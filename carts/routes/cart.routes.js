@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { isAuthenticated } = require("../../auth/isAuthenticated");
+const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { getCarts } = require("../controllers/getCarts");
 const { deleteCart } = require("../controllers/deteteCart");
 const { createCart } = require("../controllers/createCart");

@@ -1,6 +1,6 @@
 const jsonwebtoken = require("jsonwebtoken");
 const { Mutex } = require("async-mutex");
-const { User } = require("../model/user.model");
+const { User } = require("../models/user.model");
 
 // create mutex instance
 const mutex = new Mutex();

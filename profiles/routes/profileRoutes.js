@@ -1,10 +1,10 @@
 const express = require("express");
 
-const { getProfile } = require("./getProfile");
-const { updateProfile } = require("./updateProfile");
-const { deleteProfile } = require("./deleteProfile");
-const { isAuthenticated } = require("../auth/isAuthenticated");
-const { getProfiles } = require("./getProfiles");
+const { getProfile } = require("../controllers/getProfile");
+const { updateProfile } = require("../controllers/updateProfile");
+const { deleteProfile } = require("../controllers/deleteProfile");
+const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
+const { getProfiles } = require("../controllers/getProfiles");
 
 // initialize admin router
 const profileRouter = express.Router();

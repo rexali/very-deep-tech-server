@@ -1,19 +1,21 @@
-const { Profile } = require("../model/profile.model");
+const { Profile } = require("../models/profile.model");
 
 /** 
- * Get an all clients
+ * Remove a client details
  * @param {object} req - request object
  * @param {object} res - response object to user request
- * @returns void
  */
-const getProfiles = async (req, res) => {
+const deleteProfile = async (req, res) => {
     try {
-        const profile = await Profile.find().populate('user',["_id","email","role"]).exec();
+        // get a client id
+        const _id = req.body._id;
+        //    delete profile
+        const profile = await Profile.deleteOne({ _id})
         // send success data
         res.status(200).json({
             status: "success",
-            data: {profile},
-            message: "Profile read",
+            data: { profile },
+            message: "profile deleted",
         });
 
     } catch (error) {
@@ -30,5 +32,5 @@ const getProfiles = async (req, res) => {
 }
 
 module.exports = {
-    getProfiles
+    deleteProfile
 }

@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { isAuthenticated } = require("../../auth/isAuthenticated");
+const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { getProduct } = require("../controllers/getProduct");
 const { getProducts } = require("../controllers/getProducts");
 const { updateProduct } = require("../controllers/updateProduct");

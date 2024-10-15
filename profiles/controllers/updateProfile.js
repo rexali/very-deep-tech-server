@@ -1,21 +1,23 @@
-const { Profile } = require("../model/profile.model");
+const { Profile } = require("../models/profile.model");
 /**
  * Delete a client profile
  * @param {Object} req - request object
  * @param {Object} res - response object
  * @returns void
  */
-const createProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
 
     try {
         // retrieve the request body data
         const {
+            _id,
             firstName,
             lastName,
             photo
         } = req.body;
 
-        const profile = await Profile.create(
+        const profile = await Profile.updateOne(
+            { _id},
             {
                 firstName,
                 lastName,
@@ -26,7 +28,7 @@ const createProfile = async (req, res) => {
         res.status(200).json({
             status: "success",
             data: { profile },
-            message: "Profile created"
+            message: "Profile updated"
         })
 
 
@@ -36,7 +38,7 @@ const createProfile = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: result,
-            message: "profile failed"
+            message: "Update failed"
 
         })
     }
@@ -44,5 +46,5 @@ const createProfile = async (req, res) => {
 };
 
 module.exports = {
-    createProfile
+    updateProfile
 }

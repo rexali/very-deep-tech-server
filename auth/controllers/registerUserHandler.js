@@ -1,8 +1,8 @@
-const { hashpass } = require("../utils/hashHelper");
-const { escapeHTML } = require("../utils/escapeHTML");
+const { hashpass } = require("../../utils/hashHelper");
+const { escapeHTML } = require("../../utils/escapeHTML");
 const { Mutex } = require("async-mutex");
-const { User } = require("../model/user.model");
-const { Profile } = require("../model/profile.model");
+const { User } = require("../models/user.model");
+const { Profile } = require("../../model/profile.model");
 
 // create mutex instance
 const mutex = new Mutex();

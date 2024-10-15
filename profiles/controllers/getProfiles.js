@@ -1,4 +1,4 @@
-const { Profile } = require("../model/profile.model");
+const { Profile } = require("../models/profile.model");
 
 /** 
  * Get an all clients
@@ -6,14 +6,13 @@ const { Profile } = require("../model/profile.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getProfile = async (req, res) => {
+const getProfiles = async (req, res) => {
     try {
-        const _id = req.params.id
-        const profile = await Profile.findOne().where({_id}).populate('user',["_id","email","role"]).exec();
+        const profile = await Profile.find().populate('user',["_id","email","role"]).exec();
         // send success data
         res.status(200).json({
             status: "success",
-            data: { profile },
+            data: {profile},
             message: "Profile read",
         });
 
@@ -31,5 +30,5 @@ const getProfile = async (req, res) => {
 }
 
 module.exports = {
-    getProfile
+    getProfiles
 }

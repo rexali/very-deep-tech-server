@@ -1,9 +1,9 @@
 const express = require("express");
-const passport = require("../config/passport")
+const passport = require("../../config/passport")
 
-const { loginUserHandler } = require("./loginUserHandler");
-const { registerUserHandler } = require("./registerUserHandler");
-const { verifyUserTokenHandler } = require("./verifyUserTokenHandler");
+const { loginUserHandler } = require("../controllers/loginUserHandler");
+const { registerUserHandler } = require("../controllers/registerUserHandler");
+const { verifyUserTokenHandler } = require("../controllers/verifyUserTokenHandler");
 
 // initialize authentication router
 const authRouter = express.Router();
