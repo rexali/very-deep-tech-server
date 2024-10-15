@@ -2,7 +2,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const passport = require("./config/passport");
 const session = require("express-session");
 const dotenv = require('dotenv');
 // initiatize the .env
@@ -11,8 +10,8 @@ dotenv.config();
 const { logHandler } = require("./utils/logHandler");
 const { errorHandler } = require("./utils/errorHandler");
 // import auth and admin routes
-const { authRouter } = require("./auth/authRoutes");
-const { profileRouter } = require("./profiles/profileRoutes");
+const { authRouter } = require("./auth/routes/authRoutes");
+const { profileRouter } = require("./profiles/routes/profileRoutes");
 const { productRouter } = require("./products/routes/product.routes");
 const { cartRouter } = require("./carts/routes/cart.routes");
 // instantiate express
@@ -31,10 +30,6 @@ app.use(cookieParser());
 app.use(cors());
 // session
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true, cookie: { secure: true } }))
-// initialize newpassport
-app.use(passport.initialize());
-// use newpassport session
-app.use(passport.session())
 // set view engine
 app.set('view engine', 'ejs');
 // set views
