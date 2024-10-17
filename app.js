@@ -61,6 +61,12 @@ app.get("/", async (req, res) => {
     }
 });
 
+
+// server home
+app.get("/health", async (req, res) => {
+    res.send("I am fine");
+});
+
 // catch not-found resources
 app.use((req, res) => {
     try {
