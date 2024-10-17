@@ -17,7 +17,7 @@ const { cartRouter } = require("./carts/routes/cart.routes");
 // instantiate express
 const app = express();
 // port
-const PORT = 3001;
+const PORT = process.env.PORT || 4002;
 // host
 const HOST = "localhost";
 // for parsing application/json
