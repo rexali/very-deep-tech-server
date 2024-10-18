@@ -44,7 +44,6 @@ app.use("/profiles", profileRouter);
 app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 
-
 // server home
 app.get("/", async (req, res) => {
     try {
@@ -60,7 +59,6 @@ app.get("/", async (req, res) => {
         });
     }
 });
-
 
 // server home
 app.get("/health", async (req, res) => {
@@ -88,10 +86,14 @@ app.use((req, res) => {
     }
 });
 // listent to server  
-app.listen(PORT, HOST, () => {
+const server = app.listen(PORT, () => {
     // log to the console
-    console.log(`The server host is ${HOST} and is listening at port ${PORT}`);
+    console.log(`The server is listening at port ${PORT} !!!`);
 });
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000
+
 // make app object available to the whole application
-module.exports = app;
+// module.exports = app;
 
