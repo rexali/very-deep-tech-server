@@ -90,6 +90,11 @@ const loginUserHandler = async (req, res) => {
     } catch (error) {
         // catch error
         console.warn(error);
+        res.status(404).json({
+            status: "fail",
+            message: "Error! "+error.message,
+            data: null
+        });
     } finally {
         // release path for other
         release();

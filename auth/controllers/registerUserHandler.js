@@ -81,7 +81,7 @@ const registerUserHandler = async (req, res) => {
         console.warn(error);
         res.status(500).json({
             status: "failed",
-            message: "registration unsuccessful",
+            message: "Error! "+error.message,
             data: null
         });
     } finally {
