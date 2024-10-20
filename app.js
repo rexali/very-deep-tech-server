@@ -28,8 +28,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // apply default cors to the server 
 app.use(cors());
-// session
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true, cookie: { secure: true } }))
 // set view engine
 app.set('view engine', 'ejs');
 // set views

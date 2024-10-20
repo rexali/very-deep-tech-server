@@ -11,13 +11,13 @@ const cartRouter = express.Router();
 // get all products
 cartRouter.post(
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     createCart
 );
 // get all products
 cartRouter.get( 
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     getCarts
 );
 

@@ -1,4 +1,4 @@
-const {Cart } = require("../models/cart.model");
+const { Cart } = require("../models/cart.model");
 /**
  * Create a cart
  * @param {Object} req - request object
@@ -13,10 +13,10 @@ const createCart = async (req, res) => {
             product_id,
             user_id
         } = req.body;
- 
+
         const cart = await Cart.create({
-            product:{_id: product_id },
-            user: { _id: user_id }
+            product: product_id,
+            user: user_id
         });
 
         if (cart !== null) {
