@@ -6,26 +6,32 @@ const { Product } = require("../models/product.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getProduct = async (req, res) => {
+const searchProducts = async (req, res) => {
     try {
-        const _id = req.params.id
-        const product = await Product.findById(_id)
-            .populate("user",["_id","email","role"])
+        const { term, page } = req.query;
+
+        console.log(term);
+        
+        
+        const re = new RegExp(term,'i');
+
+        const products = await Product.find({ product_name: re })
+            .populate("user", ["_id", "email", "role"])
             .exec();
 
-        if (Object.keys(product).length) {
+        if (products.length) {
             // send success data
             res.status(200).json({
                 status: "success",
-                data: { product },
+                data: { products },
                 message: "Product read",
             });
         } else {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { product },
-                message: "Product reading failed",
+                data: { products },
+                message: "Product read",
             });
         }
 
@@ -43,5 +49,5 @@ const getProduct = async (req, res) => {
 }
 
 module.exports = {
-    getProduct
+    searchProducts
 }

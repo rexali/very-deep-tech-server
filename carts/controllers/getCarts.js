@@ -9,7 +9,7 @@ const { Cart } = require("../models/cart.model");
 const getCarts = async (req, res) => {
     try {
         const carts = await Cart.find()
-            .populate("user")
+            .populate("user",["_id","email","role"])
             .populate("product")
             .exec(); 
 

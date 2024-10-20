@@ -14,6 +14,7 @@ const { authRouter } = require("./auth/routes/authRoutes");
 const { profileRouter } = require("./profiles/routes/profileRoutes");
 const { productRouter } = require("./products/routes/product.routes");
 const { cartRouter } = require("./carts/routes/cart.routes");
+const { searchProducts } = require("./products/controllers/searchProducts");
 // instantiate express
 const app = express();
 // port
@@ -41,6 +42,8 @@ app.use("/auth", authRouter);
 app.use("/profiles", profileRouter);
 app.use("/products", productRouter);
 app.use("/carts", cartRouter);
+app.use("/search", searchProducts);
+
 
 // server home
 app.get("/", async (req, res) => {

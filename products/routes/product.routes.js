@@ -7,6 +7,7 @@ const { updateProduct } = require("../controllers/updateProduct");
 const { deleteProduct } = require("../controllers/deleteProduct");
 const { createProduct } = require("../controllers/createProduct");
 const { isAdmin } = require("../../auth/controllers/isAdmin");
+const { searchProducts } = require("../controllers/searchProducts");
 
 // initialize product router
 const productRouter = express.Router();
