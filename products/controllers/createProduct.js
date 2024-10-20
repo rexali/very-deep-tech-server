@@ -34,7 +34,7 @@ const createProduct = async (req, res) => {
             product_weight,
             product_size,
             product_code,
-            user: { _id: user_id }
+            user: user_id
         });
 
         if (product !== null) {

@@ -12,20 +12,20 @@ const { isAdmin } = require("../../auth/controllers/isAdmin");
 const productRouter = express.Router();
 // get a product
 productRouter.post(
-    '/:id',
-    isAdmin,
+    '/',
+    // isAdmin,
     createProduct
 );
 // get a product
 productRouter.get(
     '/:id',
-    isAuthenticated, 
+    // isAuthenticated, 
     getProduct
 );
 // get all products
 productRouter.get(
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     getProducts
 );
 // update a product
