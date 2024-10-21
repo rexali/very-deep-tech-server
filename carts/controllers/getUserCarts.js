@@ -1,34 +1,32 @@
-const { Product } = require("../models/product.model");
+const { Cart } = require("../models/cart.model");
 
 /** 
- * Get all products
+ * Get all carts
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const searchProducts = async (req, res) => {
+const getUserCarts = async (req, res) => {
+    const _id = req.params.id;
     try {
-        const { term, page } = req.query;
-        
-        const re = new RegExp(term,'i');
-
-        const products = await Product.find({ product_name: re })
+        const carts = await Cart.find({ user: _id })
             .populate("user", ["_id", "email", "role"])
+            .populate("product")
             .exec();
 
-        if (products.length) {
+        if (carts.length) {
             // send success data
             res.status(200).json({
                 status: "success",
-                data: { products },
-                message: "Product read",
+                data: { carts },
+                message: "Cart read",
             });
         } else {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { products },
-                message: "Product read",
+                data: { carts },
+                message: "Cart read",
             });
         }
 
@@ -46,5 +44,5 @@ const searchProducts = async (req, res) => {
 }
 
 module.exports = {
-    searchProducts
+    getUserCarts
 }
