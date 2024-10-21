@@ -15,6 +15,7 @@ const { profileRouter } = require("./profiles/routes/profileRoutes");
 const { productRouter } = require("./products/routes/product.routes");
 const { cartRouter } = require("./carts/routes/cart.routes");
 const { searchProducts } = require("./products/controllers/searchProducts");
+const { searchProductsByCategory } = require("./products/controllers/searchProductsByCategory");
 // instantiate express
 const app = express();
 // port
@@ -43,6 +44,8 @@ app.use("/profiles", profileRouter);
 app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/search", searchProducts);
+app.use("/category", searchProductsByCategory);
+
 
 
 // server home
