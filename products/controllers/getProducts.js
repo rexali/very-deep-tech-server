@@ -7,9 +7,15 @@ const { Product } = require("../models/product.model");
  * @returns void
  */
 const getProducts = async (req, res) => {
+
     try {
+        const page = parseInt(req.query?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
         const products = await Product.find()
-            .populate("user",["_id","email","role"])
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
             .exec();
 
         if (products.length) {
@@ -42,5 +48,5 @@ const getProducts = async (req, res) => {
 }
 
 module.exports = {
-    getProducts 
+    getProducts
 }

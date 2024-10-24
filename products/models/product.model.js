@@ -12,6 +12,7 @@ const productSchema = new mongoose.Schema({
     product_size: String,
     product_code: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    ratings:[{type: mongoose.Schema.Types.ObjectId, ref: "Rating"}]
 });
 
 const Product = mongoose.model('Product', productSchema);

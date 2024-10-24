@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     },
     password:String,
     role:String,
+    rcode:String
 });
 
 

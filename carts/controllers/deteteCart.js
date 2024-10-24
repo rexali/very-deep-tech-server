@@ -8,7 +8,7 @@ const { Cart } = require("../models/cart.model");
 const deleteCart = async (req, res) => {
     try {
         // get a client id
-        const _id = req.body._id;
+        const _id = req.params.id;
         //    delete cart
         const cart = await Cart.deleteOne({ _id });
 

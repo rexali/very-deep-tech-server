@@ -5,6 +5,8 @@ const { getCarts } = require("../controllers/getCarts");
 const { deleteCart } = require("../controllers/deteteCart");
 const { createCart } = require("../controllers/createCart");
 const { getUserCarts } = require("../controllers/getUserCarts");
+const { updateCart } = require("../controllers/updateCart");
+const { clearUserCart } = require("../controllers/clearUserCarts");
 
 // initialize cart router
 const cartRouter = express.Router();
@@ -29,11 +31,24 @@ cartRouter.get(
     getUserCarts
 );
 
+// update a cart
+cartRouter.patch(
+    "/",
+    // isAuthenticated,
+    updateCart
+);
 // delete a cart
 cartRouter.delete(
-    "/",
-    isAuthenticated,
+    "/:id",
+    // isAuthenticated,
     deleteCart
+);
+
+// delete a cart
+cartRouter.delete(
+    "/:id/users",
+    // isAuthenticated,
+    clearUserCart
 );
 // export cart router
 module.exports = {

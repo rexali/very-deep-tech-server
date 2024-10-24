@@ -8,8 +8,13 @@ const { Cart } = require("../models/cart.model");
  */
 const getUserCarts = async (req, res) => {
     const _id = req.params.id;
+    const page = parseInt(req.query.page ?? 1);
+    const limit = 10;
+    const skip = (page - 1) * limit;
     try {
         const carts = await Cart.find({ user: _id })
+            .skip(skip)
+            .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
@@ -18,7 +23,9 @@ const getUserCarts = async (req, res) => {
             // send success data
             res.status(200).json({
                 status: "success",
-                data: { carts },
+                data: {
+                    carts
+                },
                 message: "Cart read",
             });
         } else {

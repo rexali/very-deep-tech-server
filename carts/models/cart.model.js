@@ -1,6 +1,15 @@
 var { mongoose } = require("../../config/database");
 
 const cartSchema = new mongoose.Schema({
+    quantity: {
+        type: Number, default: 0
+    },
+    subtotal: {
+        type: Number, default: 0
+    },
+    price: {
+        type: Number, default: 0
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
 });

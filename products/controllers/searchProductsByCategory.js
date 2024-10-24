@@ -8,11 +8,16 @@ const { Product } = require("../models/product.model");
  */
 const searchProductsByCategory = async (req, res) => {
     try {
-        const { term, page } = req.query;
-        
-        const re = new RegExp(term,'i');
+        const term = req.query?.term ?? "";
+        const page = parseInt(req.querypage ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        const re = new RegExp(term, 'i');
 
         const products = await Product.find({ product_category: re })
+            .skip(skip)
+            .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .exec();
 

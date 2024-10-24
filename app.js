@@ -2,13 +2,16 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const session = require("express-session");
 const dotenv = require('dotenv');
 // initiatize the .env
 dotenv.config();
 // import error and log handlers
 const { logHandler } = require("./utils/logHandler");
 const { errorHandler } = require("./utils/errorHandler");
+// handle payment
+const { getTransactionUrl } = require("./payment/getTransactionUrl");
+const { verifyTransaction } = require("./payment/verifyTransaction");
+const { getWebhookData } = require("./payment/getWebhookData");
 // import auth and admin routes
 const { authRouter } = require("./auth/routes/authRoutes");
 const { profileRouter } = require("./profiles/routes/profileRoutes");
@@ -16,6 +19,12 @@ const { productRouter } = require("./products/routes/product.routes");
 const { cartRouter } = require("./carts/routes/cart.routes");
 const { searchProducts } = require("./products/controllers/searchProducts");
 const { searchProductsByCategory } = require("./products/controllers/searchProductsByCategory");
+const { subscriptionRouter } = require("./subscriptions/routes/subscription.Routes");
+const { messageRouter } = require("./messages/routes/messageRoutes");
+const { notificationRouter } = require("./notifications/routes/notificationRoutes");
+const { ratingRouter } = require("./ratings/routes/ratingRoutes");
+const { transactionRouter } = require("./transactions/routes/transaction.routes");
+const { orderRouter } = require("./orders/routes/order.routes");
 // instantiate express
 const app = express();
 // port
@@ -45,9 +54,12 @@ app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/search", searchProducts);
 app.use("/category", searchProductsByCategory);
-
-
-
+app.use("/subscriptions",subscriptionRouter);
+app.use("/messages",messageRouter);
+app.use("/notifications",notificationRouter);
+app.use('/ratings',ratingRouter);
+app.use('/transactions',transactionRouter);
+app.use('/orders',orderRouter);
 // server home
 app.get("/", async (req, res) => {
     try {
@@ -68,7 +80,12 @@ app.get("/", async (req, res) => {
 app.get("/health", async (req, res) => {
     res.send("I am fine");
 });
-
+// get paystack webhook response
+app.post("/webhook-server", getWebhookData);
+// verify paystack transaction
+app.post('/verify_transaction', verifyTransaction);
+// get paystack transaction url
+app.post('/get_trasaction_url', getTransactionUrl);
 // catch not-found resources
 app.use((req, res) => {
     try {
@@ -98,6 +115,6 @@ const server = app.listen(PORT, () => {
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000
 
-// make app object available to the whole application
+// make app object available to the whole application for test
 // module.exports = app;
 

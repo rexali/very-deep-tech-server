@@ -11,12 +11,17 @@ const createCart = async (req, res) => {
         // retrieve the request body data
         const {
             product_id,
-            user_id
+            user_id,
+            quantity,
+            price,
         } = req.body;
 
         const cart = await Cart.create({
             product: product_id,
-            user: user_id
+            user: user_id,
+            quantity,
+            price,
+            subtotal: quantity * price
         });
 
         if (cart !== null) {
