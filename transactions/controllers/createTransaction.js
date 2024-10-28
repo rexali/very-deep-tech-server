@@ -1,3 +1,4 @@
+const { Order } = require("../../orders/models/order.model");
 const { Transaction } = require("../models/transaction.model");
 
 /**
@@ -32,22 +33,41 @@ const createTransaction = async (req, res) => {
             paymentMethod
         });
 
-        if (transaction !== null) {
-            // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { transaction },
-                message: "Transaction created"
-            })
 
-        } else {
+        const order = await Order.updateOne({ _id: transaction._id },
+            {
+                orderStatus,
+                paymentStatus: "paid",
+                updatedAt: new Date(),
+            });
+
+        if (order.modifiedCount) {
+
+            if (transaction !== null) {
+                // send data as json
+                res.status(200).json({
+                    status: "success",
+                    data: { transaction },
+                    message: "Transaction created"
+                })
+
+            } else {
+                // send data as json
+                res.status(400).json({
+                    status: "failed",
+                    data: { transaction },
+                    message: "Transaction creation failed"
+                })
+            }
+        } else{
             // send data as json
             res.status(400).json({
-                status: "success",
+                status: "failed",
                 data: { transaction },
                 message: "Transaction creation failed"
             })
         }
+
 
     } catch (error) {
         console.warn(error);

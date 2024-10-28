@@ -6,12 +6,12 @@ const { deleteProfile } = require("../controllers/deleteProfile");
 const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { getProfiles } = require("../controllers/getProfiles");
 
-// initialize admin router
+// initialize profile router
 const profileRouter = express.Router();
 // get a profile
 profileRouter.get(
     '/:id',
-    isAuthenticated, 
+    // isAuthenticated, 
     getProfile
 );
 // get all user profiles

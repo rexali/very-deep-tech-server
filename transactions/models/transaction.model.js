@@ -12,14 +12,12 @@ const transactionSchema = new mongoose.Schema({
         default: 'payment' // refund, void
     },
     reference: { type: String },
-    status: {
-        type: String,
-        default: 'pending' // failure, piad
-    },
+
     currency: {
         type: String,
         default: 'NG'
     },
+
     paymentMethod: String,
 
     createdAt: { type: Date, default: new Date() },

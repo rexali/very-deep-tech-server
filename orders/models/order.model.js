@@ -1,6 +1,7 @@
 var { mongoose } = require("../../config/database");
 
 const itemSchema = new mongoose.Schema({
+
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
     quantity: {
         type: String,
@@ -17,8 +18,11 @@ const itemSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
+
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+
     items: [itemSchema], // order items list
+
     orderStatus: {
         type: String,
         default: 'pending'
@@ -43,7 +47,12 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }, // including tax and shipping
-    
+
+    paymentStatus: {
+        type: String,
+        default: "pending" // paid, cancelled
+    },
+
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date }
 });
