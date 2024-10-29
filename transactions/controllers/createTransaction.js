@@ -12,8 +12,8 @@ const createTransaction = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            order_id,
-            user_id,
+            orderId,
+            userId,
             amount,
             type, // payment, refund, void
             status,
@@ -23,8 +23,8 @@ const createTransaction = async (req, res) => {
         } = req.body;
 
         const transaction = await Transaction.create({
-            order: order_id,
-            user: user_id,
+            order: orderId,
+            user: userId,
             amount,
             type, // payment, refund, void
             status,
@@ -34,9 +34,8 @@ const createTransaction = async (req, res) => {
         });
 
 
-        const order = await Order.updateOne({ _id: transaction._id },
+        const order = await Order.updateOne({ _id: orderId },
             {
-                orderStatus,
                 paymentStatus: "paid",
                 updatedAt: new Date(),
             });

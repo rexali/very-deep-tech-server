@@ -17,7 +17,6 @@ const updateOrder = async (req, res) => {
         const order = await Order.updateOne({ _id },
             {
                 orderStatus,
-                paymentStatus,
                 updatedAt: new Date(),
             });
         if (order.modifiedCount) {

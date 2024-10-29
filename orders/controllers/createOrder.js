@@ -10,25 +10,27 @@ const createOrder = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            product_id,
-            user_id,
+            userId,
             items, // array of items
             orderStatus,
             tax,
             subtotal,
             shippingCost,
-            total
+            total,
+            paymentStatus,
+            shippingMethod
         } = req.body;
 
         const order = await Order.create({
-            product: product_id,
-            user: user_id,
+            user: userId,
             items,
             orderStatus,
             tax,
             subtotal,
             shippingCost,
             total,
+            paymentStatus,
+            shippingMethod
         });
 
         if (order !== null) {

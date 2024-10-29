@@ -52,6 +52,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "pending" // paid, cancelled
     },
+    shippingMethod:{
+        type: String,
+        default: "GENERAL" // DHL, GENERAL
+    },
 
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date }
