@@ -13,7 +13,6 @@ const createRating = async (req, res) => {
         const {
             ratingScore,
             review,
-            approved,
             userId,
             productId
         } = req.body;
@@ -21,7 +20,6 @@ const createRating = async (req, res) => {
         const rating = await Rating.create({
             ratingScore,
             review,
-            approved,
             product: productId ,
             user: userId
         });
@@ -41,9 +39,9 @@ const createRating = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { rating },
+            res.status(400).json({
+                status: "failed",
+                data: null,
                 message: "Rating creation failed"
             })
         }
@@ -53,7 +51,7 @@ const createRating = async (req, res) => {
         // send data as json
         res.status(500).json({
             status: "failed",
-            data: result,
+            data: null,
             message: "Error! " + error.message
 
         })
