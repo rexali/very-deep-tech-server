@@ -11,7 +11,7 @@ const favouriteRouter = express.Router();
 // get all favourite and products
 favouriteRouter.post(
     '/',
-    // isAuthenticated,
+    // isAuthenticated, 
     createFavourite
 );
 

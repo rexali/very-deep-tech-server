@@ -16,6 +16,7 @@ const getProducts = async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
             .exec();
 
         if (products.length) {

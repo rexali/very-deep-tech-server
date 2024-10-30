@@ -25,6 +25,7 @@ const { notificationRouter } = require("./notifications/routes/notificationRoute
 const { ratingRouter } = require("./ratings/routes/ratingRoutes");
 const { transactionRouter } = require("./transactions/routes/transaction.routes");
 const { orderRouter } = require("./orders/routes/order.routes");
+const { favouriteRouter } = require("./favourites/routes/favourite.routes");
 // instantiate express
 const app = express();
 // port
@@ -60,6 +61,8 @@ app.use("/notifications",notificationRouter);
 app.use('/ratings',ratingRouter);
 app.use('/transactions',transactionRouter);
 app.use('/orders',orderRouter);
+app.use('/favourites',favouriteRouter);
+
 // server home
 app.get("/", async (req, res) => {
     try {
