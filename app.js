@@ -105,7 +105,7 @@ app.use((req, res) => {
         res.status(500).json({
             status: "fail",
             data: null,
-            message: "Internal server error"
+            message: "Internal server error!"
         });
     }
 });
