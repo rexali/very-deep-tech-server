@@ -118,6 +118,6 @@ const server = app.listen(PORT, () => {
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000
 
-// make app object available to the whole application for test
+// make app object available for test
 // module.exports = app;
 
