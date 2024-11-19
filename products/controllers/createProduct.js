@@ -1,7 +1,7 @@
 const { Product } = require("../models/product.model");
-import { uploadMultipleFiles } from "../../utils/uploadFile";
-import multer from "multer";
-import { getFilesNames } from "../utils/getFilesNames";
+const { uploadMultipleFiles } =require("../../utils/uploadFile");
+const multer =require("multer");
+const { getFilesNames } =require("../utils/getFilesNames");
 
 
 /**
