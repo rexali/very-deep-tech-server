@@ -4,7 +4,7 @@ const multer = require("multer");
  * Upload upload file with a field name
  * @returns upload 
  */
-export function uploadFile(fieldname) {
+ function uploadFile(fieldname) {
 
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -39,7 +39,7 @@ export function uploadFile(fieldname) {
  * Upload multiple file with different field names
  * @returns upload
  */
-export function uploadFiles() {
+ function uploadFiles() {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, 'public/uploads/');
@@ -72,7 +72,7 @@ export function uploadFiles() {
  * Upload multiple file with same fieldnames
  * @returns upload
  */
-export function uploadMultipleFiles(filedName) {
+ function uploadMultipleFiles(filedName) {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, 'public/uploads/');
