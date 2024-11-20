@@ -1,5 +1,4 @@
-import { MongoGridFSChunkError } from "mongodb";
-import multer from "multer";
+const multer = require("multer");
 
 /**
  * Upload upload file with a field name
