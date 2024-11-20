@@ -10,7 +10,7 @@ const qouteRouter = express.Router();
 // get all messages
 qouteRouter.get(
     '/',
-    // isAuthenticated,
+    // isAuthenticated, 
     getQoutes
 );
 // update a message
