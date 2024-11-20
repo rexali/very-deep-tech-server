@@ -30,10 +30,10 @@ const getUserCarts = async (req, res) => {
             });
         } else {
             // send success data
-            res.status(400).json({
+            res.status(404).json({
                 status: "success",
-                data: { carts },
-                message: "Cart read",
+                data: { carts:[] },
+                message: "No Cart read",
             });
         }
 

@@ -15,7 +15,7 @@ const getOrder = async (req, res) => {
             .populate("product")
             .exec();
 
-        if (order.length) {
+        if (Object.keys(order).length) {
             // send success data
             res.status(200).json({
                 status: "success",
@@ -24,9 +24,9 @@ const getOrder = async (req, res) => {
             });
         } else {
             // send success data
-            res.status(400).json({
+            res.status(404).json({
                 status: "success",
-                data: { order },
+                data: { order:{} },
                 message: "No Order Yet",
             });
         }

@@ -10,12 +10,22 @@ const getProfile = async (req, res) => {
     try {
         const userId = req.params.id
         const profile = await Profile.findOne().where({ user: userId }).populate('user', ["_id", "email", "role"]).exec();
-        // send success data
-        res.status(200).json({
-            status: "success",
-            data: { profile },
-            message: "Profile read",
-        });
+        
+        if (Object.keys(profile).length) {
+            // send success data
+            res.status(200).json({
+                status: "success",
+                data: { profile},
+                message: "Profile read",
+            });
+        } else {
+            // send success data
+            res.status(404).json({
+                status: "success",
+                data: { profile:{} },
+                message: "Profile not found",
+            });
+        }
 
     } catch (error) {
         // catch  the error
@@ -24,7 +34,7 @@ const getProfile = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 

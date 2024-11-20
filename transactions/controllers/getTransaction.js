@@ -30,7 +30,7 @@ const getTransaction = async (req, res) => {
         } else {
             res.status(404).json({
                 status: "success",
-                data: { transaction },
+                data: { transaction:{} },
                 transaction: "No transaction found",
             });
         }

@@ -22,9 +22,9 @@ const getCarts = async (req, res) => {
             });
         } else {
             // send success data
-            res.status(400).json({
+            res.status(404).json({
                 status: "success",
-                data: { carts },
+                data: { carts:[] },
                 message: "Cart read",
             });
         }

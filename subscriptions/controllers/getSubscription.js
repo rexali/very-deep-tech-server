@@ -5,27 +5,22 @@ const { Subscription } = require("../models/subscription.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getSubscriptions = async (req, res) => {
+const getSubscription = async (req, res) => {
     try {
-        const page = parseInt(req.params?.page ?? 1);
-        const limit = 10;
-        const skip = (page - 1) * limit;
-
-        const subscriptions = await Subscription.find()
-            .skip(skip)
-            .limit(limit)
-            .exec();
+        const _id = req.params.id
+        
+        const subscription = await Subscription.findById(_id);
         // send success data
-        if (subscriptions != null) {
+        if (subscription!= null) {
             res.status(200).json({
                 status: "success",
-                data: { subscriptions },
+                data: { subscription },
                 message: "Subscription read",
             });
         } else {
             res.status(404).json({
                 status: "success",
-                data: { subscriptions },
+                data: { subscription:{} },
                 message: "No Subscription Found",
             });
         }
@@ -44,5 +39,5 @@ const getSubscriptions = async (req, res) => {
 }
 
 module.exports = {
-    getSubscriptions
+    getSubscription
 }

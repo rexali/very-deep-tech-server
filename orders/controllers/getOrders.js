@@ -27,9 +27,9 @@ const getOrders = async (req, res) => {
             });
         } else {
             // send success data
-            res.status(400).json({
+            res.status(404).json({
                 status: "success",
-                data: { orders },
+                data: { orders:[]},
                 message: "No Order Yet",
             });
         }

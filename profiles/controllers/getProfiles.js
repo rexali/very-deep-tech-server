@@ -8,13 +8,23 @@ const { Profile } = require("../models/profile.model");
  */
 const getProfiles = async (req, res) => {
     try {
-        const profile = await Profile.find().populate('user',["_id","email","role"]).exec();
-        // send success data
-        res.status(200).json({
-            status: "success",
-            data: {profile},
-            message: "Profile read",
-        });
+        const profiles = await Profile.find().populate('user',["_id","email","role"]).exec();
+        
+        if (profiles.length) {
+            // send success data
+            res.status(200).json({
+                status: "success",
+                data: { profiles},
+                message: "Profile read",
+            });
+        } else {
+            // send success data
+            res.status(400).json({
+                status: "success",
+                data: { profiles:[] },
+                message: "Profile not found",
+            });
+        }
 
     } catch (error) {
         // catch  the error

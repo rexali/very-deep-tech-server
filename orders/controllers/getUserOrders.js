@@ -32,7 +32,7 @@ const getUserOrders = async (req, res) => {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { orders },
+                data: { orders:[] },
                 message: "No Order Yet",
             });
         }

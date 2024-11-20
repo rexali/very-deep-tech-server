@@ -36,7 +36,7 @@ const getTransactions = async (req, res) => {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { transcations },
+                data: { transcations:[] },
                 message: "No Transaction Yet",
             });
         }

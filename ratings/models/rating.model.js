@@ -1,7 +1,7 @@
 var { mongoose } = require("../../config/database");
 
 const ratingSchema = new mongoose.Schema({
-    ratingScore: Number,
+    ratingScore: {type:Number,default:0},
     review: String,
     approved: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

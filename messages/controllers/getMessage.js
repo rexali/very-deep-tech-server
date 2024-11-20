@@ -20,7 +20,7 @@ const getMessage = async (req, res) => {
         } else {
             res.status(404).json({
                 status: "success",
-                data: { message },
+                data: { message:{} },
                 message: "No message found",
             });
         }

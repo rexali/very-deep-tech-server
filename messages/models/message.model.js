@@ -1,6 +1,8 @@
 var { mongoose } = require("../../config/database");
 
 const messageSchema = new mongoose.Schema({
+    firstName: String,
+    lastName: String,
     title: String,
     comment: String,
     createdAt: Date,

@@ -25,7 +25,7 @@ const getRating = async (req, res) => {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { rating },
+                data: { rating:{} },
                 message: "Rating reading failed",
             });
         }

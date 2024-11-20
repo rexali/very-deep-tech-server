@@ -20,7 +20,7 @@ const getNotification = async (req, res) => {
         } else {
             res.status(404).json({
                 status: "success",
-                data: { notification },
+                data: { notification:{} },
                 message: "No notification found",
             });
         }

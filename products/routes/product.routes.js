@@ -7,7 +7,7 @@ const { updateProduct } = require("../controllers/updateProduct");
 const { deleteProduct } = require("../controllers/deleteProduct");
 const { createProduct } = require("../controllers/createProduct");
 const { isAdmin } = require("../../auth/controllers/isAdmin");
-const { searchProducts } = require("../controllers/searchProducts");
+const { getUserProducts } = require("../controllers/getUserProducts");
 
 // initialize product router
 const productRouter = express.Router();
@@ -22,6 +22,12 @@ productRouter.get(
     '/:id',
     // isAuthenticated, 
     getProduct
+);
+// get user products
+productRouter.get(
+    '/:id/users',
+    // isAuthenticated, 
+    getUserProducts
 );
 // get all products
 productRouter.get(

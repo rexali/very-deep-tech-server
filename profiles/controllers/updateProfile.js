@@ -23,7 +23,7 @@ const updateProfile = async (req, res) => {
                 lastName,
                 photo
             });
-
+profile.
         // send data as json
         res.status(200).json({
             status: "success",

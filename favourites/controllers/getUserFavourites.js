@@ -32,7 +32,7 @@ const getUserFavourites = async (req, res) => {
             // send success data
             res.status(400).json({
                 status: "success",
-                data: { favourites },
+                data: { favourites:[] },
                 message: "Favourite read",
             });
         }

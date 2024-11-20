@@ -1,37 +1,35 @@
-const { Notification } = require("../models/notification.model");
-
+const { Qoute } = require("../models/qoute.model");
 /** 
- * Get all notifications
+ * Get all qoutes
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const getNotifications = async (req, res) => {
+const getQoutes = async (req, res) => {
     try {
         const page = parseInt(req.params?.page ?? 1);
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const notification = await Notification.find()
+        const qoutes = await Qoute.find()
             .skip(skip)
             .limit(limit)
-            .populate('user', ["_id", "email", "role"])
+            .populate('product')
             .exec();
         // send success data
-        if (notification != null) {
+        if (qoutes != null) {
             res.status(200).json({
                 status: "success",
-                data: { notification },
-                message: "Notification read",
+                data: { qoutes },
+                message: "Qoutes read",
             });
         } else {
             res.status(404).json({
                 status: "success",
-                data: { notification:[] },
-                message: "No notification found",
+                data: { qoutes:[] },
+                message: "No qoute found",
             });
         }
-
 
     } catch (error) {
         // catch  the error
@@ -47,5 +45,5 @@ const getNotifications = async (req, res) => {
 }
 
 module.exports = {
-    getNotifications
+    getQoutes
 }
