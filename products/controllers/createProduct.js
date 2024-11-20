@@ -31,7 +31,7 @@ const createProduct = async (req, res) => {
         // } = req.body;
     
 
-    uploadMultipleFiles('photos')(req, res, async function (err) {
+    uploadMultipleFiles('product_pictures')(req, res, async function (err) {
         if (err instanceof multer.MulterError) {
             // A Multer error occurred when uploading.
             throw new Error(err.message)
@@ -43,7 +43,7 @@ const createProduct = async (req, res) => {
         try {
             const data = {
                 ...req.body,
-                photos: getFilesNames(req.files)
+                product_pictures: getFilesNames(req.files)
             }
             // save in database
             const product = await Product.create({
