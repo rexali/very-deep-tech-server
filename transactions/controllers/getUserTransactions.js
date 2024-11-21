@@ -26,23 +26,27 @@ const getUserTransactions = async (req, res) => {
             })
             .exec();
 
-        if (transactions.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: {
-                    transactions
-                },
-                message: "Transaction read",
-            });
-        } else {
-            // send success data
-            res.status(404).json({
-                status: "success",
-                data: { transactions:[] },
-                message: "No Transaction Yet",
-            });
-        }
+            if (transactions != null) {
+                if (transactions.length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { transactions },
+                        message: "Transaction read",
+                    });
+                } else {
+                    res.status(404).json({
+                        status: "failed",
+                        data: { transactions: [] },
+                        message: "No transaction found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { transactions: null },
+                    message: "No transaction found",
+                });
+            }
 
     } catch (error) {
         // catch  the error

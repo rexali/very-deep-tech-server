@@ -11,25 +11,25 @@ const notificationRouter = express.Router();
 // get a notification
 notificationRouter.get(
     '/:id',
-    isAuthenticated, 
+    // isAuthenticated, 
     getNotification
 );
 // get all notifications
 notificationRouter.get(
     '/', 
-    isAuthenticated,
+    // isAuthenticated,
     getNotifications
 );
 // update a notification
 notificationRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateNotification
 );
 // delete a notification
 notificationRouter.delete(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     deleteNotification
 );
 // export notification router

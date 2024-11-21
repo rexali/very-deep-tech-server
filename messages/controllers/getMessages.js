@@ -16,20 +16,29 @@ const getMessages = async (req, res) => {
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
-        // send success data
-        if (messages != null) {
-            res.status(200).json({
-                status: "success",
-                data: { messages },
-                message: "Messages read",
-            });
-        } else {
-            res.status(404).json({
-                status: "success",
-                data: { messages:[] },
-                message: "No message found",
-            });
-        }
+
+            if (messages != null) {
+                if (messages.length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { messages },
+                        message: "Messages found",
+                    });
+                } else {
+                    res.status(404).json({
+                        status: "failed",
+                        data: { messages: [] },
+                        message: "No messages found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { messages: null },
+                    message: "No messages found",
+                });
+            }
+    
 
     } catch (error) {
         // catch  the error

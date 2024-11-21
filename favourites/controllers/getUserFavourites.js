@@ -19,27 +19,31 @@ const getUserFavourites = async (req, res) => {
             .populate("product")
             .exec();
 
-        if (favourites.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: {
-                    favourites
-                },
-                message: "Favourite read",
-            });
+        if (favourites != null) {
+            if (favourites.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { favourites },
+                    message: "Favourites found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { favourites: [] },
+                    message: "No favourites found",
+                });
+            }
         } else {
-            // send success data
             res.status(400).json({
-                status: "success",
-                data: { favourites:[] },
-                message: "Favourite read",
+                status: "failed",
+                data: { favourites: null },
+                message: "No favourites found",
             });
         }
 
     } catch (error) {
         // catch  the error
-        console.warn(error); 
+        console.warn(error);
         // send error response
         res.status(500).json({
             status: "failed",

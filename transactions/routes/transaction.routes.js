@@ -3,7 +3,7 @@ const express = require("express");
 const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { getTransaction } = require("../controllers/getTransaction");
 const { getTransactions } = require("../controllers/getTransactions");
-const { getUserTransactions } = require("../controllers/getUserTransaction");
+const { getUserTransactions } = require("../controllers/getUserTransactions");
 const { createTransaction } = require("../controllers/createTransaction");
 
 // initialize transaction router

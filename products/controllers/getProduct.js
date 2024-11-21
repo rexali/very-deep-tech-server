@@ -13,21 +13,27 @@ const getProduct = async (req, res) => {
             .populate("user",["_id","email","role"])
             .exec();
 
-        if (Object.keys(product).length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: { product },
-                message: "Product read",
-            });
-        } else {
-            // send success data
-            res.status(400).json({
-                status: "success",
-                data: { product },
-                message: "Product reading failed",
-            });
-        }
+            if (product != null) {
+                if (Object.keys(product).length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { product },
+                        message: "Product found",
+                    });
+                } else { 
+                    res.status(404).json({
+                        status: "failed",
+                        data: { product: {} },
+                        message: "No product found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { product: null },
+                    message: "No product found",
+                });
+            }
 
     } catch (error) {
         // catch  the error

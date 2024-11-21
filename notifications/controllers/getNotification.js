@@ -9,18 +9,28 @@ const { Notification } = require("../models/notification.model");
 const getNotification = async (req, res) => {
     try {
         const _id = req.params.id
-        const notification = await Notification.findById(_id).populate('user', ["_id", "email", "role"]).exec();
+        const notification = await Notification.findById(_id)
+            .populate('user', ["_id", "email", "role"])
+            .exec();
         // send success data
-        if (Object.keys(notification).length) {
-            res.status(200).json({
-                status: "success",
-                data: { notification },
-                message: "Profile read",
-            });
+        if (notification != null) {
+            if (Object.keys(notification).length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { notification },
+                    message: "Notification found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { notification: {} },
+                    message: "No notification found",
+                });
+            }
         } else {
-            res.status(404).json({
-                status: "success",
-                data: { notification:{} },
+            res.status(400).json({
+                status: "failed",
+                data: { notification: null },
                 message: "No notification found",
             });
         }
@@ -33,7 +43,7 @@ const getNotification = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

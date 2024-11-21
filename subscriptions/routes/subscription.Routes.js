@@ -11,19 +11,19 @@ const subscriptionRouter = express.Router();
 // get all subscription
 subscriptionRouter.get(
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     getSubscriptions
 );
 // update a subscription
 subscriptionRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateSubscription
 );
 // delete a subscription
 subscriptionRouter.delete(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     deleteSubscription
 );
 // export subscription router

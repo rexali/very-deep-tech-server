@@ -11,7 +11,7 @@ const getTransactions = async (req, res) => {
         const page = parseInt(req.query.page ?? 1);
         const limit = 10;
         const skip = (page - 1) * limit;
-        const transcations = await Transaction.find()
+        const transactions = await Transaction.find()
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -25,21 +25,27 @@ const getTransactions = async (req, res) => {
             })
             .exec();
 
-        if (transcations.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: { transcations },
-                message: "Transaction read",
-            });
-        } else {
-            // send success data
-            res.status(400).json({
-                status: "success",
-                data: { transcations:[] },
-                message: "No Transaction Yet",
-            });
-        }
+            if (transactions != null) {
+                if (transactions.length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { transactions },
+                        message: "Transaction read",
+                    });
+                } else {
+                    res.status(404).json({
+                        status: "failed",
+                        data: { transactions: [] },
+                        message: "No transaction found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { transactions: null },
+                    message: "No transaction found",
+                });
+            }
 
     } catch (error) {
         // catch  the error

@@ -16,21 +16,21 @@ orderRouter.post(
     createOrder
 );
 // get all orders and products
-orderRouter.get( 
+orderRouter.get(
     '/',
     // isAuthenticated, 
     getOrders
 );
 
 // get one order and product
-orderRouter.get( 
-    '/',
+orderRouter.get(
+    '/:id',
     // isAuthenticated,
     getOrder
 );
 
 // get user orders and products
-orderRouter.get( 
+orderRouter.get(
     '/:id/users',
     // isAuthenticated,
     getUserOrders

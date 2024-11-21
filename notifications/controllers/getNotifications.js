@@ -12,23 +12,32 @@ const getNotifications = async (req, res) => {
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const notification = await Notification.find()
+        const notifications = await Notification.find()
             .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
         // send success data
-        if (notification != null) {
-            res.status(200).json({
-                status: "success",
-                data: { notification },
-                message: "Notification read",
-            });
+
+        if (notifications != null) {
+            if (notifications.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { notifications },
+                    message: "Notifications found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { notifications: [] },
+                    message: "No notifications found",
+                });
+            }
         } else {
-            res.status(404).json({
-                status: "success",
-                data: { notification:[] },
-                message: "No notification found",
+            res.status(400).json({
+                status: "failed",
+                data: { notifications: null },
+                message: "No notifications found",
             });
         }
 
@@ -40,7 +49,7 @@ const getNotifications = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

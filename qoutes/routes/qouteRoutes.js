@@ -9,6 +9,13 @@ const qouteRouter = express.Router();
 
 // get all messages
 qouteRouter.get(
+    '/:id',
+    // isAuthenticated, 
+    getQoutes
+);
+
+// get all messages
+qouteRouter.get(
     '/',
     // isAuthenticated, 
     getQoutes

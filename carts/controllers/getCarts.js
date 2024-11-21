@@ -13,21 +13,27 @@ const getCarts = async (req, res) => {
             .populate("product")
             .exec(); 
 
-        if (carts.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: { carts },
-                message: "Cart read",
-            });
-        } else {
-            // send success data
-            res.status(404).json({
-                status: "success",
-                data: { carts:[] },
-                message: "Cart read",
-            });
-        }
+            if (carts != null) {
+                if (carts.length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { carts },
+                        message: "Carts found",
+                    });
+                } else {
+                    res.status(404).json({
+                        status: "failed",
+                        data: { carts: [] },
+                        message: "No carts found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { carts: null },
+                    message: "No carts found",
+                });
+            }
 
     } catch (error) {
         // catch  the error

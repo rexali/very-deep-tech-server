@@ -11,25 +11,25 @@ const messageRouter = express.Router();
 // get a message
 messageRouter.get(
     '/:id',
-    isAuthenticated, 
+    // isAuthenticated, 
     getMessage
 ); 
 // get all messages
 messageRouter.get(
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     getMessages
 );
 // update a message
 messageRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateMessage
 );
 // delete a message
 messageRouter.delete(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     deleteMessage
 );
 // export message router

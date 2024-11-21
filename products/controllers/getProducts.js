@@ -25,23 +25,29 @@ const getProducts = async (req, res) => {
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,
-            averageRating: product.ratings.map(rating=>Number(rating.ratingScore))
-            .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
+            averageRating: product.ratings.map(rating => Number(rating.ratingScore))
+                .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
         }))
 
-        if (products.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: { products: newProducts },
-                message: "Product read",
-            });
+        if (products != null) {
+            if (products.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { products: newProducts },
+                    message: "Products found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { products: [] },
+                    message: "No products found",
+                });
+            }
         } else {
-            // send success data
-            res.status(404).json({
-                status: "success",
-                data: { products:[] },
-                message: "Product read",
+            res.status(400).json({
+                status: "failed",
+                data: { products: null },
+                message: "No products found",
             });
         }
 

@@ -14,21 +14,28 @@ const getRating = async (req, res) => {
             .populate("user") 
             .exec();
             
-        if (Object.keys(rating).length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: { rating },
-                message: "Rating read",
-            });
-        } else {
-            // send success data
-            res.status(400).json({
-                status: "success",
-                data: { rating:{} },
-                message: "Rating reading failed",
-            });
-        }
+
+            if (rating != null) {
+                if (Object.keys(rating).length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { rating },
+                        message: "Rating found",
+                    });
+                } else { 
+                    res.status(404).json({
+                        status: "failed",
+                        data: { rating: {} },
+                        message: "No rating found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { rating: null },
+                    message: "No rating found",
+                });
+            }
 
 
     } catch (error) {
@@ -38,7 +45,7 @@ const getRating = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 

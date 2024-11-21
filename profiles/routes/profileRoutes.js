@@ -17,19 +17,19 @@ profileRouter.get(
 // get all user profiles
 profileRouter.get(
     '/',
-    isAuthenticated,
+    // isAuthenticated,
     getProfiles
 );
 // update a profile
 profileRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateProfile
 );
 // delete a profile
 profileRouter.delete(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     deleteProfile
 );
 // export profile router

@@ -1,37 +1,37 @@
-const { Message } = require("../models/message.model");
-
+const { Qoute } = require("../models/qoute.model");
 /** 
- * Get one message
+ * Get all qoutes
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const getMessage = async (req, res) => {
+const getQoute = async (req, res) => {
     try {
-        const _id = req.params.id
-        const message = await Message.findById(_id)
-            .populate('user', ["_id", "email", "role"])
+        const id = req.params.id;
+
+        const qoute = await Qoute.findById(id)
+            .populate('product')
             .exec();
         // send success data
-        if (message != null) {
-            if (Object.keys(message).length) {
+        if (qoute != null) {
+            if (Object.keys(qoute).length) {
                 res.status(200).json({
                     status: "success",
-                    data: { message },
-                    message: "Message found",
+                    data: { qoute },
+                    message: "Qoute found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { message: {} },
-                    message: "No message found",
+                    data: { qoute: {} },
+                    message: "No qoute found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { message: null },
-                message: "No message found",
+                data: { qoute: null },
+                message: "No qoute found",
             });
         }
 
@@ -49,5 +49,5 @@ const getMessage = async (req, res) => {
 }
 
 module.exports = {
-    getMessage
+    getQoute
 }

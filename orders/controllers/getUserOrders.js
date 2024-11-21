@@ -19,23 +19,27 @@ const getUserOrders = async (req, res) => {
             .populate("product")
             .exec();
 
-        if (orders.length) {
-            // send success data
-            res.status(200).json({
-                status: "success",
-                data: {
-                    orders
-                },
-                message: "Order read",
-            });
-        } else {
-            // send success data
-            res.status(400).json({
-                status: "success",
-                data: { orders:[] },
-                message: "No Order Yet",
-            });
-        }
+            if (orders != null) {
+                if (orders.length) {
+                    res.status(200).json({
+                        status: "success",
+                        data: { orders },
+                        message: "Orders read",
+                    });
+                } else {
+                    res.status(404).json({
+                        status: "failed",
+                        data: { orders: [] },
+                        message: "No orders found",
+                    });
+                }
+            } else {
+                res.status(400).json({
+                    status: "failed",
+                    data: { orders: null },
+                    message: "No orders found",
+                });
+            }
 
     } catch (error) {
         // catch  the error

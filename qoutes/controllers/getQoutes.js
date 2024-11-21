@@ -17,17 +17,26 @@ const getQoutes = async (req, res) => {
             .populate('product')
             .exec();
         // send success data
+
         if (qoutes != null) {
-            res.status(200).json({
-                status: "success",
-                data: { qoutes },
-                message: "Qoutes read",
-            });
+            if (qoutes.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { qoutes },
+                    message: "Qoutes found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { qoutes: [] },
+                    message: "No qoutes found",
+                });
+            }
         } else {
-            res.status(404).json({
-                status: "success",
-                data: { qoutes:[] },
-                message: "No qoute found",
+            res.status(400).json({
+                status: "failed",
+                data: { qoutes: null },
+                message: "No qoutes found",
             });
         }
 

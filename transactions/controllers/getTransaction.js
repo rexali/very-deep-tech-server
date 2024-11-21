@@ -21,20 +21,27 @@ const getTransaction = async (req, res) => {
             })
             .exec();
         // send success data
-        if (Object.keys(transaction).length) {
-            res.status(200).json({
-                status: "success",
-                data: { transaction },
-                transaction: "Profile read",
-            });
+        if (transaction != null) {
+            if (Object.keys(transaction).length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { transaction },
+                    message: "Transaction read",
+                });
+            } else { 
+                res.status(404).json({
+                    status: "failed",
+                    data: { transaction: {} },
+                    message: "No transaction found",
+                });
+            }
         } else {
-            res.status(404).json({
-                status: "success",
-                data: { transaction:{} },
-                transaction: "No transaction found",
+            res.status(400).json({
+                status: "failed",
+                data: { transaction: null },
+                message: "No transaction found",
             });
         }
-
 
     } catch (error) {
         // catch  the error
@@ -43,7 +50,7 @@ const getTransaction = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            transaction: "Error! " + error.transaction
+            message: "Error! " + error.message
         })
     }
 

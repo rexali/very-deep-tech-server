@@ -11,25 +11,25 @@ const ratingRouter = express.Router();
 // get a rating
 ratingRouter.get(
     '/:id',
-    isAuthenticated, 
+    // isAuthenticated, 
     getRating
 );
 // create a rating
 ratingRouter.post(
     '/', 
-    isAuthenticated,
+    // isAuthenticated,
     createRating
 );
 // update a rating
 ratingRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateRating
 );
 // delete a rating
 ratingRouter.delete(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     deleteRating
 );
 // export rating router

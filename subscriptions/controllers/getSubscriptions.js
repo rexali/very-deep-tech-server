@@ -11,17 +11,26 @@ const getSubscriptions = async (req, res) => {
         const _id = req.params.id
         const subscriptions = await Subscription.findById(_id).exec();
         // send success data
-        if (subscriptions.length) {
-            res.status(200).json({
-                status: "success",
-                data: { subscriptions },
-                subscriptions: "Profile read",
-            });
+
+        if (subscriptions != null) {
+            if (subscriptions.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { subscriptions },
+                    message: "Subscriptions found",
+                });
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    data: { subscriptions: [] },
+                    message: "No subscriptions found",
+                });
+            }
         } else {
-            res.status(404).json({
-                status: "success",
-                data: { subscriptions:[] },
-                subscriptions: "No subscriptions found",
+            res.status(400).json({
+                status: "failed",
+                data: { subscriptions: null },
+                message: "No subscriptions found",
             });
         }
 
@@ -33,7 +42,7 @@ const getSubscriptions = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            subscriptions: "Error! "+error.subscriptions
+            message: "Error! " + error.message
         })
     }
 
