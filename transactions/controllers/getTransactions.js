@@ -25,27 +25,35 @@ const getTransactions = async (req, res) => {
             })
             .exec();
 
-            if (transactions != null) {
-                if (transactions.length) {
-                    res.status(200).json({
-                        status: "success",
-                        data: { transactions },
-                        message: "Transaction read",
-                    });
-                } else {
-                    res.status(404).json({
-                        status: "failed",
-                        data: { transactions: [] },
-                        message: "No transaction found",
-                    });
-                }
+        const totalTransactions = (await Transaction.find()).length;
+        const newTransactions = JSON.parse(JSON.stringify(transactions)).map(transaction => ({
+            ...transaction,
+            totalTransactions: totalTransactions,
+            totalAmount: transactions.map(transaction => Number(transaction.amount))
+                .reduce((prev, curr) => prev + curr, 0)
+        }))
+
+        if (transactions != null) {
+            if (transactions.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { transactions: newTransactions },
+                    message: "Transaction read",
+                });
             } else {
-                res.status(400).json({
+                res.status(404).json({
                     status: "failed",
-                    data: { transactions: null },
+                    data: { transactions: [] },
                     message: "No transaction found",
                 });
             }
+        } else {
+            res.status(400).json({
+                status: "failed",
+                data: { transactions: null },
+                message: "No transaction found",
+            });
+        }
 
     } catch (error) {
         // catch  the error

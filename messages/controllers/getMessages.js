@@ -17,28 +17,34 @@ const getMessages = async (req, res) => {
             .populate('user', ["_id", "email", "role"])
             .exec();
 
-            if (messages != null) {
-                if (messages.length) {
-                    res.status(200).json({
-                        status: "success",
-                        data: { messages },
-                        message: "Messages found",
-                    });
-                } else {
-                    res.status(404).json({
-                        status: "failed",
-                        data: { messages: [] },
-                        message: "No messages found",
-                    });
-                }
+        const totalMessages = (await Message.find()).length;
+        const newMessages = JSON.parse(JSON.stringify(messages)).map(msg => ({
+            ...msg,
+            totalMessages
+        }))
+
+        if (messages != null) {
+            if (messages.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { messages: newMessages },
+                    message: "Messages found",
+                });
             } else {
-                res.status(400).json({
+                res.status(404).json({
                     status: "failed",
-                    data: { messages: null },
+                    data: { messages: [] },
                     message: "No messages found",
                 });
             }
-    
+        } else {
+            res.status(400).json({
+                status: "failed",
+                data: { messages: null },
+                message: "No messages found",
+            });
+        }
+
 
     } catch (error) {
         // catch  the error
@@ -47,7 +53,7 @@ const getMessages = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

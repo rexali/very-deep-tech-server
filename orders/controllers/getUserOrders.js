@@ -18,12 +18,18 @@ const getUserOrders = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
+           
+            const totalOrders = (await Order.find()).length;
+            const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
+                ...msg,
+                totalOrders: totalOrders
+            }))
 
             if (orders != null) {
                 if (orders.length) {
                     res.status(200).json({
                         status: "success",
-                        data: { orders },
+                        data: { orders:newOrders },
                         message: "Orders read",
                     });
                 } else {

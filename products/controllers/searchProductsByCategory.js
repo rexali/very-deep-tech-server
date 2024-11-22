@@ -21,11 +21,19 @@ const searchProductsByCategory = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .exec();
 
+        const totalProducts = (await Product.find()).length;
+        let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
+            ...product,
+            totalProducts,
+            averageRating: product.ratings.map(rating => Number(rating.ratingScore))
+                .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
+        }))
+
         if (products != null) {
             if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products },
+                    data: { products: newProducts },
                     message: "Products found",
                 });
             } else {

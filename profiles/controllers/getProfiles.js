@@ -12,28 +12,33 @@ const getProfiles = async (req, res) => {
             .populate('user', ["_id", "email", "role"])
             .exec();
 
+        const totalProfiles = (await Profile.find()).length;
+        const newProfiles = JSON.parse(JSON.stringify(profiles)).map(profile => ({
+            ...profile,
+            totalProfiles
+        }));
 
-            if (profiles != null) {
-                if (profiles.length) {
-                    res.status(200).json({
-                        status: "success",
-                        data: { profiles },
-                        message: "profile found",
-                    });
-                } else {
-                    res.status(404).json({
-                        status: "failed",
-                        data: { profiles: [] },
-                        message: "No profile found",
-                    });
-                }
+        if (profiles != null) {
+            if (profiles.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { profiles: newProfiles },
+                    message: "profiles found",
+                });
             } else {
-                res.status(400).json({
+                res.status(404).json({
                     status: "failed",
-                    data: { profiles: null },
-                    message: "No transaction found",
+                    data: { profiles: [] },
+                    message: "No profiles found",
                 });
             }
+        } else {
+            res.status(400).json({
+                status: "failed",
+                data: { profiles: null },
+                message: "No profiles found",
+            });
+        }
 
 
     } catch (error) {
@@ -43,7 +48,7 @@ const getProfiles = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

@@ -9,31 +9,38 @@ const { Cart } = require("../models/cart.model");
 const getCarts = async (req, res) => {
     try {
         const carts = await Cart.find()
-            .populate("user",["_id","email","role"])
+            .populate("user", ["_id", "email", "role"])
             .populate("product")
-            .exec(); 
+            .exec();
 
-            if (carts != null) {
-                if (carts.length) {
-                    res.status(200).json({
-                        status: "success",
-                        data: { carts },
-                        message: "Carts found",
-                    });
-                } else {
-                    res.status(404).json({
-                        status: "failed",
-                        data: { carts: [] },
-                        message: "No carts found",
-                    });
-                }
+        const totalCarts = (await Cart.find()).length;
+
+        const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
+            ...cart,
+            totalCarts
+        }))
+
+        if (carts != null) {
+            if (carts.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { carts: newCarts },
+                    message: "Carts found",
+                });
             } else {
-                res.status(400).json({
+                res.status(404).json({
                     status: "failed",
-                    data: { carts: null },
+                    data: { carts: [] },
                     message: "No carts found",
                 });
             }
+        } else {
+            res.status(400).json({
+                status: "failed",
+                data: { carts: null },
+                message: "No carts found",
+            });
+        }
 
     } catch (error) {
         // catch  the error

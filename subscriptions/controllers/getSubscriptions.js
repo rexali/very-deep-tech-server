@@ -11,12 +11,18 @@ const getSubscriptions = async (req, res) => {
         const _id = req.params.id
         const subscriptions = await Subscription.findById(_id).exec();
         // send success data
+        const totalSubscriptions = (await Subscription.find()).length;
+
+        const newSubscriptions = JSON.parse(JSON.stringify(subscriptions)).map(subscription => ({
+            ...subscription,
+            totalSubscriptions: totalSubscriptions
+        }));
 
         if (subscriptions != null) {
             if (subscriptions.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { subscriptions },
+                    data: { subscriptions: newSubscriptions },
                     message: "Subscriptions found",
                 });
             } else {

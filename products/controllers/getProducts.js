@@ -13,15 +13,14 @@ const getProducts = async (req, res) => {
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const totalProducts = (await Product.find()).length;
-
         const products = await Product.find()
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
             .exec();
-
+            
+        const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,

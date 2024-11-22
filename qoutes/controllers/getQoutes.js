@@ -16,13 +16,21 @@ const getQoutes = async (req, res) => {
             .limit(limit)
             .populate('product')
             .exec();
+
+        const totalQoutes = (await Qoute.find()).length;
+
+        const newQoutes = JSON.parse(JSON.stringify(qoutes)).map(qoute => ({
+            ...qoute,
+            totalQoutes
+        }));
+
         // send success data
 
         if (qoutes != null) {
             if (qoutes.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { qoutes },
+                    data: { qoutes: newQoutes },
                     message: "Qoutes found",
                 });
             } else {
@@ -47,7 +55,7 @@ const getQoutes = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

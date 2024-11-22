@@ -17,13 +17,19 @@ const getNotifications = async (req, res) => {
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
-        // send success data
 
+        const totalNotifications = (await Notification.find()).length;
+
+        const newNotifications = JSON.parse(JSON.stringify(notifications)).map(notice => ({
+            ...notice,
+            totalNotifications
+        }))
+        // send success data
         if (notifications != null) {
             if (notifications.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { notifications },
+                    data: { notifications: newNotifications },
                     message: "Notifications found",
                 });
             } else {
