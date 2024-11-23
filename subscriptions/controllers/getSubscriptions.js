@@ -8,8 +8,8 @@ const { Subscription } = require("../models/subscription.model");
  */
 const getSubscriptions = async (req, res) => {
     try {
-        const _id = req.params.id
-        const subscriptions = await Subscription.findById(_id).exec();
+
+        const subscriptions = await Subscription.find();
         // send success data
         const totalSubscriptions = (await Subscription.find()).length;
 

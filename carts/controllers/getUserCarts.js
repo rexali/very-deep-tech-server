@@ -7,11 +7,15 @@ const { Cart } = require("../models/cart.model");
  * @returns void
  */
 const getUserCarts = async (req, res) => {
-    const _id = req.params.id;
-    const page = parseInt(req.query.page ?? 1);
-    const limit = 10;
-    const skip = (page - 1) * limit;
+
+
     try {
+        
+        const _id = req.params.id;
+        const page = parseInt(req.query.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
         const carts = await Cart.find({ user: _id })
             .skip(skip)
             .limit(limit)

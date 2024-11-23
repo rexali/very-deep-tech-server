@@ -8,7 +8,14 @@ const { Profile } = require("../models/profile.model");
  */
 const getProfiles = async (req, res) => {
     try {
+
+        const page = parseInt(req.query?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
         const profiles = await Profile.find()
+            .skip(skip)
+            .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
 

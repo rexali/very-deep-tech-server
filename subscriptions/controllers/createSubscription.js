@@ -17,7 +17,7 @@ const createSubscription = async (req, res) => {
             {
                 email
             });
-
+ 
         if (subscription != null) {
             // send data as json
             res.status(200).json({

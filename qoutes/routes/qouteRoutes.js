@@ -1,33 +1,33 @@
 const express = require("express");
 
 const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
-const { getMessages, getQoutes } = require("../controllers/getQoutes");
+const {  getQoutes } = require("../controllers/getQoutes");
 const { createQoute } = require("../controllers/createQoute");
 
 // initialize admin router
 const qouteRouter = express.Router();
 
-// get all messages
+// get all qoutes
 qouteRouter.get(
     '/:id',
     // isAuthenticated, 
     getQoutes
 );
 
-// get all messages
+// get all qoutes
 qouteRouter.get(
     '/',
     // isAuthenticated, 
     getQoutes
 );
-// update a message
+// create a qoute
 qouteRouter.post(
     "/",
     // isAuthenticated,
     createQoute
 );
 
-// export message router
+// export qoute router
 module.exports = {
     qouteRouter 
 }
