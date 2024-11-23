@@ -27,9 +27,9 @@ const createSubscription = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
+            res.status(400).json({
                 status: "success",
-                data: { subscription },
+                data: { subscription: null },
                 subscription: "Subscription creation failed"
             })
         }

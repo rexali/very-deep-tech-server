@@ -8,8 +8,8 @@ const { Product } = require("../models/product.model");
  */
 const searchProducts = async (req, res) => {
     try {
-        const term = req.query?.term ?? "";
-        const page = parseInt(req.querypage ?? 1);
+        const term = req.query.term;
+        const page = parseInt(req.query.page ?? 1);
         const limit = 10;
         const skip = (page - 1) * limit;
         const re = new RegExp(term, 'i');
@@ -32,7 +32,7 @@ const searchProducts = async (req, res) => {
             if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products:newProducts },
+                    data: { products: newProducts },
                     message: "Products found",
                 });
             } else {

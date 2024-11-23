@@ -19,7 +19,7 @@ const getProducts = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
             .exec();
-            
+
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
