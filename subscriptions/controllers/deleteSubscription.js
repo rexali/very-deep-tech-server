@@ -15,13 +15,13 @@ const deleteSubscription = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: { subscription },
-                subscription: "Subscription  deleted",
+                message: "Subscription  deleted",
             });
         } else {
             res.status(200).json({
                 status: "success",
                 data: { subscription },
-                subscription: "Subscription  deletion failed",
+                message: "Subscription  deletion failed",
             });
         }
 
@@ -32,7 +32,7 @@ const deleteSubscription = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            subscription: "Error! " + error.subscription
+            message: "Error! " + error.message
         })
     }
 }
