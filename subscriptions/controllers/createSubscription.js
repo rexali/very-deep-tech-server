@@ -23,14 +23,14 @@ const createSubscription = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: { subscription },
-                subscription: "Subscription created"
+                message: "Subscription created"
             })
         } else {
             // send data as json
             res.status(400).json({
                 status: "success",
                 data: { subscription: null },
-                subscription: "Subscription creation failed"
+                message: "Subscription creation failed"
             })
         }
 
@@ -40,7 +40,7 @@ const createSubscription = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            subscription: "Error! " + error.subscription
+            message: "Error! " + error.message
 
         })
     }

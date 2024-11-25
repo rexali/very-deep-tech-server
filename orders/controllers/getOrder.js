@@ -12,7 +12,6 @@ const getOrder = async (req, res) => {
         
         const order = await Order.findById(_id)
             .populate("user", ["_id", "email", "role"])
-            .populate("product")
             .exec();
 
 

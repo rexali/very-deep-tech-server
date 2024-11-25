@@ -16,7 +16,6 @@ const getUserOrders = async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
-            .populate("product")
             .exec();
            
             const totalOrders = (await Order.find()).length;

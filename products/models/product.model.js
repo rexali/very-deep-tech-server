@@ -2,7 +2,6 @@ var { mongoose } = require("../../config/database");
 
 const productSchema = new mongoose.Schema({
     product_name: String,
-    product_picture: String,
     product_category: String,
     product_sub_category: String,
     product_description: String,
@@ -13,7 +12,7 @@ const productSchema = new mongoose.Schema({
     product_code: String,
     product_demos_links: String,
     product_photos_links: String,
-    photos: [{ type: String }],
+    product_pictures: [{ type: String }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }]
 });

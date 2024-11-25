@@ -1,5 +1,7 @@
+const multer =require("multer");
 const { uploadFile } = require("../../utils/uploadFile");
 const { Profile } = require("../models/profile.model");
+
 /**
  * Delete a client profile
  * @param {Object} req - request object

@@ -11,7 +11,7 @@ const updateProduct = async (req, res) => {
         const {
             _id,
             product_name,
-            product_picture,
+            product_pictures,
             product_category,
             product_sub_category,
             product_description,
@@ -19,14 +19,16 @@ const updateProduct = async (req, res) => {
             product_quantity,
             product_weight,
             product_size,
-            product_code
+            product_code,
+            product_demos_links,
+            product_photos_links
         } = req.body; 
 
         const product = await Product.updateOne(
             { _id },
             {
                 product_name,
-                product_picture,
+                // product_pictures,
                 product_category,
                 product_sub_category,
                 product_description,
@@ -35,6 +37,8 @@ const updateProduct = async (req, res) => {
                 product_weight,
                 product_size,
                 product_code,
+                product_demos_links,
+                product_photos_links
             });
         if (product.modifiedCount) {
             // send data as json

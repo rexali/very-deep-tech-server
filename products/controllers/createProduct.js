@@ -1,7 +1,7 @@
 const { Product } = require("../models/product.model");
-const { uploadMultipleFiles } =require("../../utils/uploadFile");
-const multer =require("multer");
-const { getFilesNames } =require("../utils/getFilesNames");
+const { uploadMultipleFiles } = require("../../utils/uploadFile");
+const multer = require("multer");
+const { getFilesNames } = require("../utils/getFilesNames");
 
 
 /**
@@ -12,24 +12,6 @@ const { getFilesNames } =require("../utils/getFilesNames");
  */
 const createProduct = async (req, res) => {
 
-    // try {
-        // retrieve the request body data
-        // const {
-        //     product_name,
-        //     product_picture,
-        //     product_category,
-        //     product_sub_category,
-        //     product_description,
-        //     product_price, 
-        //     product_quantity,
-        //     product_weight,
-        //     product_size,
-        //     product_code,
-        //     product_demos_links,
-        //     product_photos_links,
-        //     user_id
-        // } = req.body;
-    
 
     uploadMultipleFiles('product_pictures')(req, res, async function (err) {
         if (err instanceof multer.MulterError) {
@@ -41,26 +23,38 @@ const createProduct = async (req, res) => {
         };
         // Everything went fine, send the file name and other fields to database
         try {
-            const data = {
-                ...req.body,
-                product_pictures: getFilesNames(req.files)
-            }
+            const {
+                product_name,
+                product_pictures,
+                product_category,
+                product_sub_category,
+                product_description,
+                product_price,
+                product_quantity,
+                product_weight,
+                product_size,
+                product_code,
+                product_demos_links,
+                product_photos_links,
+                user_id
+            } = req.body;
             // save in database
             const product = await Product.create({
-                // product_name,
-                // product_picture,
-                // product_category,
-                // product_sub_category,
-                // product_description,
-                // product_price,
-                // product_quantity,
-                // product_weight,
-                // product_size,
-                // product_code,
-                // user: user_id
-                ...data
+                product_name,
+                product_category,
+                product_sub_category,
+                product_description,
+                product_price,
+                product_quantity,
+                product_weight,
+                product_size,
+                product_code,
+                product_demos_links,
+                product_photos_links,
+                user: user_id,
+                product_pictures: getFilesNames(req.files)
             });
-           
+
             if (product !== null) {
                 // send data as json
                 res.status(200).json({
@@ -68,7 +62,7 @@ const createProduct = async (req, res) => {
                     data: { product },
                     message: "Product created"
                 })
-    
+
             } else {
                 // send data as json
                 res.status(400).json({
@@ -79,59 +73,15 @@ const createProduct = async (req, res) => {
             }
         } catch (error) {
             console.warn(error);
-                // send data as json
-                res.status(500).json({
-                    status: "failed",
-                    data: null,
-                    message: "Error! " + error.message
-        
-                })
+            // send data as json
+            res.status(500).json({
+                status: "failed",
+                data: null,
+                message: "Error! " + error.message
+            })
         }
 
     });
-
-    //     const product = await Product.create({
-    //         product_name,
-    //         product_picture,
-    //         product_category,
-    //         product_sub_category,
-    //         product_description,
-    //         product_price,
-    //         product_quantity,
-    //         product_weight,
-    //         product_size,
-    //         product_code,
-    //         user: user_id
-    //     });
-
-    //     if (product !== null) {
-    //         // send data as json
-    //         res.status(200).json({
-    //             status: "success",
-    //             data: { product },
-    //             message: "Product created"
-    //         })
-
-    //     } else {
-    //         // send data as json
-    //         res.status(400).json({
-    //             status: "success",
-    //             data: { product },
-    //             message: "Product creation failed"
-    //         })
-    //     }
-
-    // } catch (error) {
-    //     console.warn(error);
-    //     // send data as json
-    //     res.status(500).json({
-    //         status: "failed",
-    //         data: result,
-    //         message: "Error! " + error.message
-
-    //     })
-    //  }
-
 };
 
 module.exports = {

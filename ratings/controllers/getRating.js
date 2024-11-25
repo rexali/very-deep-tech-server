@@ -13,7 +13,6 @@ const getRating = async (req, res) => {
             .populate("course")
             .populate("user") 
             .exec();
-            
 
             if (rating != null) {
                 if (Object.keys(rating).length) {

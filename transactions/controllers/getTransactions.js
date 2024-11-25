@@ -17,11 +17,7 @@ const getTransactions = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .populate({
                 path: 'order',
-                model: "Order",
-                populate: {
-                    path: 'product',
-                    model: "Product",
-                }
+                model: "Order"
             })
             .exec();
 

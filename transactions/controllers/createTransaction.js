@@ -16,10 +16,10 @@ const createTransaction = async (req, res) => {
             userId,
             amount,
             type, // payment, refund, void
-            status,
             reference,
             currency,
-            paymentMethod
+            paymentMethod,
+            paymentStatus, //pending, paid etc for order
         } = req.body;
 
         const transaction = await Transaction.create({
@@ -27,7 +27,6 @@ const createTransaction = async (req, res) => {
             user: userId,
             amount,
             type, // payment, refund, void
-            status,
             reference,
             currency,
             paymentMethod
@@ -36,7 +35,7 @@ const createTransaction = async (req, res) => {
 
         const order = await Order.updateOne({ _id: orderId },
             {
-                paymentStatus: "paid",
+                paymentStatus: paymentStatus ?? "paid",
                 updatedAt: new Date(),
             });
 
@@ -58,7 +57,7 @@ const createTransaction = async (req, res) => {
                     message: "Transaction creation failed"
                 })
             }
-        } else{
+        } else {
             // send data as json
             res.status(400).json({
                 status: "failed",
@@ -73,7 +72,7 @@ const createTransaction = async (req, res) => {
         // send data as json
         res.status(500).json({
             status: "failed",
-            data: result,
+            data: null,
             message: "Error! " + error.message
 
         })

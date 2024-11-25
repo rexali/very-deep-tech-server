@@ -24,7 +24,7 @@ const getProducts = async (req, res) => {
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,
-            averageRating: product.ratings.map(rating => Number(rating.ratingScore))
+            averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
         }))
 
