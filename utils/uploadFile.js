@@ -8,7 +8,7 @@ const multer = require("multer");
 
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, 'public/uploads/');
+            cb(null, 'public/uploads/'); 
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -22,7 +22,7 @@ const multer = require("multer");
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.mp3')
             } else if (file?.originalname.endsWith('.mp4')) {
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.mp4')
-            } else if (file?.originalname.endsWith('.jpeg')) {
+            } else if (file?.originalname.endsWith('.jpeg')) { 
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.jpeg')
             } else {
                 cb(null, file.fieldname + '-' + uniqueSuffix)

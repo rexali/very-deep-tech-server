@@ -10,15 +10,23 @@ const createProfile = async (req, res) => {
     try {
         // retrieve the request body data
         const {
+            user,
             firstName,
             lastName,
+            streetAddress,
+            localGovt,
+            state,
             photo
         } = req.body;
 
         const profile = await Profile.create(
             {
+                user,
                 firstName,
                 lastName,
+                streetAddress,
+                localGovt,
+                state,
                 photo
             });
 
