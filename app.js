@@ -49,6 +49,8 @@ app.set('views', 'views');
 app.use(errorHandler);
 //log request info in the console
 app.use(logHandler);
+// public files
+app.use(express.static('public'));
 // add auth, profile routes etc
 app.use("/auth", authRouter);
 app.use("/profiles", profileRouter);
