@@ -3,6 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const path = require('path');
 const dotenv = require('dotenv');
 // initiatize the .env
 dotenv.config();
@@ -53,7 +54,7 @@ app.use(errorHandler);
 //log request info in the console
 app.use(logHandler);
 // public files
-app.use(express.static('src/public'));
+app.use(express.static(path.join(process.cwd(),'public')));
 // add auth, profile routes etc
 app.use("/auth", authRouter);
 app.use("/profiles", profileRouter);
