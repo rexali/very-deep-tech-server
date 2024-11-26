@@ -38,13 +38,13 @@ productRouter.get(
 // update a product
 productRouter.patch(
     "/",
-    isAuthenticated,
+    // isAuthenticated,
     updateProduct
 );
 // delete a product
 productRouter.delete(
     "/",
-    isAdmin,
+    // isAdmin,
     deleteProduct
 );
 // export product router

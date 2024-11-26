@@ -1,4 +1,4 @@
-const multer =require("multer");
+const multer = require("multer");
 const { uploadFile } = require("../../utils/uploadFile");
 const { Profile } = require("../models/profile.model");
 
@@ -33,24 +33,29 @@ const updateProfile = async (req, res) => {
 
             if (req.file?.filename) {
                 // save in database
-            const profile = await Profile.updateOne({ user }, {
-                firstName,
-                lastName,
-                streetAddress,
-                localGovt,
-                state,
-                photo: req.file?.filename
-            });
-            // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { profile },
-                message: "Profile updated"
-            })
+                const profile = await Profile.updateOne({ user }, {
+                    firstName,
+                    lastName,
+                    streetAddress,
+                    localGovt,
+                    state,
+                    photo: req.file?.filename
+                });
+                // send data as json
+                res.status(200).json({
+                    status: "success",
+                    data: { profile },
+                    message: "Profile updated"
+                })
             } else {
-                
+                // send data as json
+                res.status(400).json({
+                    status: "failed",
+                    data: null,
+                    message: "Error! Filename Issue"
+                })
             }
-            
+
         });
 
     } catch (error) {
