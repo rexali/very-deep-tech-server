@@ -25,7 +25,6 @@ const createProduct = async (req, res) => {
             try {
                 const {
                     product_name,
-                    product_pictures,
                     product_category,
                     product_sub_category,
                     product_description,
@@ -36,7 +35,7 @@ const createProduct = async (req, res) => {
                     product_code,
                     product_demos_links,
                     product_photos_links,
-                    user_id
+                    user
                 } = req.body;
                 // save in database
                 const product = await Product.create({
@@ -51,7 +50,7 @@ const createProduct = async (req, res) => {
                     product_code,
                     product_demos_links,
                     product_photos_links,
-                    user: user_id,
+                    user,
                     product_pictures: getFilesNames(req.files)
                 });
 

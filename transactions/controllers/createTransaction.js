@@ -28,7 +28,7 @@ const createTransaction = async (req, res) => {
             amount,
             type, // payment, refund, void
             reference,
-            currency,
+            currency, 
             paymentMethod
         });
 
@@ -43,8 +43,7 @@ const createTransaction = async (req, res) => {
                 updatedAt: new Date(),
             });
 
-        if (order.modifiedCount) {
-
+       
             if (transaction !== null) {
                 // send data as json
                 res.status(200).json({
@@ -61,14 +60,6 @@ const createTransaction = async (req, res) => {
                     message: "Transaction creation failed"
                 })
             }
-        } else {
-            // send data as json
-            res.status(400).json({
-                status: "failed",
-                data: { transaction: null },
-                message: "Transaction creation failed"
-            })
-        }
 
 
     } catch (error) {
