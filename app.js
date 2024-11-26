@@ -2,6 +2,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 // initiatize the .env
 dotenv.config();
@@ -37,6 +38,8 @@ const HOST = "localhost";
 app.use(express.json());
 // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+// parse the body
+app.use(bodyParser.urlencoded({ extended: true }))
 // parse cookies
 app.use(cookieParser());
 // apply default cors to the server 
@@ -58,14 +61,14 @@ app.use("/products", productRouter);
 app.use("/carts", cartRouter);
 app.use("/search", searchProducts);
 app.use("/category", searchProductsByCategory);
-app.use("/subscriptions",subscriptionRouter);
-app.use("/messages",messageRouter);
-app.use("/notifications",notificationRouter);
-app.use('/ratings',ratingRouter);
-app.use('/transactions',transactionRouter);
-app.use('/orders',orderRouter);
-app.use('/favourites',favouriteRouter);
-app.use('/qoutes',qouteRouter);
+app.use("/subscriptions", subscriptionRouter);
+app.use("/messages", messageRouter);
+app.use("/notifications", notificationRouter);
+app.use('/ratings', ratingRouter);
+app.use('/transactions', transactionRouter);
+app.use('/orders', orderRouter);
+app.use('/favourites', favouriteRouter);
+app.use('/qoutes', qouteRouter);
 
 
 // server home
