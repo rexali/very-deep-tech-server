@@ -12,14 +12,14 @@ const updateProfile = async (req, res) => {
 
     try {
 
-        uploadFile('photo')(req, res, async function (err) {
-            if (err instanceof multer.MulterError) {
-                // A Multer error occurred when uploading.
-                throw new Error(err.message)
-            } else if (err) {
-                // An unknown error occurred when uploading.
-                throw new Error(err)
-            };
+        // uploadFile('photo')(req, res, async function (err) {
+        //     if (err instanceof multer.MulterError) {
+        //         // A Multer error occurred when uploading.
+        //         throw new Error(err.message)
+        //     } else if (err) {
+        //         // An unknown error occurred when uploading.
+        //         throw new Error(err)
+        //     };
             // Everything went fine, send the file name and other fields to database
             const {
                 user,
@@ -31,7 +31,7 @@ const updateProfile = async (req, res) => {
                 photo
             } = req.body;
 
-            if (req.file?.filename) {
+            // if (req.file?.filename) {
                 // save in database
                 const profile = await Profile.updateOne({ user }, {
                     firstName,
@@ -47,16 +47,16 @@ const updateProfile = async (req, res) => {
                     data: { profile },
                     message: "Profile updated"
                 })
-            } else {
-                // send data as json
-                res.status(400).json({
-                    status: "failed",
-                    data: null,
-                    message: "Error! Filename Issue"
-                })
-            }
+        //     } else {
+        //         // send data as json
+        //         res.status(400).json({
+        //             status: "failed",
+        //             data: null,
+        //             message: "Error! Filename Issue"
+        //         })
+        //     }
 
-        });
+        // });
 
     } catch (error) {
         console.warn(error);
