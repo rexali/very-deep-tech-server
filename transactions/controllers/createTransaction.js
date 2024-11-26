@@ -32,6 +32,10 @@ const createTransaction = async (req, res) => {
             paymentMethod
         });
 
+        // const transactions = await Transaction.findById(transaction._id).populate('order').exec();
+        // transactions.order.paymentStatus = paymentStatus ?? "paid";
+        // transactions.order.updatedAt = new Date();
+        // await transactions.save();
 
         const order = await Order.updateOne({ _id: orderId },
             {
@@ -53,7 +57,7 @@ const createTransaction = async (req, res) => {
                 // send data as json
                 res.status(400).json({
                     status: "failed",
-                    data: { transaction },
+                    data: { transaction: null },
                     message: "Transaction creation failed"
                 })
             }
@@ -61,7 +65,7 @@ const createTransaction = async (req, res) => {
             // send data as json
             res.status(400).json({
                 status: "failed",
-                data: { transaction },
+                data: { transaction: null },
                 message: "Transaction creation failed"
             })
         }
