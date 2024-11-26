@@ -11,16 +11,16 @@ const { getFilesNames } = require("../utils/getFilesNames");
  * @returns void
  */
 const createProduct = async (req, res) => {
-    // try {
+    try {
 
-    //     uploadMultipleFiles('product_pictures')(req, res, async function (err) {
-    //         if (err instanceof multer.MulterError) {
-    //             // A Multer error occurred when uploading.
-    //             throw new Error(err.message)
-    //         } else if (err) {
-    //             // An unknown error occurred when uploading.
-    //             throw new Error(err)
-    //         };
+        uploadMultipleFiles('product_pictures')(req, res, async function (err) {
+            if (err instanceof multer.MulterError) {
+                // A Multer error occurred when uploading.
+                throw new Error(err.message)
+            } else if (err) {
+                // An unknown error occurred when uploading.
+                throw new Error(err)
+            };
             // Everything went fine, send the file name and other fields to database
             try {
                 const {
@@ -81,17 +81,17 @@ const createProduct = async (req, res) => {
                 })
             }
 
-        // });
+        });
 
-    // } catch (error) {
-    //     console.warn(error);
-    //     // send data as json
-    //     res.status(500).json({
-    //         status: "failed",
-    //         data: null,
-    //         message: "Error! " + error.message
-    //     })
-    // }
+    } catch (error) {
+        console.warn(error);
+        // send data as json
+        res.status(500).json({
+            status: "failed",
+            data: null,
+            message: "Error! " + error.message
+        })
+    }
 
 };
 
