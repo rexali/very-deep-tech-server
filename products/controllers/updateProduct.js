@@ -9,9 +9,8 @@ const updateProduct = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            _id,
+            productId,
             product_name,
-            product_pictures,
             product_category,
             product_sub_category,
             product_description,
@@ -22,13 +21,12 @@ const updateProduct = async (req, res) => {
             product_code,
             product_demos_links,
             product_photos_links
-        } = req.body; 
+        } = req.body;
 
         const product = await Product.updateOne(
-            { _id },
+            { _id: productId },
             {
                 product_name,
-                // product_pictures,
                 product_category,
                 product_sub_category,
                 product_description,
@@ -50,7 +48,7 @@ const updateProduct = async (req, res) => {
         } else {
             // send data as json
             res.status(400).json({
-                status: "success",
+                status: "failed",
                 data: { product },
                 message: "Product update failed"
             })

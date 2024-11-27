@@ -1,4 +1,4 @@
-const {Message } = require("../models/message.model");
+const { Message } = require("../models/message.model");
 /**
  * Update message
  * @param {Object} req - request object
@@ -9,16 +9,20 @@ const updateMessage = async (req, res) => {
 
     try {
         // retrieve the request body data
-        const {
-            _id,
-            title,
-            body
-        } = req.body;
+        const title = req.body.title;
+        const comment = req.body.comment;
+        const messageId = req.body.messageId;
+        const sender = req.body.sender ?? ''; // email
+        const firstName = req.body.firstName ?? '';
+        const lastName = req.body.lastName ?? '';
 
-        const message = await Message.updateOne({ _id },
+        const message = await Message.updateOne({ _id: messageId },
             {
                 title,
-                body,
+                comment,
+                sender,
+                firstName,
+                lastName,
                 updatedAt: new Date(),
             });
         if (message.modifiedCount) {
@@ -30,8 +34,8 @@ const updateMessage = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
-                status: "success",
+            res.status(400).json({
+                status: "failed",
                 data: { message },
                 message: "Message update failed"
             })
@@ -42,8 +46,8 @@ const updateMessage = async (req, res) => {
         // send data as json
         res.status(500).json({
             status: "failed",
-            data: result,
-            message: "Error! "+error.message
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

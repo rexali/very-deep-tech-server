@@ -10,12 +10,12 @@ const updateNotification = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            _id,
             title,
-            body
+            body,
+            notificationId
         } = req.body;
 
-        const notification = await Notification.updateOne({ _id },
+        const notification = await Notification.updateOne({ _id: notificationId },
             {
                 title,
                 body,
@@ -30,8 +30,8 @@ const updateNotification = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
-                status: "success",
+            res.status(400).json({
+                status: "failed",
                 data: { notification },
                 message: "Notification update failed"
             })
@@ -42,8 +42,8 @@ const updateNotification = async (req, res) => {
         // send data as json
         res.status(200).json({
             status: "failed",
-            data:null,
-            message: "Error! "+error.message
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

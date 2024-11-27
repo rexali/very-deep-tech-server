@@ -12,7 +12,7 @@ const createNotification = async (req, res) => {
         const {
             title,
             body,
-            _id // userId
+            userId
         } = req.body;
 
         const notification = await Notification.create(
@@ -21,7 +21,7 @@ const createNotification = async (req, res) => {
                 body,
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                user: _id 
+                user:userId
             });
 
         if (notification != null) {
@@ -33,8 +33,8 @@ const createNotification = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
-                status: "success",
+            res.status(400).json({
+                status: "failed",
                 data: { notification },
                 message: "Notification creation failed"
             })
@@ -45,7 +45,7 @@ const createNotification = async (req, res) => {
         // send data as json
         res.status(500).json({
             status: "failed",
-            data: result,
+            data: null,
             message: "Error! "+error.message
 
         })

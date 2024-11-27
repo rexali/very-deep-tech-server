@@ -9,21 +9,24 @@ const createMessage = async (req, res) => {
 
     try {
         // retrieve the request body data
-        const {
-            title,
-            comment,
-            sender,
-            _id // user Id
-        } = req.body;
+        const title = req.body.title;
+        const comment = req.body.comment;
+        const user = req.body.userId;
+        const sender = req.body.sender ?? ''; // email
+        const firstName = req.body.firstName ?? '';
+        const lastName = req.body.lastName ?? '';
+
 
         const message = await Message.create(
             {
                 title,
                 comment,
+                user,
                 sender,
+                firstName,
+                lastName,
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                user: _id 
             });
 
         if (message != null) {
@@ -35,8 +38,8 @@ const createMessage = async (req, res) => {
             })
         } else {
             // send data as json
-            res.status(200).json({
-                status: "success",
+            res.status(400).json({
+                status: "failed",
                 data: { message },
                 message: "Message creation failed"
             })
