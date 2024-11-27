@@ -5,6 +5,7 @@ const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { getNotifications } = require("../controllers/getNotifications");
 const { getNotification } = require("../controllers/getNotification");
 const { deleteNotification } = require("../controllers/deleteNotification");
+const { createNotification } = require("../controllers/createNotification");
 
 // initialize admin router
 const notificationRouter = express.Router();
@@ -19,6 +20,12 @@ notificationRouter.get(
     '/', 
     // isAuthenticated,
     getNotifications
+);
+// update a notification
+notificationRouter.post(
+    "/",
+    // isAuthenticated,
+    createNotification
 );
 // update a notification
 notificationRouter.patch(

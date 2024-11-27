@@ -55,7 +55,7 @@ const createProduct = async (req, res) => {
                 product_pictures: [...filenames]
             });
 
-            if (product !== null) {
+            if (product != null) {
                 // send data as json
                 res.status(200).json({
                     status: "success",

@@ -26,7 +26,7 @@ const createMessage = async (req, res) => {
                 firstName,
                 lastName,
                 createdAt: new Date(),
-                updatedAt: new Date(),
+                updatedAt: new Date()
             });
 
         if (message != null) {

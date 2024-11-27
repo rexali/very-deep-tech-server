@@ -5,6 +5,7 @@ const { deleteMessage } = require("../controllers/deleteMessage");
 const { getMessage } = require("../controllers/getMessage");
 const { getMessages } = require("../controllers/getMessages");
 const { updateMessage } = require("../controllers/updateMessage");
+const { createMessage } = require("../controllers/createMessage");
 
 // initialize admin router
 const messageRouter = express.Router();
@@ -19,6 +20,12 @@ messageRouter.get(
     '/',
     // isAuthenticated,
     getMessages
+);
+// update a message
+messageRouter.post(
+    "/",
+    // isAuthenticated,
+    createMessage
 );
 // update a message
 messageRouter.patch(

@@ -31,7 +31,7 @@ const createNotification = async (req, res) => {
                 data: { notification },
                 message: "Notification created"
             })
-        } else {
+        } else { 
             // send data as json
             res.status(400).json({
                 status: "failed",
