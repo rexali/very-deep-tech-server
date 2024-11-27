@@ -2,7 +2,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require('path');
 const dotenv = require('dotenv');
 // initiatize the .env
@@ -40,7 +40,7 @@ app.use(express.json());
 // for parsing application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 // parse the body
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.extended({ extended: true }));
 // parse cookies
 app.use(cookieParser());
 // apply default cors to the server 
