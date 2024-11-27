@@ -22,6 +22,8 @@ const createProduct = async (req, res) => {
                 throw new Error(err)
             };
             // Everything went fine, send the file name and other fields to database
+            let filenames = getFilesNames([...req.files]);
+
             try {
                 const {
                     product_name,
@@ -51,7 +53,7 @@ const createProduct = async (req, res) => {
                     product_demos_links,
                     product_photos_links,
                     user,
-                    product_pictures: getFilesNames(req.files)
+                    product_pictures: [...filenames]
                 });
 
                 if (product !== null) {
