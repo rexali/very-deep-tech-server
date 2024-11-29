@@ -9,7 +9,7 @@ const { Notification } = require("../models/notification.model");
 const getNotifications = async (req, res) => {
     try {
         const page = parseInt(req.params?.page ?? 1);
-        const limit = 10;
+        const limit = 4;
         const skip = (page - 1) * limit;
 
         const notifications = await Notification.find()

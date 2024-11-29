@@ -9,7 +9,7 @@ const { Transaction } = require("../models/transaction.model");
 const getTransactions = async (req, res) => {
     try {
         const page = parseInt(req.query.page ?? 1);
-        const limit = 10;
+        const limit = 4;
         const skip = (page - 1) * limit;
         const transactions = await Transaction.find()
             .skip(skip)

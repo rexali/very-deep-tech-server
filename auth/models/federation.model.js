@@ -1,4 +1,4 @@
-var {mongoose} = require("../config/database");
+var {mongoose} = require("../../config/database");
 
 const federationSchema = new mongoose.Schema({
     provider:String,

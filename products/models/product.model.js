@@ -13,6 +13,7 @@ const productSchema = new mongoose.Schema({
     product_demos_links: String,
     product_photos_links: String,
     product_pictures: [{ type: String }],
+    featured: { type: Boolean, default:false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }]
 });

@@ -8,7 +8,7 @@ const { Qoute } = require("../models/qoute.model");
 const getQoutes = async (req, res) => {
     try {
         const page = parseInt(req.query?.page ?? 1);
-        const limit = 10;
+        const limit = 4;
         const skip = (page - 1) * limit;
 
         const qoutes = await Qoute.find()

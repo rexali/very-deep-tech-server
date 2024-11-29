@@ -8,8 +8,15 @@ const { Subscription } = require("../models/subscription.model");
  */
 const getSubscriptions = async (req, res) => {
     try {
-
-        const subscriptions = await Subscription.find();
+        const page = parseInt(req.query?.page ?? 1);
+        const limit = 4;
+        const skip = (page - 1) * limit;
+        
+        const subscriptions = await Subscription.find()
+            .skip(skip)
+            .limit(limit)
+            .exec();
+        ;
         // send success data
         const totalSubscriptions = (await Subscription.find()).length;
 
