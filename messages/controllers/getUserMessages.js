@@ -1,49 +1,48 @@
-const { Notification } = require("../models/notification.model");
-
+const { Message } = require("../models/message.model");
 /** 
- * Get all notifications
+ * Get all messages
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const getNotifications = async (req, res) => {
+const getUserMessages = async (req, res) => {
     try {
         const page = parseInt(req.query?.page ?? 1);
+        const userId = req.params?.userId;
         const limit = 4;
         const skip = (page - 1) * limit;
 
-        const notifications = await Notification.find()
+        const messages = await Message.find({ user: userId })
             .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
 
-        const totalNotifications = (await Notification.find()).length;
-
-        const newNotifications = JSON.parse(JSON.stringify(notifications)).map(notice => ({
-            ...notice,
-            totalNotifications
+        const totalMessages = (await Message.find()).length;
+        const newMessages = JSON.parse(JSON.stringify(messages)).map(message => ({
+            ...message,
+            totalMessages
         }))
-        // send success data
-        if (notifications != null) {
-            if (notifications.length) {
+
+        if (messages != null) {
+            if (messages.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { notifications: newNotifications },
-                    message: "Notifications found",
+                    data: { messages: newMessages },
+                    message: "Messages found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { notifications: [] },
-                    message: "No notifications found",
+                    data: { messages: [] },
+                    message: "No messages found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { notifications: null },
-                message: "No notifications found",
+                data: { messages: null },
+                message: "No messages found",
             });
         }
 
@@ -62,5 +61,5 @@ const getNotifications = async (req, res) => {
 }
 
 module.exports = {
-    getNotifications
+    getUserMessages
 }

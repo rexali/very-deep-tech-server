@@ -6,6 +6,7 @@ const { getMessage } = require("../controllers/getMessage");
 const { getMessages } = require("../controllers/getMessages");
 const { updateMessage } = require("../controllers/updateMessage");
 const { createMessage } = require("../controllers/createMessage");
+const { getUserMessages } = require("../controllers/getUserMessages");
 
 // initialize admin router
 const messageRouter = express.Router();
@@ -20,6 +21,12 @@ messageRouter.get(
     '/',
     // isAuthenticated,
     getMessages
+);
+// get all messages
+messageRouter.get(
+    '/:id/users',
+    // isAuthenticated,
+    getUserMessages
 );
 // update a message
 messageRouter.post(
