@@ -21,7 +21,6 @@ const createMessage = async (req, res) => {
             {
                 title,
                 comment,
-                user,
                 sender,
                 firstName,
                 lastName,

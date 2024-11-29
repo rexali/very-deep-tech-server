@@ -58,7 +58,7 @@ const updateProduct = async (req, res) => {
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
             data: null,
             message: "Error! " + error.message

@@ -36,8 +36,8 @@ const createProduct = async (req, res) => {
                 product_code,
                 product_demos_links,
                 product_photos_links,
-                user,
-                featured
+                user
+                // featured
             } = req.body;
             // save in database
             const product = await Product.create({
@@ -53,8 +53,8 @@ const createProduct = async (req, res) => {
                 product_demos_links,
                 product_photos_links,
                 user,
-                product_pictures: [...filenames],
-                featured
+                product_pictures: [...filenames]
+                // featured
             });
 
             if (product != null) {
@@ -68,7 +68,7 @@ const createProduct = async (req, res) => {
             } else {
                 // send data as json
                 res.status(400).json({
-                    status: "success",
+                    status: "failed",
                     data: { product },
                     message: "Product creation failed"
                 })
