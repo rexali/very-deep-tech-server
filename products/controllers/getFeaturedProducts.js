@@ -6,32 +6,33 @@ const { Product } = require("../models/product.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const searchProducts = async (req, res) => {
+const getFeaturedProducts = async (req, res) => {
+
     try {
-        const term = req.query.term;
-        const page = parseInt(req.query.page ?? 1);
+        const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-        const re = new RegExp(term, 'i');
 
-        const products = await Product.find({ product_name: re })
+        const products = await Product.find() 
+            .where({ featured: true })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
             .exec();
 
         const totalProducts = (await Product.find()).length;
+        let categories = JSON.parse(JSON.stringify(products)).map((product) => product.product_category);
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
+            categories,
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        }));
+        }))
 
         if (products != null) {
             if (products.length) {
-                //  store in cookie
-                res.cookie('termCookie', term, { httpOnly: true, secure: false });
                 res.status(200).json({
                     status: "success",
                     data: { products: newProducts },
@@ -66,5 +67,5 @@ const searchProducts = async (req, res) => {
 }
 
 module.exports = {
-    searchProducts
+    getFeaturedProducts
 }

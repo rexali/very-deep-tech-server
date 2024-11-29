@@ -37,7 +37,8 @@ const createProduct = async (req, res) => {
                 product_demos_links,
                 product_photos_links,
                 user
-                // featured
+                // featured,
+                // approved,
             } = req.body;
             // save in database
             const product = await Product.create({
@@ -54,7 +55,8 @@ const createProduct = async (req, res) => {
                 product_photos_links,
                 user,
                 product_pictures: [...filenames]
-                // featured
+                // featured,
+                // approved
             });
 
             if (product != null) {

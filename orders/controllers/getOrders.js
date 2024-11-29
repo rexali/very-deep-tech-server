@@ -18,8 +18,8 @@ const getOrders = async (req, res) => {
             .exec();
 
             const totalOrders = (await Order.find()).length;
-            const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
-                ...msg,
+            const newOrders = JSON.parse(JSON.stringify(orders)).map(order => ({
+                ...order,
                 totalOrders: totalOrders
             }))
 

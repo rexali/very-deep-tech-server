@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema({
     product_demos_links: String,
     product_photos_links: String,
     product_pictures: [{ type: String }],
-    featured: { type: String },
+    featured: { type: String, default: 'no' },
+    approved: { type: String, default: 'no' },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }]
 });

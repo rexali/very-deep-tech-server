@@ -6,9 +6,11 @@ const { Product } = require("../models/product.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const searchProducts = async (req, res) => {
+const getRecommendedProducts = async (req, res) => {
     try {
-        const term = req.query.term;
+        // get the cookies
+        const term = req.cookies.termCookie;
+        // others 
         const page = parseInt(req.query.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
@@ -31,7 +33,6 @@ const searchProducts = async (req, res) => {
         if (products != null) {
             if (products.length) {
                 //  store in cookie
-                res.cookie('termCookie', term, { httpOnly: true, secure: false });
                 res.status(200).json({
                     status: "success",
                     data: { products: newProducts },
@@ -66,5 +67,5 @@ const searchProducts = async (req, res) => {
 }
 
 module.exports = {
-    searchProducts
+    getRecommendedProducts
 }

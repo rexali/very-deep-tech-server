@@ -8,6 +8,9 @@ const { deleteProduct } = require("../controllers/deleteProduct");
 const { createProduct } = require("../controllers/createProduct");
 const { isAdmin } = require("../../auth/controllers/isAdmin");
 const { getUserProducts } = require("../controllers/getUserProducts");
+const { getFeaturedProducts } = require("../controllers/getFeaturedProducts");
+const { getPopularProducts } = require("../controllers/getPopularProducts");
+const { getRecommendedProducts } = require("../controllers/getRecommendedProducts");
 
 // initialize product router
 const productRouter = express.Router();
@@ -34,6 +37,26 @@ productRouter.get(
     '/',
     // isAuthenticated,
     getProducts
+);
+
+// get all faetured products
+productRouter.get(
+    '/featured',
+    // isAuthenticated,
+    getFeaturedProducts
+);
+
+// get all popular products
+productRouter.get(
+    '/popular',
+    // isAuthenticated,
+    getPopularProducts
+);
+// get all recommended products
+productRouter.get(
+    '/recommended',
+    // isAuthenticated,
+    getRecommendedProducts
 );
 // update a product
 productRouter.patch(
