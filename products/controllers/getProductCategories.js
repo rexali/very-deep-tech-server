@@ -14,24 +14,24 @@ const getProductCategories = async (req, res) => {
 
         const categories = JSON.parse(JSON.stringify(products)).map(product => product.product_category);
 
-        if (products != null) {
-            if (products.length) {
+        if (categories != null) {
+            if (categories.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products: categories },
+                    data: { categories },
                     message: "Products found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { products: [] },
+                    data: { categories: [] },
                     message: "No products found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { products: null },
+                data: { categories: null },
                 message: "No products found",
             });
         }
