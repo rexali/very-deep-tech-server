@@ -7,7 +7,7 @@ const { Favourite } = require("../models/favourite.model");
  * @returns void
  */
 const getUserFavourites = async (req, res) => {
-    const _id = req.params.id;
+    const _id = req.query.userId;
     const page = parseInt(req.query?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;

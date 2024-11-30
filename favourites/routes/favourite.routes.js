@@ -8,16 +8,23 @@ const { createFavourite } = require("../controllers/createFavourite");
 // initialize favourite router
 const favouriteRouter = express.Router();
 
-// get all favourite and products
+// add favourite products
 favouriteRouter.post(
     '/',
     // isAuthenticated, 
     createFavourite
 );
 
+// get all favourite products
+favouriteRouter.get( 
+    '/',
+    // isAuthenticated,
+    getUserFavourites
+);
+
 // get user favourite and products
 favouriteRouter.get( 
-    '/:id',
+    '/:id/users',
     // isAuthenticated,
     getUserFavourites
 );

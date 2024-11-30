@@ -1,5 +1,5 @@
 const { Product } = require("../models/product.model");
-const { Order } = require("../models/order.model");
+const { Order } = require("../../orders/models/order.model");
 
 /** 
  * Get all products
