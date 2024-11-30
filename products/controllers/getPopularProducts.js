@@ -22,15 +22,12 @@ const getPopularProducts = async (req, res) => {
             .exec();
 
         const totalProducts = (await Product.find()).length;
-        // get the categories
-        let categories = JSON.parse(JSON.stringify(products)).map((product) => product.product_category);
         // get popular products
         let orders = await Order.find();
         let popularProducts = JSON.parse(JSON.stringify(orders)).map(order=>order.items.map((item=>item.product)))[0].slice(0,2);
         // get the products
         let newProducts = popularProducts.map((product) => ({
             ...product,
-            categories,
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
