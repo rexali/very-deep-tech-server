@@ -25,7 +25,7 @@ const getProducts = async (req, res) => {
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
-            categories: JSON.parse(JSON.stringify(allProducts)).map(prod => prodt.product_category),
+            categories: JSON.parse(JSON.stringify(allProducts)).map(prod => prod.product_category),
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
