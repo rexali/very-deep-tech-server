@@ -10,7 +10,7 @@ const getProductCategories = async (req, res) => {
 
     try {
 
-        const products = await Product.find();
+        const products = await Product.find().exec();
 
         const categories = JSON.parse(JSON.stringify(products)).map(product => product.product_category);
 
