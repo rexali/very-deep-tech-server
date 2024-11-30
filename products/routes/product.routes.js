@@ -11,6 +11,7 @@ const { getUserProducts } = require("../controllers/getUserProducts");
 const { getFeaturedProducts } = require("../controllers/getFeaturedProducts");
 const { getPopularProducts } = require("../controllers/getPopularProducts");
 const { getRecommendedProducts } = require("../controllers/getRecommendedProducts");
+const { getProductCategories } = require("../controllers/getProductCategories");
 
 // initialize product router
 const productRouter = express.Router();
@@ -37,6 +38,12 @@ productRouter.get(
     '/',
     // isAuthenticated,
     getProducts
+);
+// get all products categories
+productRouter.get(
+    '/categories',
+    // isAuthenticated,
+    getProductCategories
 );
 
 // get all faetured products

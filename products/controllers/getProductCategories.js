@@ -6,33 +6,19 @@ const { Product } = require("../models/product.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getProducts = async (req, res) => {
+const getProductCategories = async (req, res) => {
 
     try {
-        const page = parseInt(req.query?.page ?? 1);
-        const limit = 4;
-        const skip = (page - 1) * limit;
 
-        const products = await Product.find()
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("ratings")
-            .exec();
+        const products = await Product.find();
 
-        const totalProducts = (await Product.find()).length;
-        let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
-            ...product,
-            totalProducts,
-            averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
-                .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        }))
+        const categories = JSON.parse(JSON.stringify(products)).map(product => product.product_category);
 
         if (products != null) {
             if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products: newProducts },
+                    data: { products: categories },
                     message: "Products found",
                 });
             } else {
@@ -64,5 +50,5 @@ const getProducts = async (req, res) => {
 }
 
 module.exports = {
-    getProducts
+    getProductCategories
 }
