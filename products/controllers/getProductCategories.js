@@ -10,28 +10,29 @@ const getProductCategories = async (req, res) => {
 
     try {
 
-        const products = await Product.find().exec();
+        const products = await Product.find()
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .exec();
 
-        const categories = JSON.parse(JSON.stringify(products)).map(product => product.product_category);
-
-        if (categories != null) {
-            if (categories.length) {
+        if (products != null) {
+            if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { categories },
+                    data: { products },
                     message: "Products found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { categories: [] },
+                    data: { products: [] },
                     message: "No products found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { categories: null },
+                data: { products: null },
                 message: "No products found",
             });
         }
