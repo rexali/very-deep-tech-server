@@ -19,17 +19,17 @@ const getUserFavourites = async (req, res) => {
             .populate("product")
             .exec();
 
-        const totalFavourites = (await Favourite.find()).length;
+        const totalFavourites = (await Favourite.find({ user: _id })).length;
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        }))
+        })) 
 
         if (favourites != null) {
             if (favourites.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { favourites:newFavourites },
+                    data: { favourites: newFavourites },
                     message: "Favourites found",
                 });
             } else {
