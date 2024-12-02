@@ -26,6 +26,10 @@ const registerUserHandler = async (req, res) => {
     let clientData;
     // get user role
     let role = req.body.role ?? "user";
+    let firstName = req.body.firstName ?? "";
+    let lastName = req.body.lastName ?? "";
+
+
 
     try {
         // initilise client data and escape each client details to protect XSS attack
@@ -52,7 +56,14 @@ const registerUserHandler = async (req, res) => {
             // check if insert Id is defined
             if (user._id) {
                 // create user profile
-                await Profile.create({ user: { _id: user._id } });
+                let profile = await Profile.create({
+                    user: user._id,
+                    firstName,
+                    lastName
+                });
+
+                user.profile = profile._id;
+                await user.save();
                 // send result in json data
                 res.status(200).json({
                     status: "success",
@@ -60,7 +71,9 @@ const registerUserHandler = async (req, res) => {
                     data: {
                         _id: user._id,
                         email: user.email,
-                        role: user.role
+                        role: user.role,
+                        firstName: profile.firstName,
+                        lastName: profile.lastName
                     }
                 });
             }
@@ -81,7 +94,7 @@ const registerUserHandler = async (req, res) => {
         console.warn(error);
         res.status(500).json({
             status: "failed",
-            message: "Error! "+error.message,
+            message: "Error! " + error.message,
             data: null
         });
     } finally {

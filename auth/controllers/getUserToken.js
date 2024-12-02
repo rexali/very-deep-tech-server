@@ -15,13 +15,15 @@ async function getUserToken(userEmail) {
   // acquire access to the path to do operation (for race condition)
   const release = await mutex.acquire();
   try {
-    const result = await User.findOne({ email: userEmail });
+    const result = await User.findOne({ email: userEmail })
+      .populate('profile')
+      .exec();
     // get userId, email and role by destructing
-    const { _id, email, role } = result;
+    const { _id, email, role, profile } = result;
     // get the secret key
     const jwtSecret = process.env.SECRET_KEY;
     // sign the token which expires after 24 hours 
-    const token = jsonwebtoken.sign({ _id, email, role }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
+    const token = jsonwebtoken.sign({ _id, email, role, photo: profile?.photo }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
     );
     // return promise
     return token

@@ -14,12 +14,12 @@ async function verifyUserTokenHandler(req, res) {
        // acquire access to the path, lock it to prevent race condition)
        const release = await mutex.acquire();
        // get login token from the request headers or cookies object
-       const token= req.headers.authorization?.split(' ')[1] || req.cookies.token;
-       
+       const token = req.headers.authorization?.split(' ')[1] || req.cookies.token;
+
        try {
               // verify that the token is signed during login to prevent CSRF attack
               let decoded = jwt.verify(token, process.env.SECRET_KEY);
-              
+
               // check userId,email,role are defined in the token
               if (decoded?._id && decoded?.email && decoded?.role) {
                      // return the verified user data
@@ -30,7 +30,8 @@ async function verifyUserTokenHandler(req, res) {
                                    token,
                                    _id: decoded?._id,
                                    email: decoded?.email,
-                                   role: decoded?.role
+                                   role: decoded?.role,
+                                   photo: decoded?.photo
                             }
                      });
               } else {
