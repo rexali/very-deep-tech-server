@@ -12,7 +12,7 @@ const getUserFavourites = async (req, res) => {
     const limit = 4;
     const skip = (page - 1) * limit;
     try {
-        const favourites = await Favourite.find({ user: _id })
+        const favourites = await Favourite.find({ user: _id }) 
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])

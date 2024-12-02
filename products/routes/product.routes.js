@@ -41,27 +41,27 @@ productRouter.get(
 );
 // get all products categories
 productRouter.get(
-    '/categories',
+    '/:categories/categories',
     // isAuthenticated,
     getProductCategories
 );
 
 // get all faetured products
 productRouter.get(
-    '/featured',
+    '/:featured/featured',
     // isAuthenticated,
     getFeaturedProducts
 );
 
 // get all popular products
 productRouter.get(
-    '/popular',
+    '/:popular/popular',
     // isAuthenticated,
     getPopularProducts
 );
 // get all recommended products
 productRouter.get(
-    '/recommended',
+    '/:recommended/recommended',
     // isAuthenticated,
     getRecommendedProducts
 );
