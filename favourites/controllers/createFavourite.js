@@ -1,4 +1,5 @@
-const { Cart, Favourite } = require("../models/favourite.model");
+const { Product } = require("../../products/models/product.model");
+const { Favourite } = require("../models/favourite.model");
 /**
  * Create a favourite
  * @param {Object} req - request object
@@ -18,6 +19,12 @@ const createFavourite = async (req, res) => {
             product: product_id,
             user: user_id
         });
+         // update module lessons
+         const product = await Product.findById(product_id).populate("likes");
+         product.likes.push(favourite._id);
+         // save
+         await product.save();
+         await favourite.save();
 
         if (favourite !== null) {
             // send data as json
