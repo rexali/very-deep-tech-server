@@ -6,19 +6,14 @@ const { Cart } = require("../models/cart.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getUserCarts = async (req, res) => {
+const getUserCartx = async (req, res) => {
 
 
     try {
         
         const userId = req.params.userId;
-        const page = parseInt(req.params.page ?? 1);
-        const limit = 10;
-        const skip = (page - 1) * limit;
-
-        const carts = await Cart.find({ user: userId })
-            .skip(skip)
-            .limit(limit)
+       
+        const carts = await Cart.find({ user: userId })  
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
@@ -65,5 +60,5 @@ const getUserCarts = async (req, res) => {
 }
 
 module.exports = {
-    getUserCarts
+    getUserCartx
 }

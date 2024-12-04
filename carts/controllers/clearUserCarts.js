@@ -8,21 +8,21 @@ const { Cart } = require("../models/cart.model");
 const clearUserCart = async (req, res) => {
     try {
         // get a client id
-        const _id = req.params.id;
+        const userId = req.params.userId;
         //    delete cart
-        const cart = await Cart.deleteOne({ user: _id });
+        const cart = await Cart.deleteMany({ user: userId });
 
         if (cart.deletedCount) {
             // send success data
             res.status(200).json({
                 status: "success",
                 data: { cart },
-                message: "cart deleted",
+                message: "user carts deleted",
             });
         } else {
             // send success data
             res.status(400).json({
-                status: "success",
+                status: "failed",
                 data: { cart },
                 message: "cart deletion failed",
             });

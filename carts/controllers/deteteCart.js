@@ -22,7 +22,7 @@ const deleteCart = async (req, res) => {
         } else {
             // send success data
             res.status(400).json({
-                status: "success",
+                status: "failed",
                 data: { cart },
                 message: "cart deletion failed",
             });

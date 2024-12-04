@@ -7,28 +7,44 @@ const { createCart } = require("../controllers/createCart");
 const { getUserCarts } = require("../controllers/getUserCarts");
 const { updateCart } = require("../controllers/updateCart");
 const { clearUserCart } = require("../controllers/clearUserCarts");
+const { getCart } = require("../controllers/getCart");
+const { getUserCartx } = require("../controllers/getUserCartx");
 
 // initialize cart router
 const cartRouter = express.Router();
 
-// get all carts and products
+// create a cart
 cartRouter.post(
     '/',
     // isAuthenticated,
     createCart
 );
-// get all carts and products
+// get all carts 
 cartRouter.get( 
     '/',
     // isAuthenticated,
     getCarts
 );
 
-// get user carts and products
+// get a cart
 cartRouter.get( 
     '/:id',
     // isAuthenticated,
+    getCart
+);
+
+// get a user carts with page
+cartRouter.get( 
+    '/users/:userId/pages/:page',
+    // isAuthenticated,
     getUserCarts
+);
+
+// get a user carts without page
+cartRouter.get( 
+    '/users/:userId',
+    // isAuthenticated,
+    getUserCartx
 );
 
 // update a cart
@@ -44,9 +60,9 @@ cartRouter.delete(
     deleteCart
 );
 
-// delete a cart
+// delete a user carts
 cartRouter.delete(
-    "/:id/users",
+    "/users/:userId",
     // isAuthenticated,
     clearUserCart
 );

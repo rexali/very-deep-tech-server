@@ -1,52 +1,38 @@
 const { Cart } = require("../models/cart.model");
 
 /** 
- * Get all carts
+ * Get a cart
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const getUserCarts = async (req, res) => {
-
-
+const getCart = async (req, res) => {
     try {
-        
-        const userId = req.params.userId;
-        const page = parseInt(req.params.page ?? 1);
-        const limit = 10;
-        const skip = (page - 1) * limit;
+        const id = parseInt(req.params.id);
 
-        const carts = await Cart.find({ user: userId })
-            .skip(skip)
-            .limit(limit)
+        const cart = await Cart.findById(id)
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
 
-        const totalCarts = (await Cart.find()).length;
-        const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
-            ...cart,
-            totalCarts
-        }))
-
-        if (carts != null) {
-            if (carts.length) {
+        if (cart != null) {
+            if (Object.keys(cart).length) {
                 res.status(200).json({
                     status: "success",
-                    data: { carts: newCarts },
+                    data: { cart },
                     message: "Carts found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { carts: [] },
+                    data: { cart },
                     message: "No carts found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { carts: null },
+                data: { cart: null },
                 message: "No carts found",
             });
         }
@@ -65,5 +51,5 @@ const getUserCarts = async (req, res) => {
 }
 
 module.exports = {
-    getUserCarts
+    getCart
 }

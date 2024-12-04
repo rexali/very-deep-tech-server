@@ -15,12 +15,6 @@ const updateCart = async (req, res) => {
             quantity,
             price,
         } = req.body;
-        console.log( _id,
-            product_id,
-            user_id,
-            quantity,
-            price,);
-        
 
         const cart = await Cart.updateOne(
             { _id },
@@ -29,21 +23,21 @@ const updateCart = async (req, res) => {
                 user_id,
                 quantity,
                 price,
-                subtotal: parseInt(quantity)??1 * parseInt(price)??1,
+                subtotal: parseInt(quantity) ?? 1 * parseInt(price) ?? 1,
             });
         if (cart.modifiedCount) {
             // send data as json
             res.status(200).json({
                 status: "success",
                 data: { cart },
-                message: "Product updated"
+                message: "Cart updated"
             })
         } else {
             // send data as json
             res.status(400).json({
-                status: "success",
+                status: "failed",
                 data: { cart },
-                message: "Product update failed"
+                message: "Cart update failed"
             })
         }
 
