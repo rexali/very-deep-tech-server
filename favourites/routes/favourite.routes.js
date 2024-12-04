@@ -6,6 +6,7 @@ const { getUserFavourites } = require("../controllers/getUserFavourites");
 const { createFavourite } = require("../controllers/createFavourite");
 const { getFavourites } = require("../controllers/getFavourites");
 const { getFavourite } = require("../controllers/getFavourite");
+const { getUserFavouritex } = require("../controllers/getUserFavouritex");
 
 // initialize favourite router
 const favouriteRouter = express.Router();
@@ -36,6 +37,13 @@ favouriteRouter.get(
     '/users/:userId/pages/:page',
     // isAuthenticated,
     getUserFavourites
+);
+
+// get all user favourites without page 
+favouriteRouter.get(
+    '/users/:userId',
+    // isAuthenticated,
+    getUserFavouritex
 );
 
 // delete a favourite
