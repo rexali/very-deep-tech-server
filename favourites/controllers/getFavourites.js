@@ -6,24 +6,23 @@ const { Favourite } = require("../models/favourite.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getUserFavourites = async (req, res) => {
-    const userId = req.params.userId;
-    const page = parseInt(req.params.page ?? 1);
+const getFavourites = async (req, res) => {
+    const page = parseInt(req.query?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
     try {
-        const favourites = await Favourite.find({ user: userId })
+        const favourites = await Favourite.find() 
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
 
-        const totalFavourites = (await Favourite.find({ user: userId })).length;
+        const totalFavourites = (await Favourite.find()).length;
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        }))
+        })) 
 
         if (favourites != null) {
             if (favourites.length) {
@@ -61,5 +60,5 @@ const getUserFavourites = async (req, res) => {
 }
 
 module.exports = {
-    getUserFavourites
+    getFavourites
 }

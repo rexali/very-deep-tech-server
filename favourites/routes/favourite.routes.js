@@ -4,6 +4,8 @@ const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const { deleteUserFavourite } = require("../controllers/deteteUserFavourite");
 const { getUserFavourites } = require("../controllers/getUserFavourites");
 const { createFavourite } = require("../controllers/createFavourite");
+const { getFavourites } = require("../controllers/getFavourites");
+const { getFavourite } = require("../controllers/getFavourite");
 
 // initialize favourite router
 const favouriteRouter = express.Router();
@@ -19,12 +21,19 @@ favouriteRouter.post(
 favouriteRouter.get(
     '/',
     // isAuthenticated,
-    getUserFavourites
+    getFavourites
+);
+
+// get all favourite products
+favouriteRouter.get(
+    '/:id',
+    // isAuthenticated,
+    getFavourite
 );
 
 // get user favourite and products
 favouriteRouter.get(
-    '/:id/users',
+    '/users/:userId/page/:page',
     // isAuthenticated,
     getUserFavourites
 );

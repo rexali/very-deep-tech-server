@@ -6,43 +6,33 @@ const { Favourite } = require("../models/favourite.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getUserFavourites = async (req, res) => {
-    const userId = req.params.userId;
-    const page = parseInt(req.params.page ?? 1);
-    const limit = 4;
-    const skip = (page - 1) * limit;
+const getFavourite = async (req, res) => {
+    const id = req.params.id;
     try {
-        const favourites = await Favourite.find({ user: userId })
-            .skip(skip)
-            .limit(limit)
+        const favourite = await Favourite.findById(id) 
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
 
-        const totalFavourites = (await Favourite.find({ user: userId })).length;
-        const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
-            ...favourite,
-            totalFavourites
-        }))
 
-        if (favourites != null) {
-            if (favourites.length) {
+        if (favourite != null) {
+            if (Object.keys(favourite).length) {
                 res.status(200).json({
                     status: "success",
-                    data: { favourites: newFavourites },
+                    data: { favourite },
                     message: "Favourites found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { favourites: [] },
+                    data: { favourite },
                     message: "No favourites found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { favourites: null },
+                data: { favourite: null },
                 message: "No favourites found",
             });
         }
@@ -61,5 +51,5 @@ const getUserFavourites = async (req, res) => {
 }
 
 module.exports = {
-    getUserFavourites
+    getFavourite
 }
