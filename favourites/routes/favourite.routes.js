@@ -16,14 +16,14 @@ favouriteRouter.post(
 );
 
 // get all favourite products
-favouriteRouter.get( 
+favouriteRouter.get(
     '/',
     // isAuthenticated,
     getUserFavourites
 );
 
 // get user favourite and products
-favouriteRouter.get( 
+favouriteRouter.get(
     '/:id/users',
     // isAuthenticated,
     getUserFavourites
@@ -31,7 +31,7 @@ favouriteRouter.get(
 
 // delete a favourite
 favouriteRouter.delete(
-    "/:id/users",
+    "/:productId/users/:userId",
     // isAuthenticated,
     deleteUserFavourite
 );

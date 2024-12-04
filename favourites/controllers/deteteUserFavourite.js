@@ -8,8 +8,8 @@ const { Favourite } = require("../models/favourite.model");
 const deleteUserFavourite = async (req, res) => {
     try {
         // get a client id
-        const userId = req.params.id;
-        const productId = req.body;
+        const userId = req.params.userId;
+        const productId = req.params.productId;
         //    delete favourite
         const favourite = await Favourite.deleteOne({ user: userId, product: productId });
 
