@@ -24,23 +24,23 @@ favouriteRouter.get(
     getFavourites
 );
 
-// get all favourite products
+// get a favourite
 favouriteRouter.get(
     '/:id',
     // isAuthenticated,
     getFavourite
 );
 
-// get user favourite and products
+// get user favourites
 favouriteRouter.get(
-    '/users/:userId/page/:page',
+    '/users/:userId/pages/:page',
     // isAuthenticated,
     getUserFavourites
 );
 
 // delete a favourite
 favouriteRouter.delete(
-    "/:productId/users/:userId",
+    "/products/:productId/users/:userId",
     // isAuthenticated,
     deleteUserFavourite
 );

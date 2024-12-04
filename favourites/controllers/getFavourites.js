@@ -7,18 +7,13 @@ const { Favourite } = require("../models/favourite.model");
  * @returns void
  */
 const getFavourites = async (req, res) => {
-    const page = parseInt(req.query?.page ?? 1);
-    const limit = 4;
-    const skip = (page - 1) * limit;
     try {
         const favourites = await Favourite.find() 
-            .skip(skip)
-            .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
 
-        const totalFavourites = (await Favourite.find()).length;
+        const totalFavourites = favourites.length;
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
