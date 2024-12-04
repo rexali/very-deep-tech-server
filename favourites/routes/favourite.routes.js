@@ -46,7 +46,7 @@ favouriteRouter.get(
     getUserFavouritex
 );
 
-// delete a favourite
+// delete a user favourite
 favouriteRouter.delete(
     "/products/:productId/users/:userId",
     // isAuthenticated,

@@ -9,6 +9,7 @@ const { updateCart } = require("../controllers/updateCart");
 const { clearUserCart } = require("../controllers/clearUserCarts");
 const { getCart } = require("../controllers/getCart");
 const { getUserCartx } = require("../controllers/getUserCartx");
+const { deleteUserCart } = require("../controllers/deteteUserCart");
 
 // initialize cart router
 const cartRouter = express.Router();
@@ -60,7 +61,14 @@ cartRouter.delete(
     deleteCart
 );
 
-// delete a user carts
+// delete a user cart
+cartRouter.delete(
+    "/:id/users/:userId",
+    // isAuthenticated,
+    deleteUserCart
+);
+
+// clear a user carts
 cartRouter.delete(
     "/users/:userId",
     // isAuthenticated,
