@@ -12,6 +12,7 @@ const getProduct = async (req, res) => {
         const product = await Product.findById(_id)
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
+            .populate("likes")
             .exec();
 
         let preparedProduct = JSON.parse(JSON.stringify(product));

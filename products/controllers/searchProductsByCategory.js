@@ -19,6 +19,7 @@ const searchProductsByCategory = async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
+            .populate("likes")
             .exec();
 
         const totalProducts = (await Product.find()).length;

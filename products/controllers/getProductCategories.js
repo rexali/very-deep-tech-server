@@ -13,6 +13,7 @@ const getProductCategories = async (req, res) => {
         const products = await Product.find()
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
+            .populate("likes")
             .exec();
 
         if (products != null) {

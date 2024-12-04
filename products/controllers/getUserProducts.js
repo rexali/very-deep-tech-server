@@ -21,6 +21,7 @@ const getUserProducts = async (req, res) => {
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
+            .populate("likes")
             .exec();
 
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({

@@ -18,6 +18,7 @@ const getProducts = async (req, res) => {
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
+            .populate("likes")
             .exec();
 
         const totalProducts = (await Product.find()).length;
