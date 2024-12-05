@@ -5,7 +5,7 @@ const { Product } = require("../models/product.model");
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
- */
+ */ 
 const searchProducts = async (req, res) => {
     try {
         const term = req.query.term;

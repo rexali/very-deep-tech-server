@@ -1,5 +1,6 @@
 const { Product } = require("../models/product.model");
 const { Order } = require("../../orders/models/order.model");
+const { name } = require("ejs");
 
 /** 
  * Get all products
@@ -20,12 +21,13 @@ const getPopularProducts = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .populate("ratings")
             .populate("likes")
+            .sort({ likes: -1 })
             .exec();
 
         const totalProducts = (await Product.find()).length;
         // get popular products
         let orders = await Order.find();
-        let popularProducts = JSON.parse(JSON.stringify(orders)).map(order=>order.items.map((item=>item.product)))[0].slice(0,2);
+        let popularProducts = JSON.parse(JSON.stringify(orders)).map(order => order.items.map((item => item.product)))[0].slice(0, 2);
         // get the products
         let newProducts = popularProducts.map((product) => ({
             ...product,

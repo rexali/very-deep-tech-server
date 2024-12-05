@@ -37,9 +37,10 @@ const createProduct = async (req, res) => {
                 product_demos_links,
                 product_photos_links,
                 user
-                // featured,
-                // approved,
             } = req.body;
+            // prepare data
+            let photos_links = product_photos_links?.split(',').map(link => link.trim()).filter(link => link != '').join(',')
+            let demos_links = product_demos_links?.trim();
             // save in database
             const product = await Product.create({
                 product_name,
@@ -51,12 +52,10 @@ const createProduct = async (req, res) => {
                 product_weight,
                 product_size,
                 product_code,
-                product_demos_links,
-                product_photos_links,
+                product_demos_links: demos_links,
+                product_photos_links: photos_links,
                 user,
                 product_pictures: [...filenames]
-                // featured,
-                // approved
             });
 
             if (product != null) {

@@ -5,34 +5,32 @@ const { Product } = require("../models/product.model");
  * @param {Object} res - response object
  * @returns void
  */
-const updateProduct = async (req, res) => {
+const featureProduct = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            productId
+            productId,
         } = req.body;
         const featured = req.body.featured ?? 'no';
-        const approved = req.body.approved ?? 'no';
 
         const product = await Product.updateOne(
             { _id: productId },
             {
                 featured,
-                approved
             });
         if (product.modifiedCount) {
             // send data as json
             res.status(200).json({
                 status: "success",
                 data: { product },
-                message: "Product updated"
+                message: "Featured success"
             })
         } else {
             // send data as json
             res.status(400).json({
                 status: "failed",
                 data: { product },
-                message: "Product update failed"
+                message: "Featured failed"
             })
         }
 
@@ -50,5 +48,5 @@ const updateProduct = async (req, res) => {
 };
 
 module.exports = {
-    updateProduct
+    featureProduct
 }

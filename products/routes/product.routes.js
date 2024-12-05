@@ -12,6 +12,8 @@ const { getFeaturedProducts } = require("../controllers/getFeaturedProducts");
 const { getPopularProducts } = require("../controllers/getPopularProducts");
 const { getRecommendedProducts } = require("../controllers/getRecommendedProducts");
 const { getProductCategories } = require("../controllers/getProductCategories");
+const { featureProduct } = require("../controllers/featureProduct");
+const { approveProduct } = require("../controllers/approveProduct");
 
 // initialize product router
 const productRouter = express.Router();
@@ -70,6 +72,18 @@ productRouter.patch(
     "/",
     // isAuthenticated,
     updateProduct
+);
+// featured a  product
+productRouter.patch(
+    "/featureproduct",
+    // isAuthenticated,
+    featureProduct
+);
+// approve a product
+productRouter.patch(
+    "/approveproduct",
+    // isAuthenticated,
+    approveProduct
 );
 // delete a product
 productRouter.delete(
