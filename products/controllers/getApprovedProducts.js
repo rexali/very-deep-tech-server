@@ -6,17 +6,36 @@ const { Product } = require("../models/product.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getProductCategories = async (req, res) => {
+const getApprovedProducts = async (req, res) => {
 
     try {
+        const page = parseInt(req.params?.page ?? 1);
+        const limit = 4;
+        const skip = (page - 1) * limit;
 
-        const products = await Product.find().select('product_category').exec();
+        const products = await Product.find() 
+            .where({ approved: 'yes' })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .populate("likes")
+            .exec();
+
+        const totalProducts = (await Product.find()).length;
+        
+        let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
+            ...product,
+            totalProducts,
+            averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
+                .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
+        }))
 
         if (products != null) {
             if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products },
+                    data: { products: newProducts },
                     message: "Products found",
                 });
             } else {
@@ -48,5 +67,5 @@ const getProductCategories = async (req, res) => {
 }
 
 module.exports = {
-    getProductCategories
+    getApprovedProducts
 }

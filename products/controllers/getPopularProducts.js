@@ -11,7 +11,7 @@ const { name } = require("ejs");
 const getPopularProducts = async (req, res) => {
 
     try {
-        const page = parseInt(req.query?.page ?? 1);
+        const page = parseInt(req.params?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 
@@ -25,11 +25,8 @@ const getPopularProducts = async (req, res) => {
             .exec();
 
         const totalProducts = (await Product.find()).length;
-        // get popular products
-        let orders = await Order.find();
-        let popularProducts = JSON.parse(JSON.stringify(orders)).map(order => order.items.map((item => item.product)))[0].slice(0, 2);
         // get the products
-        let newProducts = popularProducts.map((product) => ({
+        let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))

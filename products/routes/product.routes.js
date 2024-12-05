@@ -14,6 +14,7 @@ const { getRecommendedProducts } = require("../controllers/getRecommendedProduct
 const { getProductCategories } = require("../controllers/getProductCategories");
 const { featureProduct } = require("../controllers/featureProduct");
 const { approveProduct } = require("../controllers/approveProduct");
+const { getApprovedProducts } = require("../controllers/getApprovedProducts");
 
 // initialize product router
 const productRouter = express.Router();
@@ -43,27 +44,34 @@ productRouter.get(
 );
 // get all products categories
 productRouter.get(
-    '/:categories/categories',
+    '/:page/categories',
     // isAuthenticated,
     getProductCategories
 );
 
-// get all faetured products
+// get all approved products
 productRouter.get(
-    '/:featured/featured',
+    '/:page/approved',
+    // isAuthenticated,
+    getApprovedProducts
+);
+
+// get all featured products
+productRouter.get(
+    '/:page/featured',
     // isAuthenticated,
     getFeaturedProducts
 );
 
 // get all popular products
 productRouter.get(
-    '/:popular/popular',
+    '/:page/popular',
     // isAuthenticated,
     getPopularProducts
 );
 // get all recommended products
 productRouter.get(
-    '/:recommended/recommended',
+    '/:page/recommended',
     // isAuthenticated,
     getRecommendedProducts
 );

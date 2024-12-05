@@ -9,12 +9,12 @@ const { Product } = require("../models/product.model");
 const getFeaturedProducts = async (req, res) => {
 
     try {
-        const page = parseInt(req.query?.page ?? 1);
+        const page = parseInt(req.params.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 
         const products = await Product.find() 
-            .where({ featured: true })
+            .where({ featured: 'yes' })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])

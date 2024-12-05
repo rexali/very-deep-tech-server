@@ -11,7 +11,7 @@ const getRecommendedProducts = async (req, res) => {
         // get the cookies
         const term = req.cookies.termCookie;
         // others 
-        const page = parseInt(req.query.page ?? 1);
+        const page = parseInt(req.params.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
         const re = new RegExp(term, 'i');
