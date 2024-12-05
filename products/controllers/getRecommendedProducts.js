@@ -67,6 +67,34 @@ const getRecommendedProducts = async (req, res) => {
 
 }
 
+async function getRecommended(req,res) {
+     // get the cookies
+     const term = req.cookies.termCookie;
+     // others 
+     const page = parseInt(req.params.page ?? 1);
+     const limit = 4;
+     const skip = (page - 1) * limit;
+     const re = new RegExp(term, 'i');
+
+     const products = await Product.find({ product_name: re })
+         .skip(skip)
+         .limit(limit)
+         .populate("user", ["_id", "email", "role"])
+         .populate("likes")
+         .exec();
+
+     const totalProducts = (await Product.find()).length;
+     let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
+         ...product,
+         totalProducts,
+         averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
+             .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
+     }));
+
+     return newProducts
+}
+
 module.exports = {
-    getRecommendedProducts
+    getRecommendedProducts,
+    getRecommended
 }

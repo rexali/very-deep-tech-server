@@ -47,6 +47,11 @@ const getProductCategories = async (req, res) => {
 
 }
 
+async function getCategories(req,res) {
+    return await Product.find().select('product_category').exec();
+}
+
 module.exports = {
-    getProductCategories
+    getProductCategories,
+    getCategories
 }

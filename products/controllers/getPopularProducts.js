@@ -68,6 +68,33 @@ const getPopularProducts = async (req, res) => {
 
 }
 
+async function getPopular(req,res) {
+    const page = parseInt(req.params?.page ?? 1);
+    const limit = 4;
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find()
+        .skip(skip)
+        .limit(limit)
+        .populate("user", ["_id", "email", "role"])
+        .populate("ratings")
+        .populate("likes")
+        .sort({ likes: -1 })
+        .exec();
+
+    const totalProducts = (await Product.find()).length;
+    // get the products
+    let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
+        ...product,
+        totalProducts,
+        averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
+            .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
+    }))
+
+    return newProducts;
+}
+
 module.exports = {
-    getPopularProducts
+    getPopularProducts,
+    getPopular
 }
