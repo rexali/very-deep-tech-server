@@ -31,12 +31,12 @@ cartRouter.get(
 cartRouter.get( 
     '/:id',
     // isAuthenticated,
-    getCart
+    getCart 
 );
 
 // get a user carts with page
 cartRouter.get( 
-    '/pages/:page/users/:userId/',
+    '/pages/:page/users/:userId',
     // isAuthenticated,
     getUserCarts
 );
