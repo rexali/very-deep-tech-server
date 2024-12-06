@@ -36,7 +36,7 @@ messageRouter.post(
 );
 // update a message
 messageRouter.patch(
-    "/:id",
+    "/",
     // isAuthenticated,
     updateMessage
 );
