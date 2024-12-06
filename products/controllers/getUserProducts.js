@@ -9,8 +9,8 @@ const { Product } = require("../models/product.model");
 const getUserProducts = async (req, res) => {
 
     try {
-        const userId = req.params.id;
-        const page = parseInt(req.query?.page ?? 1);
+        const userId = req.params.userId;
+        const page = parseInt(req.params?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 

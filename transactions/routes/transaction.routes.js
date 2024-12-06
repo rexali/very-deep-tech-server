@@ -24,7 +24,7 @@ transactionRouter.get(
 
 // get user transaction and products
 transactionRouter.get( 
-    '/:id/users',
+    '/pages/:page/users/:userId',
     // isAuthenticated,
     getUserTransactions
 );

@@ -36,7 +36,7 @@ cartRouter.get(
 
 // get a user carts with page
 cartRouter.get( 
-    '/users/:userId/pages/:page',
+    '/pages/:page/users/:userId/',
     // isAuthenticated,
     getUserCarts
 );

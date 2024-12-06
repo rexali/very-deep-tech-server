@@ -31,7 +31,7 @@ orderRouter.get(
 
 // get user orders and products
 orderRouter.get(
-    '/:id/users',
+    'pages/:page/users/:userId',
     // isAuthenticated,
     getUserOrders
 );

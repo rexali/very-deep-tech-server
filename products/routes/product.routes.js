@@ -33,7 +33,7 @@ productRouter.get(
 );
 // get user products
 productRouter.get(
-    '/:id/users',
+    '/pages/:page/users/:userId',
     // isAuthenticated, 
     getUserProducts
 );
