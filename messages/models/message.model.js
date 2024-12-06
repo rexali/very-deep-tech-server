@@ -5,8 +5,8 @@ const messageSchema = new mongoose.Schema({
     lastName: String,
     title: String,
     comment: String,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() },
     sender: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

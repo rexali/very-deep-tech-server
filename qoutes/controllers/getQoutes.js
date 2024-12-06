@@ -12,6 +12,7 @@ const getQoutes = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const qoutes = await Qoute.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate('product')
@@ -22,7 +23,7 @@ const getQoutes = async (req, res) => {
         const newQoutes = JSON.parse(JSON.stringify(qoutes)).map(qoute => ({
             ...qoute,
             totalQoutes
-        })).reverse(); 
+        })).reverse();
 
         // send success data
 

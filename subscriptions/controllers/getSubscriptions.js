@@ -11,8 +11,9 @@ const getSubscriptions = async (req, res) => {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-        
+
         const subscriptions = await Subscription.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .exec();

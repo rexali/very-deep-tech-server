@@ -42,7 +42,7 @@ const getProductCategories = async (req, res) => {
             status: "failed",
             data: null,
             message: "Error! " + error.message
-        })
+        }) 
     }
 
 }

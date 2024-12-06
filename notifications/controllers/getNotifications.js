@@ -13,6 +13,7 @@ const getNotifications = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const notifications = await Notification.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
@@ -23,7 +24,7 @@ const getNotifications = async (req, res) => {
         const newNotifications = JSON.parse(JSON.stringify(notifications)).map(notice => ({
             ...notice,
             totalNotifications
-        })).reverse(); 
+        }));
         // send success data
         if (notifications != null) {
             if (notifications.length) {

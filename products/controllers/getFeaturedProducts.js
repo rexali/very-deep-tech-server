@@ -14,6 +14,8 @@ const getFeaturedProducts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const products = await Product.find() 
+        .sort({_id:-1})
+
             .where({ featured: 'yes' })
             .skip(skip)
             .limit(limit)
@@ -72,6 +74,8 @@ async function getFeatured(req,res) {
     const skip = (page - 1) * limit;
 
     const products = await Product.find() 
+    .sort({_id:-1})
+
         .where({ featured: 'yes' })
         .skip(skip)
         .limit(limit)

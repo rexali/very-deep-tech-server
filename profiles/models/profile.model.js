@@ -8,7 +8,9 @@ const profileSchema = new mongoose.Schema({
     localGovt: String,
     state: String,
     country: String,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
 });
 
 const Profile = mongoose.model('Profile', profileSchema); 

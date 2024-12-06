@@ -12,6 +12,7 @@ const getTransactions = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         const transactions = await Transaction.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])

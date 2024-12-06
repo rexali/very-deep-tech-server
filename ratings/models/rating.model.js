@@ -5,7 +5,9 @@ const ratingSchema = new mongoose.Schema({
     review: String,
     approved: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" }
+    product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
 });
 
 const Rating = mongoose.model('Rating', ratingSchema);

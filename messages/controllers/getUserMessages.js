@@ -13,7 +13,8 @@ const getUserMessages = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const messages = await Message.find({ user: userId })
-            .skip(skip) 
+            .sort({ _id: -1 })
+            .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
@@ -22,7 +23,7 @@ const getUserMessages = async (req, res) => {
         const newMessages = JSON.parse(JSON.stringify(messages)).map(message => ({
             ...message,
             totalMessages
-        })).reverse(); 
+        }));
 
         if (messages != null) {
             if (messages.length) {

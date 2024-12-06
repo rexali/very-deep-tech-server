@@ -13,6 +13,7 @@ const getCarts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const carts = await Cart.find()
+            .sort({_id:-1})
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -24,7 +25,7 @@ const getCarts = async (req, res) => {
         const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
             ...cart,
             totalCarts
-        })).reverse(); 
+        })); 
 
         if (carts != null) {
             if (carts.length) {

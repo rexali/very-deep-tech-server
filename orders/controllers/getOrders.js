@@ -12,6 +12,8 @@ const getOrders = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         const orders = await Order.find()
+        .sort({_id:-1})
+
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -21,7 +23,7 @@ const getOrders = async (req, res) => {
             const newOrders = JSON.parse(JSON.stringify(orders)).map(order => ({
                 ...order,
                 totalOrders: totalOrders
-            })).reverse(); 
+            })); 
 
             if (orders != null) {
                 if (orders.length) {

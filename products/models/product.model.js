@@ -17,7 +17,9 @@ const productSchema = new mongoose.Schema({
     approved: { type: String, default: 'no' },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Favourite" }],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }]
+    ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
 });
 
 const Product = mongoose.model('Product', productSchema);

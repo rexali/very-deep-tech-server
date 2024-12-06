@@ -13,7 +13,8 @@ const getApprovedProducts = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
 
-        const products = await Product.find() 
+        const products = await Product.find()
+            .sort({ _id: -1 })
             .where({ approved: 'yes' })
             .skip(skip)
             .limit(limit)
@@ -23,13 +24,13 @@ const getApprovedProducts = async (req, res) => {
             .exec();
 
         const totalProducts = (await Product.find()).length;
-        
+
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        })).reverse(); 
+        }));
 
         if (products != null) {
             if (products.length) {

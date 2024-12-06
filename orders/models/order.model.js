@@ -58,7 +58,7 @@ const orderSchema = new mongoose.Schema({
     },
 
     createdAt: { type: Date, default: new Date() },
-    updatedAt: { type: Date }
+    updatedAt: { type: Date, default: new Date() }
 });
 
 const Order = mongoose.model('Order', orderSchema);

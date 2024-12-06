@@ -12,6 +12,7 @@ const getRatings = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const ratings = await Rating.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate('product')
@@ -23,7 +24,7 @@ const getRatings = async (req, res) => {
         const newRatings = JSON.parse(JSON.stringify(ratings)).map(rating => ({
             ...rating,
             totalRatings
-        })).reverse(); 
+        })).reverse();
 
         // send success data
 

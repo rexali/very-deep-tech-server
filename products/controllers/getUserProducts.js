@@ -17,6 +17,8 @@ const getUserProducts = async (req, res) => {
         const totalProducts = (await Product.find({ user: userId })).length;
 
         const products = await Product.find()
+        .sort({_id:-1})
+
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -29,7 +31,7 @@ const getUserProducts = async (req, res) => {
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore??0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        })).reverse(); 
+        })); 
 
         if (products != null) {
             if (products.length) {

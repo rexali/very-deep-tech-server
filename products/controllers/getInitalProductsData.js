@@ -1,8 +1,10 @@
 const { Product } = require("../models/product.model");
 const { getFeatured } = require("./getFeaturedProducts");
-const { getPopular } = require("./getPopularProducts");
+const { getPopular, getPopularProducts } = require("./getPopularProducts");
+const { getProductCategories, getCategories } = require("./getProductCategories");
 const { getProductData } = require("./getProducts");
 const { getRecommended } = require("./getRecommendedProducts");
+
 
 /** 
  * Get all products
@@ -12,11 +14,18 @@ const { getRecommended } = require("./getRecommendedProducts");
  */
 const getInitialProductsData = async (req, res) => {
 
-    Promise.all([getProductData(req, res), getPopular(req, res), getRecommended(req, res), getFeatured(req, res)]).then(([
+    Promise.all([
+        getProductData(req, res),
+        getPopular(req, res),
+        getRecommended(req, res),
+        getFeatured(req, res),
+        getCategories(req, res)
+    ]).then(([
         productData,
         popularData,
         recommendedData,
-        featuredData
+        featuredData,
+        categoryData
     ]) => {
         res.status(200).json({
             status: "success",
@@ -24,7 +33,8 @@ const getInitialProductsData = async (req, res) => {
                 productData,
                 popularData,
                 recommendedData,
-                featuredData
+                featuredData,
+                categoryData
             },
             message: "Products found",
         });

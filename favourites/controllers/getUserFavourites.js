@@ -13,6 +13,7 @@ const getUserFavourites = async (req, res) => {
     const skip = (page - 1) * limit;
     try {
         const favourites = await Favourite.find({ user: userId })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -23,7 +24,7 @@ const getUserFavourites = async (req, res) => {
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        })).reverse(); 
+        }));
 
         if (favourites != null) {
             if (favourites.length) {

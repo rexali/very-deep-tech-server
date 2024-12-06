@@ -14,6 +14,7 @@ const getProfiles = async (req, res) => {
         const skip = (page - 1) * limit;
 
         const profiles = await Profile.find()
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
@@ -23,7 +24,7 @@ const getProfiles = async (req, res) => {
         const newProfiles = JSON.parse(JSON.stringify(profiles)).map(profile => ({
             ...profile,
             totalProfiles
-        })).reverse(); 
+        })).reverse();
 
         if (profiles != null) {
             if (profiles.length) {

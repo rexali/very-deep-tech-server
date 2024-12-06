@@ -74,6 +74,7 @@ async function getPopular(req,res) {
     const skip = (page - 1) * limit;
 
     const products = await Product.find()
+        .sort({_id:-1})
         .skip(skip)
         .limit(limit)
         .populate("user", ["_id", "email", "role"])
@@ -89,7 +90,7 @@ async function getPopular(req,res) {
         totalProducts,
         averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
             .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-    })).reverse(); 
+    })); 
 
     return newProducts;
 }

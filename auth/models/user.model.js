@@ -8,7 +8,9 @@ const userSchema = new mongoose.Schema({
     password: String,
     role: String,
     rcode: String,
-    profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" }
+    profile: { type: mongoose.Schema.Types.ObjectId, ref: "Profile" },
+    createdAt: { type: Date, default: new Date() },
+    updatedAt: { type: Date, default: new Date() }
 });
 
 

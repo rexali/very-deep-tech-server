@@ -8,7 +8,9 @@ const { Favourite } = require("../models/favourite.model");
  */
 const getFavourites = async (req, res) => {
     try {
-        const favourites = await Favourite.find() 
+        const favourites = await Favourite.find()
+            .sort({ _id: -1 })
+
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
@@ -17,7 +19,7 @@ const getFavourites = async (req, res) => {
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        })).reverse(); 
+        })).reverse();
 
         if (favourites != null) {
             if (favourites.length) {

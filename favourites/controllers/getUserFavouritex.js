@@ -11,6 +11,7 @@ const getUserFavouritex = async (req, res) => {
 
     try {
         const favourites = await Favourite.find({ user: userId })
+            .sort({ _id: -1 })
             .populate("user", ["_id", "email", "role"])
             .populate("product")
             .exec();
@@ -19,7 +20,7 @@ const getUserFavouritex = async (req, res) => {
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        })).reverse(); 
+        }));
 
         if (favourites != null) {
             if (favourites.length) {

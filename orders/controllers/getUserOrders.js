@@ -13,38 +13,39 @@ const getUserOrders = async (req, res) => {
     const skip = (page - 1) * limit;
     try {
         const orders = await Order.find({ user: _id })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .exec();
-           
-            const totalOrders = (await Order.find()).length;
-            const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
-                ...msg,
-                totalOrders: totalOrders
-            })).reverse(); 
 
-            if (orders != null) {
-                if (orders.length) {
-                    res.status(200).json({
-                        status: "success",
-                        data: { orders:newOrders },
-                        message: "Orders read",
-                    });
-                } else {
-                    res.status(404).json({
-                        status: "failed",
-                        data: { orders: [] },
-                        message: "No orders found",
-                    });
-                }
+        const totalOrders = (await Order.find()).length;
+        const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
+            ...msg,
+            totalOrders: totalOrders
+        }));
+
+        if (orders != null) {
+            if (orders.length) {
+                res.status(200).json({
+                    status: "success",
+                    data: { orders: newOrders },
+                    message: "Orders read",
+                });
             } else {
-                res.status(400).json({
+                res.status(404).json({
                     status: "failed",
-                    data: { orders: null },
+                    data: { orders: [] },
                     message: "No orders found",
                 });
             }
+        } else {
+            res.status(400).json({
+                status: "failed",
+                data: { orders: null },
+                message: "No orders found",
+            });
+        }
 
     } catch (error) {
         // catch  the error

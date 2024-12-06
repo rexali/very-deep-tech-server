@@ -13,6 +13,7 @@ const getUserTransactions = async (req, res) => {
     const skip = (page - 1) * limit;
     try {
         const transactions = await Transaction.find({ user: _id })
+            .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
