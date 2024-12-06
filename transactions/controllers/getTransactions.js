@@ -27,7 +27,7 @@ const getTransactions = async (req, res) => {
             totalTransactions: totalTransactions,
             totalAmount: transactions.map(transaction => Number(transaction.amount))
                 .reduce((prev, curr) => prev + curr, 0)
-        }))
+        })).reverse();
 
         if (transactions != null) {
             if (transactions.length) {

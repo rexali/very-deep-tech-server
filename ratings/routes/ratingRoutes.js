@@ -5,6 +5,7 @@ const { createRating } = require("../controllers/createRating");
 const { getRating } = require("../controllers/getRating");
 const { updateRating } = require("../controllers/updateRating");
 const { deleteRating } = require("../controllers/deleteRating");
+const { getRatings } = require("../controllers/getRatings");
 
 // initialize rating router
 const ratingRouter = express.Router();
@@ -13,6 +14,12 @@ ratingRouter.get(
     '/:id',
     // isAuthenticated, 
     getRating
+);
+// get all ratings
+ratingRouter.get(
+    '/',
+    // isAuthenticated, 
+    getRatings
 );
 // create a rating
 ratingRouter.post(

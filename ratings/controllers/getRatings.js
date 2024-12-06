@@ -1,52 +1,53 @@
-const { Subscription } = require("../models/subscription.model");
-
+const { Rating } = require("../models/rating.model");
 /** 
- * Get one subscriptions
+ * Get all ratings
  * @param {object} req - request object
  * @param {object} res - response object to user request
  * @returns void
  */
-const getSubscriptions = async (req, res) => {
+const getRatings = async (req, res) => {
     try {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-        
-        const subscriptions = await Subscription.find()
+
+        const ratings = await Rating.find()
             .skip(skip)
             .limit(limit)
+            .populate('product')
+            .populate('user')
             .exec();
-        ;
+
+        const totalRatings = (await Rating.find()).length;
+
+        const newRatings = JSON.parse(JSON.stringify(ratings)).map(rating => ({
+            ...rating,
+            totalRatings
+        })).reverse(); 
+
         // send success data
-        const totalSubscriptions = (await Subscription.find()).length;
 
-        const newSubscriptions = JSON.parse(JSON.stringify(subscriptions)).map(subscription => ({
-            ...subscription,
-            totalSubscriptions: totalSubscriptions
-        })).reverse();
-
-        if (subscriptions != null) {
-            if (subscriptions.length) {
+        if (ratings != null) {
+            if (ratings.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { subscriptions: newSubscriptions },
-                    message: "Subscriptions found",
+                    data: { ratings: newRatings },
+                    message: "Qoutes found",
                 });
             } else {
                 res.status(404).json({
                     status: "failed",
-                    data: { subscriptions: [] },
-                    message: "No subscriptions found",
+                    data: { ratings: [] },
+                    message: "No ratings found",
                 });
             }
         } else {
             res.status(400).json({
                 status: "failed",
-                data: { subscriptions: null },
-                message: "No subscriptions found",
+                data: { ratings: null },
+                message: "No ratings found",
             });
         }
-
 
     } catch (error) {
         // catch  the error
@@ -62,5 +63,5 @@ const getSubscriptions = async (req, res) => {
 }
 
 module.exports = {
-    getSubscriptions
+    getRatings
 }

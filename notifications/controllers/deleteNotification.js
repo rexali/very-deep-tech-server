@@ -8,7 +8,7 @@ const { Notification } = require("../models/notification.model");
 const deleteNotification = async (req, res) => {
     try {
         // get a notice id
-        const _id = req.body._id;
+        const _id = req.params.id;
         // delete notification
         const notification = await Notification.deleteOne({ _id });
         // send success data

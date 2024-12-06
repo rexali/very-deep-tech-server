@@ -24,7 +24,7 @@ messageRouter.get(
 );
 // get all messages
 messageRouter.get(
-    '/:id/users',
+    '/pages/:page/users/:userId',
     // isAuthenticated,
     getUserMessages
 );
@@ -36,13 +36,13 @@ messageRouter.post(
 );
 // update a message
 messageRouter.patch(
-    "/",
+    "/:id",
     // isAuthenticated,
     updateMessage
 );
 // delete a message
 messageRouter.delete(
-    "/",
+    "/:id",
     // isAuthenticated,
     deleteMessage
 );

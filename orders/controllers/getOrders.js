@@ -21,7 +21,7 @@ const getOrders = async (req, res) => {
             const newOrders = JSON.parse(JSON.stringify(orders)).map(order => ({
                 ...order,
                 totalOrders: totalOrders
-            }))
+            })).reverse(); 
 
             if (orders != null) {
                 if (orders.length) {

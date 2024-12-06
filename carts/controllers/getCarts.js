@@ -24,7 +24,7 @@ const getCarts = async (req, res) => {
         const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
             ...cart,
             totalCarts
-        }))
+        })).reverse(); 
 
         if (carts != null) {
             if (carts.length) {

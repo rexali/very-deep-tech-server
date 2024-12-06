@@ -23,7 +23,7 @@ const getProfiles = async (req, res) => {
         const newProfiles = JSON.parse(JSON.stringify(profiles)).map(profile => ({
             ...profile,
             totalProfiles
-        }));
+        })).reverse(); 
 
         if (profiles != null) {
             if (profiles.length) {

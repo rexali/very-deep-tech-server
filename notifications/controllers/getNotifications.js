@@ -23,7 +23,7 @@ const getNotifications = async (req, res) => {
         const newNotifications = JSON.parse(JSON.stringify(notifications)).map(notice => ({
             ...notice,
             totalNotifications
-        }))
+        })).reverse(); 
         // send success data
         if (notifications != null) {
             if (notifications.length) {

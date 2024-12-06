@@ -10,7 +10,7 @@ const getRating = async (req, res) => {
     try {
         const _id = req.params.id; // rating's id
         const rating = await Rating.findById(_id)
-            .populate("course")
+            .populate("product")
             .populate("user") 
             .exec();
 

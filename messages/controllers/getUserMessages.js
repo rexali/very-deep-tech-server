@@ -7,13 +7,13 @@ const { Message } = require("../models/message.model");
  */
 const getUserMessages = async (req, res) => {
     try {
-        const page = parseInt(req.query?.page ?? 1);
+        const page = parseInt(req.params?.page ?? 1);
         const userId = req.params?.userId;
         const limit = 4;
         const skip = (page - 1) * limit;
 
         const messages = await Message.find({ user: userId })
-            .skip(skip)
+            .skip(skip) 
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
@@ -22,7 +22,7 @@ const getUserMessages = async (req, res) => {
         const newMessages = JSON.parse(JSON.stringify(messages)).map(message => ({
             ...message,
             totalMessages
-        }))
+        })).reverse(); 
 
         if (messages != null) {
             if (messages.length) {

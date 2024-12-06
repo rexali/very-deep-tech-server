@@ -22,7 +22,7 @@ const getQoutes = async (req, res) => {
         const newQoutes = JSON.parse(JSON.stringify(qoutes)).map(qoute => ({
             ...qoute,
             totalQoutes
-        }));
+        })).reverse(); 
 
         // send success data
 

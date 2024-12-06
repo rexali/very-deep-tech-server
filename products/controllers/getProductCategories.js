@@ -16,7 +16,7 @@ const getProductCategories = async (req, res) => {
             if (products.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { products },
+                    data: { products: products.reverse() },
                     message: "Products found",
                 });
             } else {
@@ -47,7 +47,7 @@ const getProductCategories = async (req, res) => {
 
 }
 
-async function getCategories(req,res) {
+async function getCategories(req, res) {
     return await Product.find().select('product_category').exec();
 }
 

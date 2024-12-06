@@ -8,7 +8,7 @@ const { Rating } = require("../models/rating.model");
 const deleteRating = async (req, res) => {
     try {
         // get a rating's id
-        const _id = req.body._id;
+        const _id = req.body.id;
         //    delete rating
         const rating = await Rating.deleteOne({ _id });
 

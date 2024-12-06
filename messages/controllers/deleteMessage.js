@@ -7,7 +7,7 @@ const { Message } = require("../models/message.model");
 const deleteMessage = async (req, res) => {
     try {
         // get a notice id
-        const _id = req.body._id;
+        const _id = req.params.id;
         // delete message
         const message = await Message.deleteOne({ _id });
         // send success data
@@ -18,8 +18,8 @@ const deleteMessage = async (req, res) => {
                 message: "Message deleted",
             });
         } else {
-            res.status(200).json({
-                status: "success",
+            res.status(400).json({
+                status: "failed",
                 data: { message },
                 message: "Message deletion failed",
             });

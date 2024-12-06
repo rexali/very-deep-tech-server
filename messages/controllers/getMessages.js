@@ -21,7 +21,7 @@ const getMessages = async (req, res) => {
         const newMessages = JSON.parse(JSON.stringify(messages)).map(msg => ({
             ...msg,
             totalMessages
-        }))
+        })).reverse(); 
 
         if (messages != null) {
             if (messages.length) {

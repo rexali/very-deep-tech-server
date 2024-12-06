@@ -35,7 +35,7 @@ notificationRouter.patch(
 );
 // delete a notification
 notificationRouter.delete(
-    "/",
+    "/:id",
     // isAuthenticated,
     deleteNotification
 );

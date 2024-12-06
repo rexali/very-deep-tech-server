@@ -10,11 +10,11 @@ const updateOrder = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            _id,
+            orderId,
             orderStatus
         } = req.body;
 
-        const order = await Order.updateOne({ _id },
+        const order = await Order.updateOne({ _id: orderId },
             {
                 orderStatus,
                 updatedAt: new Date(),
@@ -29,7 +29,7 @@ const updateOrder = async (req, res) => {
         } else {
             // send data as json
             res.status(200).json({
-                status: "success",
+                status: "failed",
                 data: { order },
                 message: "Order update failed"
             })
@@ -40,8 +40,8 @@ const updateOrder = async (req, res) => {
         // send data as json
         res.status(200).json({
             status: "failed",
-            data:null,
-            message: "Error! "+error.message
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

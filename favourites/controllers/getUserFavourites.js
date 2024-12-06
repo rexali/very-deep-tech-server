@@ -23,7 +23,7 @@ const getUserFavourites = async (req, res) => {
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({
             ...favourite,
             totalFavourites
-        }))
+        })).reverse(); 
 
         if (favourites != null) {
             if (favourites.length) {
