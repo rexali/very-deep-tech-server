@@ -23,7 +23,7 @@ const getUserTransactions = async (req, res) => {
             })
             .exec();
 
-        const totalTransactions = (await Transaction.find()).length;
+        const totalTransactions = (await Transaction.find({ user: userId })).length;
         const newTransactions = JSON.parse(JSON.stringify(transactions)).map(transaction => ({
             ...transaction,
             totalTransactions: totalTransactions,

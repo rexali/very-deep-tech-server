@@ -14,11 +14,8 @@ const getUserProducts = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
 
-        const totalProducts = (await Product.find({ user: userId })).length;
-
         const products = await Product.find()
-        .sort({_id:-1})
-
+            .sort({_id:-1})
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
@@ -26,6 +23,7 @@ const getUserProducts = async (req, res) => {
             .populate("likes")
             .exec();
 
+        const totalProducts = (await Product.find({ user: userId })).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,

@@ -24,7 +24,7 @@ const getUserCarts = async (req, res) => {
             .populate("product")
             .exec();
 
-        const totalCarts = (await Cart.find()).length;
+        const totalCarts = (await Cart.find({ user: userId })).length;
         const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
             ...cart,
             totalCarts

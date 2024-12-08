@@ -19,7 +19,7 @@ const getUserOrders = async (req, res) => {
             .populate("user", ["_id", "email", "role"])
             .exec();
 
-        const totalOrders = (await Order.find()).length;
+        const totalOrders = (await Order.find({user: userId})).length;
         const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
             ...msg,
             totalOrders: totalOrders
