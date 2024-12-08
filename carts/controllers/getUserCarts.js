@@ -13,7 +13,7 @@ const getUserCarts = async (req, res) => {
 
         const userId = req.params.userId;
         const page = parseInt(req.params.page ?? 1);
-        const limit = 10;
+        const limit = 4;
         const skip = (page - 1) * limit;
 
         const carts = await Cart.find({ user: userId })
