@@ -8,12 +8,12 @@ const { Product } = require("../models/product.model");
  */
 const getSortedProducts = async (req, res) => {
     try {
-        const sortTerm = req.body.sort;
+        const sort = req.body.sort;
 
         let sortName;
         let sortValue;
 
-        if (sortTerm && sortTerm === 'low') {
+        if (sort && sort === 'low') {
             sortName = 'product_price';
             sortValue = 1;
         }

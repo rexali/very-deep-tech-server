@@ -8,14 +8,14 @@ const { Product } = require("../models/product.model");
  */
 const getFilteredProducts = async (req, res) => {
     try {
-        const filter = req.body.filter;
+        const filters = req.body.filters;
 
         const page = parseInt(req.query.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 
         const products = await Product.find()
-            .where('product_price').gte(filter[0]).lte(filter[1])
+            .where('product_price').gte(filters[0]).lte(filters[1])
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
