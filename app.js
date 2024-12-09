@@ -29,6 +29,8 @@ const { transactionRouter } = require("./transactions/routes/transaction.routes"
 const { orderRouter } = require("./orders/routes/order.routes");
 const { favouriteRouter } = require("./favourites/routes/favourite.routes");
 const { qouteRouter } = require("./qoutes/routes/qouteRoutes");
+const { getSortedProducts } = require("./products/controllers/getSortedProducts");
+const { getFilteredProducts } = require("./products/controllers/getFilteredProducts");
 // instantiate express
 const app = express();
 // port
@@ -70,6 +72,9 @@ app.use('/transactions', transactionRouter);
 app.use('/orders', orderRouter);
 app.use('/favourites', favouriteRouter);
 app.use('/qoutes', qouteRouter);
+app.use('/sortings', getSortedProducts);
+app.use('/filterings', getFilteredProducts);
+
 
 
 // server home

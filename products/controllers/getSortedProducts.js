@@ -8,8 +8,8 @@ const { Product } = require("../models/product.model");
  */
 const getSortedProducts = async (req, res) => {
     try {
-        const sort = req.body.sort;
-
+        const sort = req.query.sort;
+ 
         let sortName;
         let sortValue;
 
