@@ -34,8 +34,7 @@ const getFilteredProducts = async (req, res) => {
 
         if (products != null) {
             if (products.length) {
-                //  store in cookie
-                res.cookie('termCookie', term, { httpOnly: true, secure: false });
+               
                 res.status(200).json({
                     status: "success",
                     data: { products: newProducts },
