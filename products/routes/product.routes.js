@@ -16,6 +16,8 @@ const { featureProduct } = require("../controllers/featureProduct");
 const { approveProduct } = require("../controllers/approveProduct");
 const { getApprovedProducts } = require("../controllers/getApprovedProducts");
 const { getInitialProductsData } = require("../controllers/getInitalProductsData");
+const { getFilteredProducts } = require("../controllers/getFilteredProducts");
+const { getSortedProducts } = require("../controllers/getSortedProducts");
 
 // initialize product router
 const productRouter = express.Router();
@@ -49,6 +51,21 @@ productRouter.get(
     '/:page/initial',
     // isAuthenticated,
     getInitialProductsData
+);
+
+
+// get all filtered products
+productRouter.get(
+    '/:page/filters',
+    // isAuthenticated,
+    getFilteredProducts
+);
+
+// get all filtered products
+productRouter.get(
+    '/:page/sorts',
+    // isAuthenticated,
+    getSortedProducts
 );
 
 // get all products categories
