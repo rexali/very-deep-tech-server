@@ -7,12 +7,12 @@ const { Order } = require("../models/order.model");
  * @returns void
  */
 const getUserOrders = async (req, res) => {
-    const _id = req.params.userId;
+    const userId = req.params.id;
     const page = parseInt(req.params.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
     try {
-        const orders = await Order.find({ user: _id })
+        const orders = await Order.find({ user: userId })
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)

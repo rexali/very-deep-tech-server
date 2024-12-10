@@ -17,14 +17,14 @@ transactionRouter.get(
 );
 // get all transaction and products
 transactionRouter.get( 
-    '/',
+    '/', 
     // isAuthenticated,
     getTransactions
 );
 
 // get user transaction and products
 transactionRouter.get( 
-    '/pages/:page/users/:userId',
+    '/:page/users/:id',
     // isAuthenticated,
     getUserTransactions
 );

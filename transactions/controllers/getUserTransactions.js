@@ -7,16 +7,16 @@ const { Transaction } = require("../models/transaction.model");
  * @returns void
  */
 const getUserTransactions = async (req, res) => {
-    const _id = req.params.userId;
+    const userId = req.params.id;
     const page = parseInt(req.params.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
     try {
-        const transactions = await Transaction.find({ user: _id })
+        const transactions = await Transaction.find({ user: userId })
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
-            .populate("user", ["_id", "email", "role"])
+            .populate("user", ["userId", "email", "role"])
             .populate({
                 path: 'order',
                 model: "Order"
