@@ -1,7 +1,7 @@
 const { uploadMultipleFiles } = require("../../utils/uploadFile");
 const { Product } = require("../models/product.model");
 const multer = require("multer");
-var fs = require('fs');
+var fs = require('fs/promises');
 const { getFilesNames } = require("../utils/getFilesNames");
 
 /**
@@ -44,18 +44,19 @@ const updateProduct = async (req, res) => {
             let photos_links = product_photos_links?.split(',').map(link => link.trim()).filter(link => link != '').join(',')
             let demos_links = product_demos_links?.trim();
             // remove file
-            productphotos?.forEach(photo => {
-                fs.unlink(path.join(process.cwd(), 'public/uploads/' + photo), function (err) {
-                    if (err) {
-                        // send data as json
-                        res.status(500).json({
-                            status: "failed",
-                            data: null,
-                            message: "Error! " + err.message
-                        })
-                    }
-                    console.log('File deleted');
-                })
+            productphotos?.forEach(async photo => {
+                try {
+                    const res = await fs.unlink(process.cwd(), 'public/uploads/' + photo);
+                } catch (error) {
+                    console.warn(error);
+                    // send data as json
+                    res.status(500).json({
+                        status: "failed",
+                        data: null,
+                        message: "Error! " + error.message
+                    })
+                }
+
             });
             // update
             const product = await Product.updateOne(

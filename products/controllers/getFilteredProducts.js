@@ -11,7 +11,6 @@ const getFilteredProducts = async (req, res) => {
         const filter1 = req.query.filter1;
         const filter2 = req.query.filter2;
 
-
         const page = parseInt(req.query.page ?? 1); 
         const limit = 4; 
         const skip = (page - 1) * limit;
