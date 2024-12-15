@@ -11,12 +11,14 @@ const updateOrder = async (req, res) => {
         // retrieve the request body data
         const {
             orderId,
-            orderStatus
         } = req.body;
+        const orderStatus = req.body?.orderStatus ?? 'pending';
+        const paymentStatus = req.body?.paymntStatus ?? 'pending';
 
         const order = await Order.updateOne({ _id: orderId },
             {
                 orderStatus,
+                paymentStatus,
                 updatedAt: new Date(),
             });
         if (order.modifiedCount) {

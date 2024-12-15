@@ -33,13 +33,13 @@ const createTransaction = async (req, res) => {
         });
 
         // const transactions = await Transaction.findById(transaction._id).populate('order').exec();
-        // transactions.order.paymentStatus = paymentStatus ?? "paid";
+        // transactions.order.paymentStatus = paymentStatus;
         // transactions.order.updatedAt = new Date();
         // await transactions.save();
 
         const order = await Order.updateOne({ _id: orderId },
             {
-                paymentStatus: paymentStatus ?? "paid",
+                paymentStatus: paymentStatus,
                 updatedAt: new Date(),
             });
 

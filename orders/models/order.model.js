@@ -52,7 +52,8 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "pending" // paid, cancelled
     },
-    shippingMethod:{
+
+    shippingMethod: {
         type: String,
         default: "GENERAL" // DHL, GENERAL
     },

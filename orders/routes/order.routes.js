@@ -5,6 +5,7 @@ const { createOrder } = require("../controllers/createOrder");
 const { getOrders } = require("../controllers/getOrders");
 const { getUserOrders } = require("../controllers/getUserOrders");
 const { getOrder } = require("../controllers/getOrder");
+const { updateOrder } = require("../controllers/updateOrder");
 
 // initialize order router
 const orderRouter = express.Router();
@@ -14,6 +15,12 @@ orderRouter.post(
     '/',
     // isAuthenticated,
     createOrder
+);
+// update order
+orderRouter.patch(
+    '/',
+    // isAuthenticated,
+    updateOrder
 );
 // get all orders and products
 orderRouter.get(
