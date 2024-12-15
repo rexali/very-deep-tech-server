@@ -8,8 +8,8 @@ const { Cart } = require("../models/cart.model");
  */
 const getCarts = async (req, res) => {
     try {
-        const page = parseInt(req.query.page ?? 1);
-        const limit = 10;
+        const page = parseInt(req.query?.page ?? 1);
+        const limit = 4;
         const skip = (page - 1) * limit;
 
         const carts = await Cart.find()
