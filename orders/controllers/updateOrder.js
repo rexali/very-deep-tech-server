@@ -12,8 +12,8 @@ const updateOrder = async (req, res) => {
         const {
             orderId,
         } = req.body;
-        const orderStatus = req.body?.orderStatus ?? 'pending';
-        const paymentStatus = req.body?.paymntStatus ?? 'pending';
+        const orderStatus = req.body.orderStatus ?? 'pending';
+        const paymentStatus = req.body.paymentStatus ?? 'pending';
 
         const order = await Order.updateOne({ _id: orderId },
             {
