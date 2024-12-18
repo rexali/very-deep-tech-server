@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ],
+    "framework": null,
+    "installCommand": null,
+    "buildCommmand": null,
+    "outputDirectory": "public"
+}
