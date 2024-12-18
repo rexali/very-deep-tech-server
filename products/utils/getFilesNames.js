@@ -1,7 +1,7 @@
 
 function getFilesNames(files) {
     let results = [];
-    files.forEach((file) => {
+    files?.forEach((file) => {
             results.push(file.filename)
     });
 

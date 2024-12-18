@@ -28,7 +28,7 @@ const updateMessage = async (req, res) => {
             lastName: Joi.string(),
             messageId: Joi.string().required(),
         });
-
+ 
         const { error, value } = schema.validate({ title, comment, user, sender, firstName, lastName, messageId });
 
         if (error) {

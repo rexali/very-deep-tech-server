@@ -22,7 +22,8 @@ const createProduct = async (req, res) => {
                 throw new Error(err)
             };
             // Everything went fine, send the file name and other fields to database
-            let filenames = getFilesNames([...req.files]);
+            let files = req?.files ?? [];
+            let filenames = getFilesNames([...files]);
 
             const {
                 product_name,

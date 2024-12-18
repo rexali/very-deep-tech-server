@@ -21,7 +21,8 @@ const updateProduct = async (req, res) => {
                 throw new Error(err)
             };
             // Everything went fine, send the file name and other fields to database
-            let filenames = getFilesNames([...req.files]);
+            let files = req?.files ?? [];
+            let filenames = getFilesNames([...files]);
             // retrieve the request body data
             const {
                 productId,
@@ -43,7 +44,7 @@ const updateProduct = async (req, res) => {
             // get the product pictures string[]
             let productPictures = result.product_pictures;
             // update
-            let photos = filenames.length > 0 ? [...productPictures, ...filenames] : [...productPictures];
+            let photos = filenames?.length > 0 ? [...productPictures, ...filenames] : [...productPictures];
 
             const product = await Product.updateOne(
                 { _id: productId },
