@@ -8,7 +8,7 @@ const { Product } = require("../models/product.model");
 const deleteProduct = async (req, res) => {
     try {
         // get a client id
-        const _id = req.body._id;
+        const _id = req.body.id;
         //    delete product
         const product = await Product.deleteOne({ _id });
 
