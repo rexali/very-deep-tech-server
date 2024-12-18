@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "rewrites": [
         {
             "source": "/(.*)",
@@ -8,6 +7,6 @@
     ],
     "framework": null,
     "installCommand": null,
-    "buildCommmand": null,
+    "buildCommmand": "",
     "outputDirectory": "public"
 }

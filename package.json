@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon --ext .js,ejs,json,html --watch . --watch views --watch public app.js",
-    "build":"",
     "test": "mocha"
   },
   "keywords": [],
