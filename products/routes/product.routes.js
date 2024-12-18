@@ -18,6 +18,7 @@ const { getApprovedProducts } = require("../controllers/getApprovedProducts");
 const { getInitialProductsData } = require("../controllers/getInitalProductsData");
 const { getFilteredProducts } = require("../controllers/getFilteredProducts");
 const { getSortedProducts } = require("../controllers/getSortedProducts");
+const { removeProductPicture } = require("../controllers/removeProductPhoto");
 
 // initialize product router
 const productRouter = express.Router();
@@ -107,6 +108,13 @@ productRouter.patch(
     // isAuthenticated,
     updateProduct
 );
+// remove a product picture
+productRouter.patch(
+    "/removeproductpicture",
+    // isAuthenticated,
+    removeProductPicture
+);
+
 // featured a  product
 productRouter.patch(
     "/featureproduct",
