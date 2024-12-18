@@ -57,7 +57,7 @@ const createMessage = async (req, res) => {
                         sender: senderx,
                         firstName: firstNamex,
                         lastName: lastNamex,
-                        user: userx,
+                        user,
                         createdAt: new Date(),
                         updatedAt: new Date()
                     });
