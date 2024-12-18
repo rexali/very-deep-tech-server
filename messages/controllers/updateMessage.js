@@ -1,4 +1,6 @@
 const { Message } = require("../models/message.model");
+const Joi = require('joi');
+const { escape } = require('html-escaper')
 /**
  * Update message
  * @param {Object} req - request object
@@ -16,13 +18,43 @@ const updateMessage = async (req, res) => {
         const firstName = req.body.firstName ?? '';
         const lastName = req.body.lastName ?? '';
 
-        const message = await Message.updateOne({ _id: messageId },
+        // let us validate inputs
+        const schema = Joi.object({
+            title: Joi.string().required(),
+            comment: Joi.string().required(),
+            user: Joi.string(),
+            sender: Joi.string().email(),
+            firstName: Joi.string(),
+            lastName: Joi.string(),
+            messageId: Joi.string().required(),
+        });
+
+        const { error, value } = schema.validate({ title, comment, user, sender, firstName, lastName, messageId });
+
+        if (error) {
+            // send data as json
+            res.status(400).json({
+                status: "failed",
+                data: null,
+                message: "Error! " + error.message
+            })
+        }
+
+        // let us sanitize inputs
+        let titlex = escape(title);
+        let commentx = escape(comment);
+        let senderx = escape(sender);
+        let firstNamex = escape(firstName);
+        let lastNamex = escape(lastName);
+        let messageIdx = escape(messageId);
+
+        let message = await Message.updateOne({ _id: messageIdx },
             {
-                title,
-                comment,
-                sender,
-                firstName,
-                lastName,
+                title: titlex,
+                comment: commentx,
+                sender: senderx,
+                firstName: firstNamex,
+                lastName: lastNamex,
                 updatedAt: new Date(),
             });
         if (message.modifiedCount) {
