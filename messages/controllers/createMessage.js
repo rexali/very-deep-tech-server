@@ -13,7 +13,7 @@ const createMessage = async (req, res) => {
         // retrieve the request body data
         const title = req.body.title;
         const comment = req.body.comment;
-        const user = req.body.userId;
+        const user = req.body?.userId ?? "";
         const sender = req.body.sender ?? ''; // email
         const firstName = req.body.firstName ?? '';
         const lastName = req.body.lastName ?? '';
@@ -37,59 +37,60 @@ const createMessage = async (req, res) => {
                 data: null,
                 message: "Error! " + error.message
             })
-        }
-    
-        // let us sanitize our inputs
-
-        let titlex = escape(title);
-        let commentx = escape(comment);
-        let senderx = escape(sender);
-        let firstNamex = escape(firstName);
-        let lastNamex = escape(lastName);
-        let userx = user === undefined ? '' : escape(user);
-
-        let message;
-
-        if (user) {
-            message = await Message.create(
-                {
-                    title: titlex,
-                    comment: commentx,
-                    sender: senderx,
-                    firstName: firstNamex,
-                    lastName: lastNamex,
-                    user: userx,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                });
         } else {
-            message = await Message.create(
-                {
-                    title: titlex,
-                    comment: commentx,
-                    sender: senderx,
-                    firstName: firstNamex,
-                    lastName: lastNamex,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                });
-        }
+
+            // let us sanitize our inputs
+
+            let titlex = escape(title);
+            let commentx = escape(comment);
+            let senderx = escape(sender);
+            let firstNamex = escape(firstName);
+            let lastNamex = escape(lastName);
+
+            let message;
+
+            if (user) {
+                message = await Message.create(
+                    {
+                        title: titlex,
+                        comment: commentx,
+                        sender: senderx,
+                        firstName: firstNamex,
+                        lastName: lastNamex,
+                        user: userx,
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    });
+            } else {
+                message = await Message.create(
+                    {
+                        title: titlex,
+                        comment: commentx,
+                        sender: senderx,
+                        firstName: firstNamex,
+                        lastName: lastNamex,
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    });
+            }
 
 
-        if (message != null) {
-            // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { message },
-                message: "Message created"
-            })
-        } else {
-            // send data as json
-            res.status(400).json({
-                status: "failed",
-                data: { message },
-                message: "Message creation failed"
-            })
+            if (message != null) {
+                // send data as json
+                res.status(200).json({
+                    status: "success",
+                    data: { message },
+                    message: "Message created"
+                })
+            } else {
+                // send data as json
+                res.status(400).json({
+                    status: "failed",
+                    data: { message },
+                    message: "Message creation failed"
+                })
+            }
+
         }
 
     } catch (error) {
