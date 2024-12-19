@@ -26,14 +26,6 @@ const removeProductPicture = async (req, res) => {
         await product.save();
 
         if (product != null) {
-            // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { product },
-                message: "Removed!"
-            })
-        }
-        if (product != null) {
             // remove file
             try {
                 await fs.unlink(path.join(process.cwd(), 'public/uploads/' + product_picture));
@@ -45,7 +37,7 @@ const removeProductPicture = async (req, res) => {
                 res.status(200).json({
                     status: "success",
                     data: { product },
-                    message: "Product found",
+                    message: "Product picture removed",
                 });
             } else {
                 res.status(404).json({

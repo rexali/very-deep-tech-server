@@ -27,7 +27,7 @@ const updateProduct = async (req, res) => {
             const {
                 productId,
                 product_name,
-                product_category,
+                product_category, 
                 product_sub_category,
                 product_description,
                 product_price,
@@ -42,7 +42,7 @@ const updateProduct = async (req, res) => {
             // update
             const result = await Product.findById(productId).exec();
             // get the product pictures string[]
-            let productPictures = result?.product_pictures;
+            let productPictures = result?.product_pictures ?? [];
             // update
             let photos = filenames?.length > 0 ? [...productPictures, ...filenames] : [...productPictures];
 
