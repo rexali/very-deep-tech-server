@@ -18,7 +18,7 @@ const { getApprovedProducts } = require("../controllers/getApprovedProducts");
 const { getInitialProductsData } = require("../controllers/getInitalProductsData");
 const { getFilteredProducts } = require("../controllers/getFilteredProducts");
 const { getSortedProducts } = require("../controllers/getSortedProducts");
-const { removeProductPicture } = require("../controllers/removeProductPhoto");
+const { removeProductPicture } = require("../controllers/removeProductPicture");
 
 // initialize product router
 const productRouter = express.Router();
