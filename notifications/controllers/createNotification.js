@@ -1,4 +1,6 @@
 const { Notification } = require("../models/notification.model");
+const Joi = require('joi');
+const { escape } = require('html-escaper');
 /**
  * Create a notification
  * @param {Object} req - request object
@@ -15,38 +17,61 @@ const createNotification = async (req, res) => {
             userId
         } = req.body;
 
-        const notification = await Notification.create(
-            {
-                title,
-                body,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                user:userId
-            });
+        // let us validate inputs
+        const schema = Joi.object({
+            title: Joi.string().required(),
+            body: Joi.string().required(),
+            userId: Joi.string(),
+        });
 
-        if (notification != null) {
-            // send data as json
-            res.status(200).json({
-                status: "success",
-                data: { notification },
-                message: "Notification created"
-            })
-        } else { 
+        const { error, value } = schema.validate({ title, body, userId });
+
+        if (error) {
             // send data as json
             res.status(400).json({
                 status: "failed",
-                data: { notification },
-                message: "Notification creation failed"
+                data: null,
+                message: "Error! " + error.message
             })
-        }
+        } else {
 
+            // let us sanitize our inputs
+            let titlex = escape(title);
+            let bodyx = escape(body);
+            let userIdx = escape(userId);
+
+            const notification = await Notification.create(
+                {
+                    title: titlex,
+                    body: bodyx,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    user: userIdx
+                });
+
+            if (notification != null) {
+                // send data as json
+                res.status(200).json({
+                    status: "success",
+                    data: { notification },
+                    message: "Notification created"
+                })
+            } else {
+                // send data as json
+                res.status(400).json({
+                    status: "failed",
+                    data: { notification },
+                    message: "Notification creation failed"
+                })
+            }
+        }
     } catch (error) {
         console.warn(error);
         // send data as json
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
 
         })
     }

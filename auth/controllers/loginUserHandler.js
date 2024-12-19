@@ -1,8 +1,9 @@
 const { getUserPassword } = require("./getUserPassword");
 const { getUserToken } = require("./getUserToken");
 const { checkpass } = require("../../utils/hashHelper");
-const { escapeHTML } = require("../../utils/escapeHTML");
 const { Mutex } = require("async-mutex");
+const Joi = require('joi');
+const { escape } = require('html-escaper');
 
 // create mutex instance
 const mutex = new Mutex();
@@ -19,76 +20,71 @@ const loginUserHandler = async (req, res) => {
     try {
         // get email and password
         const { email, password } = req.body;
+        // let us validate inputs
+        const schema = Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().required()
+        });
+        const { error, value } = schema.validate({ email, password });
 
-        //   check if email and password are not null
-        if (!email) {
-            //    if null, send response
-            res.status(404).json({
-                status: "fail",
-                message: "email missing",
-                data: null
-            });
+        if (error) {
+            // send data as json
+            res.status(400).json({
+                status: "failed",
+                data: null,
+                message: "Error! " + error.message
+            })
         } else {
-            // check if password is not null
-            if (!password) {
-                //    if null, send response
-                res.status(404).json({
-                    status: "failed",
-                    message: "password missing",
-                    data: null
-                });
-            } else {
-                // make safe email and password by escaping html elements
-                let escPassword = escapeHTML(password);
-                let escEmail = escapeHTML(email);
-                //  check if both email and password provided
-                if (escPassword && escEmail) {
 
-                    const clientData = {
-                        email: escEmail,
-                        password: escPassword
-                    }
-                    // get password - user password in database
-                    let dbpassword = await getUserPassword(clientData.email);    //await User.findOne({ email: clientData.email });
-                    // check to see it is not empty or undefined
-                    if (!dbpassword) {
-                        //    if null, send response
-                        res.status(404).json({
-                            status: "fail",
-                            message: "email doesn't match any registered user",
-                            data: null
-                        });
-                    } else {
-                        // verify the database password with password provided by user
-                        if (checkpass(dbpassword, clientData.password)) {
-                            // get logged-in token
-                            const token = await getUserToken(clientData.email);
-                            //  store in cookie
-                            res.cookie('token', token, { httpOnly: true, secure: false });
-                            // send token and other detail
-                            res.status(200).json({
-                                status: "success",
-                                message: "Logged in successfully",
-                                data: { token }
-                            });
+            // make safe email and password by escaping html elements
+            let passwordx = escape(password);
+            let emailx = escape(email);
+            //  check if both email and password provided
+            if (passwordx && emailx) {
 
-                        } else {
-                            res.status(404).json({
-                                status: "failed",
-                                message: "password mismatch",
-                                data: null
-                            });
-                        }
-                    }
-
-                } else {
+                const clientData = {
+                    email: emailx,
+                    password: passwordx
+                }
+                // get password - user password in database
+                let dbpassword = await getUserPassword(clientData.email);    //await User.findOne({ email: clientData.email });
+                // check to see it is not empty or undefined
+                if (!dbpassword) {
+                    //    if null, send response
                     res.status(404).json({
-                        status: "failed",
-                        message: "email or password missing",
+                        status: "fail",
+                        message: "email doesn't match any registered user",
                         data: null
                     });
+                } else {
+                    // verify the database password with password provided by user
+                    if (checkpass(dbpassword, clientData.password)) {
+                        // get logged-in token
+                        const token = await getUserToken(clientData.email);
+                        //  store in cookie
+                        res.cookie('token', token, { httpOnly: true, secure: false });
+                        // send token and other detail
+                        res.status(200).json({
+                            status: "success",
+                            message: "Logged in successfully",
+                            data: { token }
+                        });
+
+                    } else {
+                        res.status(404).json({
+                            status: "failed",
+                            message: "password mismatch",
+                            data: null
+                        });
+                    }
                 }
 
+            } else {
+                res.status(404).json({
+                    status: "failed",
+                    message: "email or password missing",
+                    data: null
+                });
             }
         }
 

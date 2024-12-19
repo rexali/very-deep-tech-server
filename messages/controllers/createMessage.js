@@ -1,6 +1,6 @@
 const { Message } = require("../models/message.model");
 const Joi = require('joi');
-const { escape } = require('html-escaper')
+const { escape } = require('html-escaper');
 /**
  * Create a message
  * @param {Object} req - request object
