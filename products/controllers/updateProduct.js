@@ -49,9 +49,7 @@ const updateProduct = async (req, res) => {
             // update
             let photos = filenames?.length ? updatedPhotos : productPictures;
 
-            const product = await Product.updateOne(
-                { _id: productId },
-                {
+            const product = await Product.updateOne({ _id: productId },{
                     product_name,
                     product_category,
                     product_sub_category,
