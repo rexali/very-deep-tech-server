@@ -2,7 +2,8 @@ const { Product } = require("../models/product.model");
 const { uploadMultipleFiles } = require("../../utils/uploadFile");
 const multer = require("multer");
 const { getFilesNames } = require("../utils/getFilesNames");
-
+const Joi = require('joi');
+const { escape } = require('html-escaper');
 
 /**
  * Create a product
@@ -38,10 +39,23 @@ const createProduct = async (req, res) => {
                 product_demos_links,
                 user
             } = req.body;
-            // prepare data
-            let demos_links = product_demos_links?.trim();
-            // save in database
-            const product = await Product.create({
+
+            // let us validate inputs
+            const schema = Joi.object({
+                product_name: Joi.string().required(),
+                product_category: Joi.string().required(),
+                product_sub_categoryr: Joi.string().required(),
+                product_description: Joi.string().required(),
+                product_price: Joi.string().required(),
+                product_quantity: Joi.string().required(),
+                product_weight: Joi.string().required(),
+                product_size: Joi.string().required(),
+                product_code: Joi.string().required(),
+                product_demos_links: Joi.string().required(),
+                user: Joi.string().required()
+            });
+
+            const { error, value } = schema.validate({
                 product_name,
                 product_category,
                 product_sub_category,
@@ -51,28 +65,66 @@ const createProduct = async (req, res) => {
                 product_weight,
                 product_size,
                 product_code,
-                product_demos_links: demos_links,
-                user,
-                product_pictures: [...filenames]
+                product_demos_links,
+                user
             });
 
-            if (product != null) {
-                // send data as json
-                res.status(200).json({
-                    status: "success",
-                    data: { product },
-                    message: "Product created"
-                })
-
-            } else {
+            if (error) {
                 // send data as json
                 res.status(400).json({
                     status: "failed",
-                    data: { product },
-                    message: "Product creation failed"
+                    data: null,
+                    message: "Error! " + error.message
                 })
-            }
+            } else {
 
+                // let us sanitize our inputs
+                let productName = escape(product_name);
+                let productCategory = escape(product_category);
+                let productSubCategory = escape(product_sub_category);
+                let productDescription = escape(product_description);
+                let productPrice = escape(product_price);
+                let productQuantity = escape(product_quantity);
+                let productWeight = escape(product_weight);
+                let productCode = escape(product_code);
+                let productSize = escape(product_size);
+                let productDemosLinks = escape(product_demos_links);
+                let useR = escape(user);
+                // prepare data
+                let demos_links = productDemosLinks?.trim();
+                // save in database
+                const product = await Product.create({
+                    product_name: productName,
+                    product_category: productCategory,
+                    product_sub_category: productSubCategory,
+                    product_description: productDescription,
+                    product_price: productPrice,
+                    product_quantity: productQuantity,
+                    product_weight: productWeight,
+                    product_size: productSize,
+                    product_code: productCode,
+                    product_demos_links: demos_links,
+                    user: useR,
+                    product_pictures: [...filenames]
+                });
+
+                if (product != null) {
+                    // send data as json
+                    res.status(200).json({
+                        status: "success",
+                        data: { product },
+                        message: "Product created"
+                    })
+
+                } else {
+                    // send data as json
+                    res.status(400).json({
+                        status: "failed",
+                        data: { product },
+                        message: "Product creation failed"
+                    })
+                }
+            }
 
         });
 

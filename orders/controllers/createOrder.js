@@ -45,7 +45,7 @@ const createOrder = async (req, res) => {
             // send data as json
             res.status(400).json({
                 status: "success",
-                data: { order},
+                data: { order },
                 message: "Order creation failed"
             })
         }

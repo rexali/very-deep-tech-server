@@ -1,6 +1,8 @@
 const multer = require("multer");
 const { uploadFile } = require("../../utils/uploadFile");
 const { Profile } = require("../models/profile.model");
+const Joi = require('joi');
+const { escape } = require('html-escaper');
 
 /**
  * Delete a client profile
@@ -27,26 +29,54 @@ const updateProfile = async (req, res) => {
                 lastName,
                 streetAddress,
                 localGovt,
-                state,
-                photo
+                state
             } = req.body;
 
             if (req.file?.filename) {
-                // save in database
-                const profile = await Profile.updateOne({ user }, {
-                    firstName,
-                    lastName,
-                    streetAddress,
-                    localGovt,
-                    state,
-                    photo: req.file?.filename
+                // let us validate inputs
+                const schema = Joi.object({
+                    firstName: Joi.string(),
+                    lastName: Joi.string(),
+                    streetAddress: Joi.string(),
+                    localGovt: Joi.string(),
+                    state: Joi.string()
                 });
-                // send data as json
-                res.status(200).json({
-                    status: "success",
-                    data: { profile },
-                    message: "Profile updated"
-                })
+
+                const { error, value } = schema.validate({ firstName, lastName, streetAddress, localGovt, state });
+
+                if (error) {
+                    // send data as json
+                    res.status(400).json({
+                        status: "failed",
+                        data: null,
+                        message: "Error! " + error.message
+                    })
+                } else {
+
+                    // let us sanitize our inputs
+
+                    let firstNamex = escape(firstName);
+                    let lastNamex = escape(lastName);
+                    let streetAddressx = escape(streetAddress);
+                    let localGovtx = escape(localGovt);
+                    let statex = escape(state);
+
+                    // save in database
+                    const profile = await Profile.updateOne({ user }, {
+                        firstName: firstNamex,
+                        lastName: lastNamex,
+                        streetAddress: streetAddressx,
+                        localGovt: localGovtx,
+                        state: statex,
+                        photo: req.file?.filename
+                    });
+                    // send data as json
+                    res.status(200).json({
+                        status: "success",
+                        data: { profile },
+                        message: "Profile updated"
+                    })
+                }
             } else {
                 // send data as json
                 res.status(400).json({

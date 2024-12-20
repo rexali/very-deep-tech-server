@@ -1,6 +1,7 @@
 const { Message } = require("../models/message.model");
 const Joi = require('joi');
 const { escape } = require('html-escaper');
+
 /**
  * Create a message
  * @param {Object} req - request object
@@ -8,7 +9,7 @@ const { escape } = require('html-escaper');
  * @returns void
  */
 const createMessage = async (req, res) => {
-
+ 
     try {
         // retrieve the request body data
         const title = req.body.title;
