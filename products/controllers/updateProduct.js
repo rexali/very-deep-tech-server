@@ -26,7 +26,7 @@ const updateProduct = async (req, res) => {
             const {
                 productId,
                 product_name,
-                product_category, 
+                product_category,
                 product_sub_category,
                 product_description,
                 product_price,
@@ -39,12 +39,15 @@ const updateProduct = async (req, res) => {
             // prepare data
             let demos_links = product_demos_links?.trim();
             // update
-            const result1 = await Product.findById(productId);
-            const result2 = JSON.parse(JSON.stringify(result1));
+            const result = await Product.findById(productId);
+            const finalResult = JSON.parse(JSON.stringify(result));
             // get the product pictures string[]
-            let productPictures = result2?.product_pictures ?? [];
+            let productPictures = finalResult?.product_pictures ?? [];
+
+            const updatedPhotos = [...productPictures, ...filenames];
+
             // update
-            let photos = filenames?.length ? [...productPictures, ...filenames] : [...productPictures];
+            let photos = filenames?.length ? updatedPhotos : productPictures;
 
             const product = await Product.updateOne(
                 { _id: productId },
@@ -59,7 +62,7 @@ const updateProduct = async (req, res) => {
                     product_size,
                     product_code,
                     product_demos_links: demos_links,
-                    product_pictures: photos
+                    product_pictures: [...photos]
                 });
 
             if (product.modifiedCount) {
