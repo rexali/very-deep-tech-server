@@ -1,7 +1,6 @@
 const { uploadMultipleFiles } = require("../../utils/uploadFile");
 const { Product } = require("../models/product.model");
 const multer = require("multer");
-var fs = require('fs/promises');
 const { getFilesNames } = require("../utils/getFilesNames");
 
 /**
@@ -40,11 +39,12 @@ const updateProduct = async (req, res) => {
             // prepare data
             let demos_links = product_demos_links?.trim();
             // update
-            const result = await Product.findById(productId).exec();
+            const result1 = await Product.findById(productId);
+            const result2 = JSON.parse(JSON.stringify(result1));
             // get the product pictures string[]
-            let productPictures = result?.product_pictures ?? [];
+            let productPictures = result2?.product_pictures ?? [];
             // update
-            let photos = filenames?.length > 0 ? [...productPictures, ...filenames] : [...productPictures];
+            let photos = filenames?.length ? [...productPictures, ...filenames] : [...productPictures];
 
             const product = await Product.updateOne(
                 { _id: productId },

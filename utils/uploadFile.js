@@ -5,11 +5,11 @@ const path = require('path');
  * Upload upload file with a field name
  * @returns upload 
  */
- function uploadFile(fieldname) {
+function uploadFile(fieldname) {
 
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, path.join(process.cwd(),'public/uploads/')); 
+            cb(null, path.join(process.cwd(), 'public/uploads/'));
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -23,7 +23,7 @@ const path = require('path');
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.mp3')
             } else if (file?.originalname.endsWith('.mp4')) {
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.mp4')
-            } else if (file?.originalname.endsWith('.jpeg')) { 
+            } else if (file?.originalname.endsWith('.jpeg')) {
                 cb(null, file.fieldname + '-' + uniqueSuffix + '.jpeg')
             } else {
                 cb(null, file.fieldname + '-' + uniqueSuffix)
@@ -40,10 +40,10 @@ const path = require('path');
  * Upload multiple file with different field names
  * @returns upload
  */
- function uploadFiles() {
+function uploadFiles() {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, path.join(process.cwd(),'public/uploads/'));
+            cb(null, path.join(process.cwd(), 'public/uploads/'));
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -73,10 +73,10 @@ const path = require('path');
  * Upload multiple file with same fieldnames
  * @returns upload
  */
- function uploadMultipleFiles(filedName) {
+function uploadMultipleFiles(filedName) {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, path.join(process.cwd(),'public/uploads/'));
+            cb(null, path.join(process.cwd(), 'public/uploads/'));
         },
         filename: function (req, file, cb) {
             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -103,7 +103,7 @@ const path = require('path');
     return upload;
 }
 
-module.exports={
+module.exports = {
     uploadFile,
     uploadFiles,
     uploadMultipleFiles
