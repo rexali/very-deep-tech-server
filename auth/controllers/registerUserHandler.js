@@ -5,6 +5,9 @@ const { Profile } = require("../../profiles/models/profile.model");
 const Joi = require('joi');
 const { escape } = require('html-escaper');
 const { sendMail } = require("../../utils/sendMail");
+const { confirmHTMLMSG } = require("../../utils/confirmRegistrationHTML");
+const { v4: uuidv4 } = require('uuid');
+
 
 // create mutex instance
 const mutex = new Mutex();
@@ -76,10 +79,12 @@ const registerUserHandler = async (req, res) => {
 
                 user.profile = profile._id;
                 await user.save();
+
+                const rcode = uuidv4();
                 
                 try {
                     // send email to user
-                    await sendMail(user.email, "Registration successful", 'text', 'cShop','', "You have successfully registered");
+                    await sendMail(user.email, "Registration successful", 'html', 'cShop',confirmHTMLMSG(user.email, rcode),'');
                 } catch (error) {
                     console.log(error);   
                 }

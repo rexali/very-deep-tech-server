@@ -18,24 +18,40 @@ const changePassword = async (req, res) => {
     try {
         const {
             email,
-            rCode,
+            rcode,
             password
         } = req.body;
 
         const newEmail = escapeHTML(email);
-        const newCode = escapeHTML(rCode);
+        const newCode = escapeHTML(rcode);
         const newPassword = escapeHTML(password);
 
         let result = await isUserEmail(newEmail, newCode);
 
         if (result) {
-            let result = await User.updateOne({ email: newEmail, rcode: rCode }, { password: hashpass(newPassword) })
-            res.json({ ...result });
+            let result = await User.updateOne({ email: newEmail, rcode: rcode }, { password: hashpass(newPassword) })
+            res.status(200).json({
+                status: "success",
+                message: "Password changed successfully",
+                data: { result }
+            });
+        } else {
+            res.status(404).json({
+                status: "failed",
+                message: "Password change failed",
+                data: { result: false }
+            });
         }
     } catch (error) {
         console.warn(error);
+
+        res.status(500).json({
+            status: "failed",
+            message: "Internal server error",
+            data: null
+        });
     } finally {
-        // release path for other
+        // release path for other 
         release();
     }
 

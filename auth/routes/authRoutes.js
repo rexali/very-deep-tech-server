@@ -3,6 +3,9 @@ const express = require("express");
 const { loginUserHandler } = require("../controllers/loginUserHandler");
 const { registerUserHandler } = require("../controllers/registerUserHandler");
 const { verifyUserTokenHandler } = require("../controllers/verifyUserTokenHandler");
+const { changePassword } = require("../controllers/changePassword");
+const { confirmRegistration } = require("../controllers/confirmRegistration");
+const { requestPassword } = require("../controllers/requestPassword");
 
 // initialize authentication router
 const authRouter = express.Router();
@@ -12,6 +15,12 @@ authRouter.post("/login", loginUserHandler);
 authRouter.post("/register", registerUserHandler);
 // verify token route
 authRouter.post("/verify", verifyUserTokenHandler);
+//change password
+authRouter.post("/change", changePassword);
+// confirm registration
+authRouter.post("/confirm", confirmRegistration);
+// forget password
+authRouter.post("/forget", requestPassword);
 // export the authRouter
 module.exports = {
     authRouter

@@ -3,6 +3,7 @@ const { changeHTMLMSQ } = require("../../utils/changeHTMLMSQ");
 const { escapeHTML } = require("../../utils/escapeHTML");
 const { isUserCodeUpdated } = require("./isUserCodeUpdated");
 const { isUserEmail } = require("./isUserEmail");
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * Request for password change
@@ -19,34 +20,55 @@ const requestPassword = (req, res) => {
         } = req.body;
 
         try {
-            // escape the email
+            // escape the email 
             const newEmail = escapeHTML(email);
             // genrate random code
-            const rCode = uuidv4();
+            const rcode = uuidv4();
             // check the email exist
-            let result = await isUserEmail(newEmail, rCode)
-            // if exist prepare the sql to upadte the rCode
+            let result = await isUserEmail(newEmail, rcode)
+            // if exist prepare the sql to upadte the rcode
             if (result) {
-                // update the user rCode
-                let codeResult = await isUserCodeUpdated(newEmail, rCode);
+                // update the user rcode
+                let codeResult = await isUserCodeUpdated(newEmail, rcode);
                 if (codeResult) {
-                    const html = changeHTMLMSQ(newEmail, rCode)
-                    let mailResult = true; //await sendMail(email, 'Request password', 'html', html, '')
+                    const html = changeHTMLMSQ(newEmail, rcode)
+                    let mailResult = await sendMail(newEmail, 'Request password', 'html', html, '')
                     if (mailResult) {
-
-                        res.json({ result: true });
+                        res.status(200).json({
+                            status: "success",
+                            message: "Password request successful",
+                            data: { result:mailResult }
+                        });
                     } else {
-
-                        res.json({ result: false });
+                        res.status(404).json({
+                            status: "failed",
+                            message: "Password change failed",
+                            data: { result: false }
+                        });
                     }
                 } else {
                     console.warn('random code update error');
+                    res.status(404).json({
+                        status: "failed",
+                        message: "Random code generation error",
+                        data: { result: false }
+                    });
                 }
             } else {
                 console.warn('no email')
+                res.status(404).json({
+                    status: "failed",
+                    message: "Email does not exist",
+                    data: { result: false }
+                });
             }
         } catch (error) {
             console.warn(error);
+            res.status(404).json({
+                status: "failed",
+                message: "Internal server error",
+                data: { result: false }
+            });
         }
     }).catch((error) => {
         console.warn(error);

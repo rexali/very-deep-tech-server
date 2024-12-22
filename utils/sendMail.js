@@ -1,6 +1,9 @@
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 const { escape } = require("html-escaper");
+const { use } = require("passport");
+const Imap = require('imap');
+const {simpLeParse}= require('mailparser');
 dotenv.config();
 /**
  * Send an email to a user
@@ -15,7 +18,7 @@ dotenv.config();
  * @param} text - the content of the message in text format
  * @returns a boolean promise
  */
-function sendMail(
+async function sendMail(
     email,
     subject,
     format = 'html',
@@ -26,7 +29,7 @@ function sendMail(
 
     try {
         var transporter = nodemailer.createTransport({
-            host: smtp.hostinger.com, // 'mail.mujaware.com',//gmail
+            host: 'smtp.titan.email',     //smtp.hostinger.com, // 'mail.mujaware.com',//gmail
             port: 587, //465,
             secure: true,
             auth: {
@@ -34,6 +37,15 @@ function sendMail(
                 pass: process.env.EMAIL_PASS,
             }
         });
+
+        var imap = new Imap({
+            user: process.env.EMAIL_USER,
+            password: process.env.EMAIL_PASS,
+            host: 'imap.titan.email',
+            port: 993,
+            tls: true
+        });
+
 
         var mailOptions2 = {
             envelope: {
@@ -55,26 +67,33 @@ function sendMail(
             [format]: html ? html : text // or html:<html>It is easy</html>
         };
 
-        return new Promise((resolve, reject) => {
+        const info = await transporter.sendMail(mailOptions);
+        
 
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                    resolve(false)
+        console.log('Email sent: ' + info.response);
+        console.log('Info Object: ', info);
+
+        // append the sent mail to the sent folder
+        imap.once('ready', function () {
+            imap.openBox('Sent', true, function (err) {
+                if (err) {
+                    console.log('Error: ', err);
+                    imap.end();
+                    return;
                 } else {
-                    console.log('Email sent: ' + info.response);
-                    resolve(true)
+                    console.log('Mail sent and appended to the sent folder');
                 }
-
             });
         });
 
+        return true;
+
     } catch (error) {
         console.warn(error);
+        return false;
     }
 
 }
-
 
 
 /**
@@ -144,7 +163,7 @@ function sendMultipleMail(
     return promise;
 }
 
-module.exports={ 
+module.exports = {
     sendMultipleMail,
     sendMail
 };

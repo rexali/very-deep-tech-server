@@ -15,26 +15,40 @@ const confirmRegistration = async (req, res) => {
     try {
         const {
             email,
-            rCode,
+            rcode,
         } = req.body;
-    
+
         const newEmail = escapeHTML(email);
-        const newCode = escapeHTML(rCode);
-    
+        const newCode = escapeHTML(rcode);
+
         let result = await isUserEmail(newEmail, newCode);
-    
+
         if (result) {
-            res.json({ result: true })
+            res.status(200).json({
+                status: "success",
+                message: "Confirmed successfully",
+                data: { result: true }
+            });
         } else {
-            res.json({ result: false })
-        } 
+            res.status(404).json({
+                status: "failed",
+                message: "Confirmation failed",
+                data: { result: false }
+            });
+        }
     } catch (error) {
-        
+        console.log(error);
+
+        res.status(500).json({
+            status: "failed",
+            message: "Internal server error",
+            data: null
+        });
     } finally {
         // release path for other
         release();
     }
-  
+
 
 }
 
