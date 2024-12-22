@@ -1,33 +1,33 @@
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-import { escape } from "html-escaper";
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+const { escape } = require("html-escaper");
 dotenv.config();
 /**
  * Send an email to a user
- * @param {string} username - username of the mail server
- * @param {string} password - password of the mail server
- * @param {string} from -  where the mail is coming from
- * @param {string} to -  to where the mail is coming from
- * @param {string} subject -  the subject of the email
- * @param {string} name - property name of sender of email
- * @param {string} format -  format of the message i.e html or text
- * @param {string} html - the content of the message in html format
- * @param {string} text - the content of the message in text format
+ * @param} username - username of the mail server
+ * @param} password - password of the mail server
+ * @param} from -  where the mail is coming from
+ * @param} to -  to where the mail is coming from
+ * @param} subject -  the subject of the email
+ * @param} name - property name of sender of email
+ * @param} format -  format of the message i.e html or text
+ * @param} html - the content of the message in html format
+ * @param} text - the content of the message in text format
  * @returns a boolean promise
  */
-export function sendMail(
-    email: string,
-    subject: string,
-    format: string = 'html',
-    name: string,
-    html?: string,
-    text?: string,
-){
+function sendMail(
+    email,
+    subject,
+    format = 'html',
+    name,
+    html,
+    text,
+) {
 
     try {
         var transporter = nodemailer.createTransport({
-            host: 'mail.mujaware.com',//gmail
-            port: 465,
+            host: smtp.hostinger.com, // 'mail.mujaware.com',//gmail
+            port: 587, //465,
             secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
@@ -49,15 +49,15 @@ export function sendMail(
 
         var mailOptions = {
             // from: `${process.env.USER}, {name:"Aliyu Bello",address:${process.env.USER}}`,
-            from: `${name ? name : "Homes4U"} <${process.env.EMAIL_USER}>`,
+            from: `${name ? name : "cShop"} <${process.env.EMAIL_USER}>`,
             to: email,
             subject: subject,
             [format]: html ? html : text // or html:<html>It is easy</html>
         };
 
-        let promise = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
 
-            transporter.sendMail(mailOptions, function (error: any, info: any) {
+            transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
                     resolve(false)
@@ -69,7 +69,6 @@ export function sendMail(
             });
         });
 
-        return promise;
     } catch (error) {
         console.warn(error);
     }
@@ -81,28 +80,28 @@ export function sendMail(
 /**
  * Send email to users
  * 
- * @param {string } username username of the mail server
- * @param {string} password password of the mail server
- * @param {string} from where the mail is coming from
- * @param {string} to to where the mail is coming from
- * @param {string} subject the subject of the email 
- * @param {string} senderName name of sender of email
- * @param {string} format format of the message i.e html or text
- * @param {string} messageHtml the content of the message in html format
- * @param {string} messageText the content of the message in text format
+ * @param } username username of the mail server
+ * @param} password password of the mail server
+ * @param} from where the mail is coming from
+ * @param} to to where the mail is coming from
+ * @param} subject the subject of the email 
+ * @param} senderName name of sender of email
+ * @param} format format of the message i.e html or text
+ * @param} messageHtml the content of the message in html format
+ * @param} messageText the content of the message in text format
  * 
- * @returns result, a json string
+ * @returns result, a jso
  */
 
 function sendMultipleMail(
-    email:string,
-    subject:string,
-    format:string = 'html',
-    messageHtml:string,
-    messageText:string,
-    senderName:string,
-    ccList:string,
-    bccList:string,
+    email,
+    subject,
+    format = 'html',
+    messageHtml,
+    messageText,
+    senderName,
+    ccList,
+    bccList,
 ) {
 
     const emaile = escape(email);
@@ -112,12 +111,12 @@ function sendMultipleMail(
     const namee = escape(senderName);
 
     var transporter = nodemailer.createTransport({
-        host: 'mail.mujaware.com',//gmail
-        port: 465,
+        host: smtp.hostinger.com, // 'mail.mujaware.com',//gmail
+        port: 587, //465,
         secure: true,
         auth: {
-            user: process.env.USER,
-            pass: process.env.PASS,
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
         }
     });
 
@@ -145,9 +144,12 @@ function sendMultipleMail(
     return promise;
 }
 
-export {sendMultipleMail };
+module.exports={ 
+    sendMultipleMail,
+    sendMail
+};
 
-const ADDRESS_OBJECT_FORMAT=
+const ADDRESS_OBJECT_FORMAT =
     `
 {
         name: 'Майлер, Ноде',
