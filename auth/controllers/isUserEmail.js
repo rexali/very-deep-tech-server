@@ -1,4 +1,3 @@
-const { connectDb } = require("../dbase/connectDb");
 const { Mutex } = require("async-mutex");
 const { User } = require("../models/user.model");
 

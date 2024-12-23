@@ -1,4 +1,3 @@
-const { transact } = require("../dbase/transact");
 const { User } = require("../models/user.model");
 const { escapeHTML } = require("../utils/escapeHTML");
 const { hashpass } = require("../utils/hashHelper");
