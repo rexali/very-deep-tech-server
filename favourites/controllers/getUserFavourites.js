@@ -17,7 +17,12 @@ const getUserFavourites = async (req, res) => {
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
-            .populate("product")
+            .populate({
+                path:'product',
+                populate:{
+                    path:'likes'
+                }
+            })
             .exec();
 
         const totalFavourites = (await Favourite.find({ user: userId })).length;
