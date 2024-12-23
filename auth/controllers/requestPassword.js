@@ -42,9 +42,7 @@ const requestPassword = (req, res) => {
 
 
             try {
-                // escape the email 
-                const emailx = escapeHTML(email);
-                // genrate random code
+                // generate random code
                 const rcode = uuidv4();
                 // check the email exist
                 let result = await User.findOne({ email: emailx });

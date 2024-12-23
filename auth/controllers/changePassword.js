@@ -1,5 +1,5 @@
 const { User } = require("../models/user.model");
-const { hashpass } = require("../utils/hashHelper");
+const { hashpass } = require("../../utils/hashHelper");
 const { isUserEmail } = require("./isUserEmail");
 const { Mutex } = require("async-mutex");
 const Joi = require('joi');
