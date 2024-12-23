@@ -1,6 +1,7 @@
-const { escapeHTML } = require("../utils/escapeHTML");
 const { isUserEmail } = require("./isUserEmail");
 const { Mutex } = require("async-mutex");
+const Joi = require('joi');
+const { escape } = require('html-escaper');
 
 // create mutex instance
 const mutex = new Mutex();
@@ -18,10 +19,27 @@ const confirmRegistration = async (req, res) => {
             rcode,
         } = req.body;
 
-        const newEmail = escapeHTML(email);
-        const newCode = escapeHTML(rcode);
+        // let us validate inputs
+        const schema = Joi.object({
+            email: Joi.string().email().required(),
+            rcode: Joi.string().required()
+        });
+        const { error, value } = schema.validate({ email, rcode });
 
-        let result = await isUserEmail(newEmail, newCode);
+        if (error) {
+            // send data as json
+            res.status(400).json({
+                status: "failed",
+                data: null,
+                message: "Error! " + error.message
+            })
+        } else {
+
+            // make safe email and password by escaping html elements
+            let emailx = escape(email);
+            let rcodex = escape(rcode);
+
+        let result = await isUserEmail(emailx, rcodex);
 
         if (result) {
             res.status(200).json({
@@ -36,6 +54,7 @@ const confirmRegistration = async (req, res) => {
                 data: { result: false }
             });
         }
+    }
     } catch (error) {
         console.log(error);
 
