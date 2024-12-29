@@ -31,6 +31,7 @@ const { favouriteRouter } = require("./favourites/routes/favourite.routes");
 const { qouteRouter } = require("./qoutes/routes/qouteRoutes");
 const { getSortedProducts } = require("./products/controllers/getSortedProducts");
 const { getFilteredProducts } = require("./products/controllers/getFilteredProducts");
+const { getInitialProductsData } = require("./products/controllers/getInitalProductsData");
 // instantiate express
 const app = express();
 // port
@@ -74,8 +75,7 @@ app.use('/favourites', favouriteRouter);
 app.use('/qoutes', qouteRouter);
 app.use('/sortings', getSortedProducts);
 app.use('/filterings', getFilteredProducts);
-
-
+app.use('/initial', getInitialProductsData);
 
 // server home
 app.get("/", async (req, res) => {
