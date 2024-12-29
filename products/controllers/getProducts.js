@@ -84,7 +84,7 @@ async function getProductData(req, res) {
     const page = parseInt(req.query?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
-   let product;
+   let products;
    if (subdomain) {
     products = await Product.find({subdomain})
         .sort({ _id: -1 })

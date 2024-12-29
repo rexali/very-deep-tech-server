@@ -69,8 +69,8 @@ const getPopularProducts = async (req, res) => {
 }
 
 async function getPopular(req, res) {
-    const subdomain = req.params?.subdomain ?? ""
-    const page = parseInt(req.params?.page ?? 1);
+    const subdomain = req.query?.subdomain ?? ""
+    const page = parseInt(req.query?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
     let products;
