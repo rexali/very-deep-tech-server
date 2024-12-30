@@ -238,7 +238,7 @@ async function generateWeeklySalesReport() {
                 _id: {
                     $dateToString: {
                         format: "%Y-%m-W%U",
-                        createdAt: "$createdAt"
+                        date: "$createdAt"
                     }
                 },
                 totalSales: { $sum: "$amount" }
