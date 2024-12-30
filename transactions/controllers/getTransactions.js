@@ -36,10 +36,15 @@ const getTransactions = async (req, res) => {
                     status: "success",
                     data: {
                         transactions: newTransactions,
-                        salesFromMondayToFriday: getSalesFromMondayToFriday(),
-                        weeklySalesReport: generateWeeklySalesReport(),
-                        salesForMonth: getSalesForMonth(2024, 1),
-                        monthlySalesReport: generateMonthlySalesReport(2024, 1)
+                        salesFromMondayToFriday: await getSalesFromMondayToFriday(),
+                        weeklySalesReport: await generateWeeklySalesReport(),
+                        salesForMonth: await getSalesForMonth(2024, new Date().getMonth() + 1),
+                        monthlySalesReport: await generateMonthlySalesReport(2024, new Date().getMonth() + 1),
+                        // obj
+                        generateSalesReportObj: await generateSalesReportObj(),
+                        generateMonthlySalesReportObj: await generateMonthlySalesReportObj(),
+                        generateQuarterlySalesReportObj: await generateQuarterlySalesReportObj(),
+                        generateWeeklySalesReportObj: await generateWeeklySalesReport(),
                     },
                     message: "Transaction read",
                 });
@@ -151,11 +156,104 @@ async function generateMonthlySalesReport(year, month) {
         throw error;
     }
 }
+// // ...............................................................................
+
+// const mongoose = require('mongoose');
+// const Sales = mongoose.model('Sales', {
+//   date: Date,
+//   amount: Number,
+//   product: String
+// });
+
+// Function to generate sales report for each day of the week
+async function generateSalesReportObj() {
+    const today = new Date();
+    const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1);
+    const sunday = new Date(monday.getTime() + 6 * 24 * 60 * 60 * 1000);
+
+    const salesReport = await Sales.aggregate([
+        {
+            $match: {
+                date: { $gte: monday, $lte: sunday }
+            }
+        },
+        {
+            $group: {
+                _id: { $dayOfWeek: "$date" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    return salesReport;
+}
+
+
+// Function to generate sales report for each month of the year
+async function generateMonthlySalesReportObj() {
+    const salesReport = await Sales.aggregate([
+        {
+            $group: {
+                _id: { $month: "$date" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    return salesReport;
+}
+
+
+
+// Function to generate sales report for each quarter of the year
+async function generateQuarterlySalesReportObj() {
+    const salesReport = await Sales.aggregate([
+        {
+            $group: {
+                _id: { $quarter: "$date" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    return salesReport;
+}
+
+
+
+// Function to generate sales report for each week of the month
+async function generateWeeklySalesReport() {
+    const salesReport = await Sales.aggregate([
+        {
+            $group: {
+                _id: {
+                    $dateToString: {
+                        format: "%Y-%m-W%U",
+                        date: "$date"
+                    }
+                },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    return salesReport;
+}
+
+
 
 module.exports = {
-    getTransactions,
-    generateMonthlySalesReport,
-    getSalesForMonth,
-    generateWeeklySalesReport,
-    getSalesFromMondayToFriday
+    getTransactions
 }
