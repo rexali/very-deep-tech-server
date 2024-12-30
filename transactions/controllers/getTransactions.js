@@ -1,3 +1,4 @@
+const { date } = require("joi");
 const { Transaction } = require("../models/transaction.model");
 
 /** 
@@ -216,7 +217,13 @@ async function generateQuarterlySalesReportObj() {
     const salesReport = await Transaction.aggregate([
         {
             $group: {
-                _id: { $quarter: "$createdAt" },
+                _id: { 
+                    $dateTrunc:{
+                        date:"$createdAt",
+                        unit:"quarter"
+                    },
+                },
+
                 totalSales: { $sum: "$amount" }
             }
         },
