@@ -159,8 +159,8 @@ async function generateMonthlySalesReport(year, month) {
 // // ...............................................................................
 
 // const mongoose = require('mongoose');
-// const Sales = mongoose.model('Sales', {
-//   date: Date,
+// const Transaction = mongoose.model('Transaction', {
+//   createdAt: Date,
 //   amount: Number,
 //   product: String
 // });
@@ -171,15 +171,15 @@ async function generateSalesReportObj() {
     const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 1);
     const sunday = new Date(monday.getTime() + 6 * 24 * 60 * 60 * 1000);
 
-    const salesReport = await Sales.aggregate([
+    const salesReport = await Transaction.aggregate([
         {
             $match: {
-                date: { $gte: monday, $lte: sunday }
+                createdAt: { $gte: monday, $lte: sunday }
             }
         },
         {
             $group: {
-                _id: { $dayOfWeek: "$date" },
+                _id: { $dayOfWeek: "$createdAt" },
                 totalSales: { $sum: "$amount" }
             }
         },
@@ -194,10 +194,10 @@ async function generateSalesReportObj() {
 
 // Function to generate sales report for each month of the year
 async function generateMonthlySalesReportObj() {
-    const salesReport = await Sales.aggregate([
+    const salesReport = await Transaction.aggregate([
         {
             $group: {
-                _id: { $month: "$date" },
+                _id: { $month: "$createdAt" },
                 totalSales: { $sum: "$amount" }
             }
         },
@@ -213,10 +213,10 @@ async function generateMonthlySalesReportObj() {
 
 // Function to generate sales report for each quarter of the year
 async function generateQuarterlySalesReportObj() {
-    const salesReport = await Sales.aggregate([
+    const salesReport = await Transaction.aggregate([
         {
             $group: {
-                _id: { $quarter: "$date" },
+                _id: { $quarter: "$createdAt" },
                 totalSales: { $sum: "$amount" }
             }
         },
@@ -232,13 +232,13 @@ async function generateQuarterlySalesReportObj() {
 
 // Function to generate sales report for each week of the month
 async function generateWeeklySalesReport() {
-    const salesReport = await Sales.aggregate([
+    const salesReport = await Transaction.aggregate([
         {
             $group: {
                 _id: {
                     $dateToString: {
                         format: "%Y-%m-W%U",
-                        date: "$date"
+                        createdAt: "$createdAt"
                     }
                 },
                 totalSales: { $sum: "$amount" }
