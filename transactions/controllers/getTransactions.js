@@ -34,7 +34,13 @@ const getTransactions = async (req, res) => {
             if (transactions.length) {
                 res.status(200).json({
                     status: "success",
-                    data: { transactions: newTransactions },
+                    data: {
+                        transactions: newTransactions,
+                        salesFromMondayToFriday: getSalesFromMondayToFriday(),
+                        weeklySalesReport: generateWeeklySalesReport(),
+                        salesForMonth: getSalesForMonth(2024, 1),
+                        monthlySalesReport: generateMonthlySalesReport(2024, 1)
+                    },
                     message: "Transaction read",
                 });
             } else {
@@ -65,6 +71,91 @@ const getTransactions = async (req, res) => {
 
 }
 
+async function getSalesFromMondayToFriday() {
+
+    const startOfWeek = new Date();
+
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Monday
+    startOfWeek.setHours(0, 0, 0, 0);
+
+    const endOfWeek = new Date(startOfWeek);
+
+    endOfWeek.setDate(startOfWeek.getDate() + 4); // Friday
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    try {
+        const sales = await Transaction.find({
+            createdAt: {
+                $gte: startOfWeek,
+                $lte: endOfWeek
+            }
+        });
+
+        return sales;
+    } catch (error) {
+        console.error('Error fetching sales:', error);
+        throw error;
+    }
+}
+
+
+async function generateWeeklySalesReport() {
+    try {
+        const sales = await getSalesFromMondayToFriday();
+        const totalSales = sales.reduce((total, sale) => total + sale.amount, 0);
+
+        return {
+            totalSales,
+            sales
+        };
+    } catch (error) {
+        console.error('Error generating weekly sales report:', error);
+        throw error;
+    }
+}
+
+async function getSalesForMonth(year, month) {
+
+    const startOfMonth = new Date(year, month, 1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const endOfMonth = new Date(year, month + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
+
+    try {
+        const sales = await Transaction.find({
+            createdAt: {
+                $gte: startOfMonth,
+                $lte: endOfMonth
+            }
+        });
+
+        return sales;
+    } catch (error) {
+        console.error('Error fetching sales for month:', error);
+        throw error;
+    }
+}
+
+async function generateMonthlySalesReport(year, month) {
+    try {
+        const sales = await getSalesForMonth(year, month);
+        const totalSales = sales.reduce((total, sale) => total + sale.amount, 0);
+
+        return {
+            totalSales,
+            sales
+        };
+    } catch (error) {
+        console.error('Error generating monthly sales report:', error);
+        throw error;
+    }
+}
+
 module.exports = {
-    getTransactions
+    getTransactions,
+    generateMonthlySalesReport,
+    getSalesForMonth,
+    generateWeeklySalesReport,
+    getSalesFromMondayToFriday
 }

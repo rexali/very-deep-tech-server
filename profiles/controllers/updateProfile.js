@@ -32,36 +32,36 @@ const updateProfile = async (req, res) => {
                 state
             } = req.body;
 
-            if (req.file?.filename) {
-                // let us validate inputs
-                const schema = Joi.object({
-                    firstName: Joi.string(),
-                    lastName: Joi.string(),
-                    streetAddress: Joi.string(),
-                    localGovt: Joi.string(),
-                    state: Joi.string()
-                });
+            // let us validate inputs
+            const schema = Joi.object({
+                firstName: Joi.string(),
+                lastName: Joi.string(),
+                streetAddress: Joi.string(),
+                localGovt: Joi.string(),
+                state: Joi.string()
+            });
 
-                const { error, value } = schema.validate({ firstName, lastName, streetAddress, localGovt, state });
+            const { error, value } = schema.validate({ firstName, lastName, streetAddress, localGovt, state });
 
-                if (error) {
-                    // send data as json
-                    res.status(400).json({
-                        status: "failed",
-                        data: null,
-                        message: "Error! " + error.message
-                    })
-                } else {
+            if (error) {
+                // send data as json
+                res.status(400).json({
+                    status: "failed",
+                    data: null,
+                    message: "Error! " + error.message
+                })
+            } else {
 
-                    // let us sanitize our inputs
+                // let us sanitize our inputs
 
-                    let firstNamex = escape(firstName);
-                    let lastNamex = escape(lastName);
-                    let streetAddressx = escape(streetAddress);
-                    let localGovtx = escape(localGovt);
-                    let statex = escape(state);
+                let firstNamex = escape(firstName);
+                let lastNamex = escape(lastName);
+                let streetAddressx = escape(streetAddress);
+                let localGovtx = escape(localGovt);
+                let statex = escape(state);
 
-                    // save in database
+                if (req.file?.filename) {
+                    
                     const profile = await Profile.updateOne({ user }, {
                         firstName: firstNamex,
                         lastName: lastNamex,
@@ -76,14 +76,25 @@ const updateProfile = async (req, res) => {
                         data: { profile },
                         message: "Profile updated"
                     })
+
+                } else {
+                    // save in database
+                    const profile = await Profile.updateOne({ user }, {
+                        firstName: firstNamex,
+                        lastName: lastNamex,
+                        streetAddress: streetAddressx,
+                        localGovt: localGovtx,
+                        state: statex
+                    });
+                    // send data as json
+                    res.status(200).json({
+                        status: "success",
+                        data: { profile },
+                        message: "Profile updated"
+                    })
+
                 }
-            } else {
-                // send data as json
-                res.status(400).json({
-                    status: "failed",
-                    data: null,
-                    message: "Error! Filename Issue"
-                })
+
             }
 
         });
