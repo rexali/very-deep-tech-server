@@ -1,4 +1,3 @@
-const { date } = require("joi");
 const { Transaction } = require("../models/transaction.model");
 
 /** 
@@ -157,14 +156,6 @@ async function generateMonthlySalesReport(year, month) {
         throw error;
     }
 }
-// // ...............................................................................
-
-// const mongoose = require('mongoose');
-// const Transaction = mongoose.model('Transaction', {
-//   createdAt: Date,
-//   amount: Number,
-//   product: String
-// });
 
 // Function to generate sales report for each day of the week
 async function generateSalesReportObj() {
@@ -217,16 +208,21 @@ async function generateQuarterlySalesReportObj() {
     const salesReport = await Transaction.aggregate([
         {
             $group: {
-                _id: { 
-                    $dateTrunc:{
-                        date:"$createdAt",
-                        unit:"quarter"
-                    },
+                _id: {
+                    $dateTrunc: {
+                        date: "$createdAt",
+                        unit: "quarter",
+                        binSize: 1
+                    }
                 },
 
                 totalSales: { $sum: "$amount" }
-            }
+            },
+
         },
+
+        
+
         {
             $sort: { _id: 1 }
         }

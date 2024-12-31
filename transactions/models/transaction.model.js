@@ -17,6 +17,7 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         default: 'NG'
     },
+    status: String,
 
     paymentMethod: String,
 
