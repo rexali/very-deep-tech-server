@@ -91,17 +91,15 @@ const updateProduct = async (req, res) => {
                 // prepare data
                 let demos_links = productDemosLinks?.trim();
                 // find the product
-                const result = await Product.findById(productID);
-                // get the product pictures
-                const finalResult = JSON.parse(JSON.stringify(result));
+                let result = await Product.findById(productId);
                 // get the product pictures string[]
-                let productPictures = finalResult?.product_pictures ?? [];
+                let productPictures = result.product_pictures;
                 // update the pictures
-                const updatedPhotos = [...productPictures, ...filenames];
+                let updatedPhotos = [...productPictures, ...filenames];
 
                 let photos = filenames?.length ? updatedPhotos : productPictures;
 
-                const product = await Product.updateOne({ _id: productID }, {
+                const product = await Product.updateOne({ _id: productId }, {
                     product_name: productName,
                     product_category: productCategory,
                     product_sub_category: productSubCategory,
