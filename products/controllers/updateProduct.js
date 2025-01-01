@@ -91,15 +91,17 @@ const updateProduct = async (req, res) => {
                 // prepare data
                 let demos_links = productDemosLinks?.trim();
                 // find the product
-                let result = await Product.findById(productId);
+                let result = await Product.findById(productID);
                 // get the product pictures string[]
-                let productPictures = result.product_pictures;
+                let productData = JSON.parse(JSON.stringify(result));
+                // get a product's pictures
+                let productPictures = productData.product_pictures;
                 // update the pictures
                 let updatedPhotos = [...productPictures, ...filenames];
 
                 let photos = filenames?.length ? updatedPhotos : productPictures;
 
-                const product = await Product.updateOne({ _id: productId }, {
+                const product = await Product.updateOne({ _id: productID }, {
                     product_name: productName,
                     product_category: productCategory,
                     product_sub_category: productSubCategory,
@@ -121,6 +123,7 @@ const updateProduct = async (req, res) => {
                         message: "Product updated"
                     })
                 } else {
+                    console.log(product);    
                     // send data as json
                     res.status(400).json({
                         status: "failed",
