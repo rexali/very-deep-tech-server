@@ -43,7 +43,7 @@ const updateProduct = async (req, res) => {
             const schema = Joi.object({
                 product_name: Joi.string().required(),
                 product_category: Joi.string().required(),
-                product_sub_categoryr: Joi.string().required(),
+                product_sub_category: Joi.string().required(),
                 product_description: Joi.string().required(),
                 product_price: Joi.string().required(),
                 product_quantity: Joi.string().required(),
@@ -123,7 +123,6 @@ const updateProduct = async (req, res) => {
                         message: "Product updated"
                     })
                 } else {
-                    console.log(product);    
                     // send data as json
                     res.status(400).json({
                         status: "failed",
