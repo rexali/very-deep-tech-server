@@ -28,7 +28,7 @@ const getProducts = async (req, res) => {
             totalProducts,
             averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        }))
+        }));
 
         if (products != null) {
             if (products.length) {
