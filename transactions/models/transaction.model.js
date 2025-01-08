@@ -20,7 +20,7 @@ const transactionSchema = new mongoose.Schema({
     status: String,
 
     paymentMethod: String,
-
+    subdomain:String,
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() }
 

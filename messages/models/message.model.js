@@ -5,6 +5,7 @@ const messageSchema = new mongoose.Schema({
     lastName: String,
     title: String,
     comment: String,
+    subdomain:String,
     read: { type: String, default: 'no' },
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() },

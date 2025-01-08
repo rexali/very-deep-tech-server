@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema({
     product_photos_links: String,
     product_cost: String,
     product_expiry_date: Date,
+    subdomain:String,
     product_pictures: [{ type: String }],
     featured: { type: String, default: 'no' },
     approved: { type: String, default: 'no' },

@@ -57,7 +57,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "GENERAL" // DHL, GENERAL
     },
-
+    subdomain:String,
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() }
 });

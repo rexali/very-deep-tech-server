@@ -37,7 +37,8 @@ const createProduct = async (req, res) => {
                 product_size,
                 product_code,
                 product_demos_links,
-                user
+                user,
+                subdomain
             } = req.body;
 
             // let us validate inputs
@@ -52,7 +53,8 @@ const createProduct = async (req, res) => {
                 product_size: Joi.string().required(),
                 product_code: Joi.string().required(),
                 product_demos_links: Joi.string().required(),
-                user: Joi.string().required()
+                user: Joi.string().required(),
+                subdomain: Joi.string()
             });
 
             const { error, value } = schema.validate({
@@ -66,6 +68,7 @@ const createProduct = async (req, res) => {
                 product_size,
                 product_code,
                 product_demos_links,
+                subdomain,
                 user
             });
 
@@ -90,6 +93,7 @@ const createProduct = async (req, res) => {
                 let productSize = escape(product_size);
                 let productDemosLinks = escape(product_demos_links);
                 let useR = escape(user);
+                let subdomainx = escape(subdomain)
                 // prepare data
                 let demos_links = productDemosLinks?.trim();
                 // save in database
@@ -105,6 +109,7 @@ const createProduct = async (req, res) => {
                     product_code: productCode,
                     product_demos_links: demos_links,
                     user: useR,
+                    subdomain: subdomainx,
                     product_pictures: [...filenames]
                 });
 

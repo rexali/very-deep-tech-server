@@ -3,6 +3,7 @@ var { mongoose } = require("../../config/database");
 const ratingSchema = new mongoose.Schema({
     ratingScore: {type:Number,default:0},
     review: String,
+    subdomain:String,
     approved: { type: Boolean, default: false },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },

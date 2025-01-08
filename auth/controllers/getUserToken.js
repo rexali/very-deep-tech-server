@@ -23,7 +23,7 @@ async function getUserToken(userEmail) {
     // get the secret key
     const jwtSecret = process.env.SECRET_KEY;
     // sign the token which expires after 24 hours 
-    const token = jsonwebtoken.sign({ _id, email, role, photo: profile?.photo }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
+    const token = jsonwebtoken.sign({ _id, email, role, photo: profile?.photo, lastName: profile?.lastName }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
     );
     // return promise
     return token
