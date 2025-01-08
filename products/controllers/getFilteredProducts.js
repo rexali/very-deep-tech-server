@@ -10,18 +10,32 @@ const getFilteredProducts = async (req, res) => {
     try {
         const filter1 = req.query.filter1;
         const filter2 = req.query.filter2;
-
-        const page = parseInt(req.query.page ?? 1); 
-        const limit = 4; 
+        const subdomain = req.query.subdomain ?? "";
+        const page = parseInt(req.query.page ?? 1);
+        const limit = 4;
         const skip = (page - 1) * limit;
 
-        const products = await Product.find()
-            .where('product_price').gte(filter1).lte(filter2)
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("likes")
-            .exec();
+        let products;
+        if (subdomain) {
+
+            products = await Product.find({ subdomain })
+                .where('product_price').gte(filter1).lte(filter2)
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("likes")
+                .exec();
+        } else {
+
+            products = await Product.find()
+                .where('product_price').gte(filter1).lte(filter2)
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("likes")
+                .exec();
+        }
+
 
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
@@ -33,7 +47,7 @@ const getFilteredProducts = async (req, res) => {
 
         if (products != null) {
             if (products.length) {
-               
+
                 res.status(200).json({
                     status: "success",
                     data: { products: newProducts },
@@ -65,7 +79,7 @@ const getFilteredProducts = async (req, res) => {
         })
     }
 
-} 
+}
 
 module.exports = {
     getFilteredProducts

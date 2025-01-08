@@ -7,19 +7,33 @@ const { Order } = require("../models/order.model");
  * @returns void
  */
 const getUserOrders = async (req, res) => {
-    const userId = req.params.id;
-    const page = parseInt(req.params.page ?? 1);
-    const limit = 4;
-    const skip = (page - 1) * limit;
     try {
-        const orders = await Order.find({ user: userId })
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .exec();
 
-        const totalOrders = (await Order.find({user: userId})).length;
+        const subdomain = req.params?.subdomain ?? ""
+        const userId = req.params.id;
+        const page = parseInt(req.params.page ?? 1);
+        const limit = 4;
+        const skip = (page - 1) * limit;
+
+        let orders;
+        if (subdomain) {
+            orders = await Order.find({ user: userId, subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .exec();
+        } else {
+            orders = await Order.find({ user: userId })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .exec();
+        }
+
+
+        const totalOrders = (await Order.find({ user: userId })).length;
         const newOrders = JSON.parse(JSON.stringify(orders)).map(msg => ({
             ...msg,
             totalOrders: totalOrders

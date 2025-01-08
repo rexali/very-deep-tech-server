@@ -9,18 +9,32 @@ const { Product } = require("../models/product.model");
 const getProducts = async (req, res) => {
 
     try {
+        const subdomain = req.query?.subdomain ?? "";
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
+        let products;
+        if (subdomain) {
+            products = await Product.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("ratings")
+                .populate("likes")
+                .exec();
 
-        const products = await Product.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("ratings")
-            .populate("likes")
-            .exec();
+        } else {
+            products = await Product.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("ratings")
+                .populate("likes")
+                .exec();
+
+        }
 
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({

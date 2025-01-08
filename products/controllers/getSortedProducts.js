@@ -9,7 +9,7 @@ const { Product } = require("../models/product.model");
 const getSortedProducts = async (req, res) => {
     try {
         const sort = req.query.sort;
- 
+
         let sortName;
         let sortValue;
 
@@ -30,17 +30,29 @@ const getSortedProducts = async (req, res) => {
             sortValue = -1;
         }
 
+        const subdomain = req.query?.subdomain ?? "";
         const page = parseInt(req.query.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
+        let products;
+        if (subdomain) {
+            products = await Product.find({ subdomain })
+                .sort({ [sortName]: sortValue })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("likes")
+                .exec();
+        } else {
+            products = await Product.find()
+                .sort({ [sortName]: sortValue })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("likes")
+                .exec();
+        }
 
-        const products = await Product.find()
-            .sort({ [sortName]: sortValue })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("likes")
-            .exec();
 
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
@@ -52,7 +64,7 @@ const getSortedProducts = async (req, res) => {
 
         if (products != null) {
             if (products.length) {
-              
+
                 res.status(200).json({
                     status: "success",
                     data: { products: newProducts },

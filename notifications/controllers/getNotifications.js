@@ -8,16 +8,29 @@ const { Notification } = require("../models/notification.model");
  */
 const getNotifications = async (req, res) => {
     try {
+        const subdomain = req.query?.subdomain ?? "";
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 
-        const notifications = await Notification.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('user', ["_id", "email", "role"])
-            .exec();
+        let notifications;
+        if (subdomain) {
+            notifications = await Notification.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        } else {
+            notifications = await Notification.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        }
+
+
 
         const totalNotifications = (await Notification.find()).length;
 

@@ -1,7 +1,7 @@
 const { Product } = require("../models/product.model");
 const { getFeatured } = require("./getFeaturedProducts");
-const { getPopular, getPopularProducts } = require("./getPopularProducts");
-const { getProductCategories, getCategories } = require("./getProductCategories");
+const { getPopular} = require("./getPopularProducts");
+const { getCategories } = require("./getProductCategories");
 const { getProductData } = require("./getProducts");
 const { getRecommended } = require("./getRecommendedProducts");
 

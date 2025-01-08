@@ -11,18 +11,31 @@ const getRecommendedProducts = async (req, res) => {
         // get the cookies
         const term = req.cookies.termCookie;
         // others 
+        const subdomain = req.params.subdomain??"";
         const page = parseInt(req.params.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
         const re = new RegExp(term, 'i');
 
-        const products = await Product.find({ product_name: re })
+        let products;
+        if (subdomain) {
+            products = await Product.find({ product_name: re, subdomain})
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
             .populate("user", ["_id", "email", "role"])
             .populate("likes")
-            .exec();
+            .exec();  
+        } else {
+            products = await Product.find({ product_name: re })
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("likes")
+            .exec();    
+        }
+       
 
         const totalProducts = (await Product.find()).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({

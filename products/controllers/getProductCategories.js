@@ -42,13 +42,19 @@ const getProductCategories = async (req, res) => {
             status: "failed",
             data: null,
             message: "Error! " + error.message
-        }) 
+        })
     }
 
 }
 
 async function getCategories(req, res) {
-    return await Product.find().select('product_category').exec();
+    const subdomain = req.params?.subdomain ?? "";
+
+    if (subdomain) {
+        return await Product.find({ subdomain }).select('product_category').exec();
+    } else {
+        return await Product.find().select('product_category').exec();
+    }
 }
 
 module.exports = {

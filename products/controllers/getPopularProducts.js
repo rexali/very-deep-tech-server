@@ -68,20 +68,34 @@ const getPopularProducts = async (req, res) => {
 
 }
 
-async function getPopular(req,res) {
+async function getPopular(req, res) {
+    const subdomain = req.params?.subdomain ?? ""
     const page = parseInt(req.params?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
+    let products;
+    if (subdomain) {
+        products = await Product.find({ subdomain })
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .populate("likes")
+            .sort({ likes: -1 })
+            .exec();
+    } else {
+        products = await Product.find()
+            .sort({ _id: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .populate("likes")
+            .sort({ likes: -1 })
+            .exec();
 
-    const products = await Product.find()
-        .sort({_id:-1})
-        .skip(skip)
-        .limit(limit)
-        .populate("user", ["_id", "email", "role"])
-        .populate("ratings")
-        .populate("likes")
-        .sort({ likes: -1 })
-        .exec();
+    }
 
     const totalProducts = (await Product.find()).length;
     // get the products
@@ -90,7 +104,7 @@ async function getPopular(req,res) {
         totalProducts,
         averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
             .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-    })); 
+    }));
 
     return newProducts;
 }

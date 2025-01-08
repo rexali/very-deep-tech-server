@@ -36,7 +36,7 @@ productRouter.get(
 );
 // get user products
 productRouter.get(
-    '/pages/:page/users/:userId',
+    '/pages/:page/users/:userId/subdomains/:subdomain',
     // isAuthenticated, 
     getUserProducts
 );
@@ -49,7 +49,7 @@ productRouter.get(
 
 // get all initial homepage products data
 productRouter.get(
-    '/:page/initial',
+    '/:page/initial/subdomains/:subdomain',
     // isAuthenticated,
     getInitialProductsData
 );
@@ -57,48 +57,48 @@ productRouter.get(
 
 // get all filtered products
 productRouter.get(
-    '/:page/filters',
+    '/:page/filters/subdomains/:subdomain',
     // isAuthenticated,
     getFilteredProducts
 );
 
 // get all filtered products
 productRouter.get(
-    '/:page/sorts',
+    '/:page/sorts/subdomains/:subdomain',
     // isAuthenticated,
     getSortedProducts
 );
 
 // get all products categories
 productRouter.get(
-    '/:page/categories',
+    '/:page/categories/subdomains/:subdomain',
     // isAuthenticated,
     getProductCategories
 );
 
 // get all approved products
 productRouter.get(
-    '/:page/approved',
+    '/:page/approved/subdomains/:subdomain',
     // isAuthenticated,
     getApprovedProducts
 );
 
 // get all featured products
 productRouter.get(
-    '/:page/featured',
+    '/:page/featured/subdomains/:subdomain',
     // isAuthenticated,
     getFeaturedProducts
 );
 
 // get all popular products
 productRouter.get(
-    '/:page/popular',
+    '/:page/popular/subdomains/:subdomain',
     // isAuthenticated,
     getPopularProducts
 );
 // get all recommended products
 productRouter.get(
-    '/:page/recommended',
+    '/:page/recommended/subdomains/:subdomain',
     // isAuthenticated,
     getRecommendedProducts
 );

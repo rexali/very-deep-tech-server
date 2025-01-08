@@ -9,27 +9,42 @@ const { Product } = require("../models/product.model");
 const getUserProducts = async (req, res) => {
 
     try {
+        const subdomain = req.params?.subdomain ?? ""
         const userId = req.params.userId;
         const page = parseInt(req.params?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
 
-        const products = await Product.find()
-            .sort({_id:-1})
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("ratings")
-            .populate("likes")
-            .exec();
+        let products;
+        if (subdomain) {
+            products = await Product.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("ratings")
+                .populate("likes")
+                .exec();
+
+        } else {
+            products = await Product.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("ratings")
+                .populate("likes")
+                .exec();
+
+        }
 
         const totalProducts = (await Product.find({ user: userId })).length;
         let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
             ...product,
             totalProducts,
-            averageRating: product.ratings.map(rating => Number(rating?.ratingScore??0))
+            averageRating: product.ratings.map(rating => Number(rating?.ratingScore ?? 0))
                 .reduce((prev, curr) => prev + curr, 0) / product.ratings.length
-        })); 
+        }));
 
         if (products != null) {
             if (products.length) {
