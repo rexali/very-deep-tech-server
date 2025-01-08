@@ -19,11 +19,11 @@ async function getUserToken(userEmail) {
       .populate('profile')
       .exec();
     // get userId, email and role by destructing
-    const { _id, email, role, profile } = result;
+    const { _id, email, role, subdomain, profile } = result;
     // get the secret key
     const jwtSecret = process.env.SECRET_KEY;
     // sign the token which expires after 24 hours 
-    const token = jsonwebtoken.sign({ _id, email, role, photo: profile?.photo, lastName: profile?.lastName }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
+    const token = jsonwebtoken.sign({ _id, email, role, photo: profile?.photo, subdomain }, jwtSecret, { noTimestamp: true, expiresIn: '7d' }
     );
     // return promise
     return token

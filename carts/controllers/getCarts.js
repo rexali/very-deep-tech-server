@@ -9,16 +9,27 @@ const { Cart } = require("../models/cart.model");
 const getCarts = async (req, res) => {
     try {
         const page = parseInt(req.query?.page ?? 1);
+        const subdomain = req.query?.subdomain ?? ""
         const limit = 4;
         const skip = (page - 1) * limit;
-
-        const carts = await Cart.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("product")
-            .exec();
+        let carts;
+        if (subdomain) {
+            carts = await Cart.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        } else {
+            carts = await Cart.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        }
 
         const totalCarts = (await Cart.find()).length;
 

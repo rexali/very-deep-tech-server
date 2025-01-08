@@ -25,7 +25,7 @@ const registerUserHandler = async (req, res) => {
         // get the reaquest body data
         const {
             password,
-            email,
+            email
         } = req.body;
 
         // declare clientData
@@ -34,6 +34,7 @@ const registerUserHandler = async (req, res) => {
         let role = req.body.role ?? "user";
         let firstName = req.body.firstName ?? "";
         let lastName = req.body.lastName ?? "";
+        let subdomain = req.body.subdomain ?? ""
 
         // let us validate inputs
         const schema = Joi.object({
@@ -41,10 +42,11 @@ const registerUserHandler = async (req, res) => {
             password: Joi.string().required(),
             role: Joi.string(),
             firstName: Joi.string(),
-            lastName: Joi.string()
+            lastName: Joi.string(),
+            subdomain: Joi.string()
         });
 
-        const { error, value } = schema.validate({ email, password, role, firstName, lastName });
+        const { error, value } = schema.validate({ email, password, role, firstName, lastName, subdomain });
 
         if (error) {
             // send data as json
@@ -63,11 +65,12 @@ const registerUserHandler = async (req, res) => {
                 role: escape(role),
                 firstName: escape(firstName),
                 lastName: escape(lastName),
+                subdomain: escape(subdomain)
             }
             // hash the user password
             const hassPassword = hashpass(clientData.password);
             // enter data to users table
-            const user = await new User({ email, password: hassPassword, role }).save();
+            const user = await new User({ email:clientData.email, password: hassPassword, role: clientData.role, subdomain: clientData.subdomain }).save();
             // check if insert Id is defined
             if (user._id) {
                 // create user profile
@@ -81,12 +84,12 @@ const registerUserHandler = async (req, res) => {
                 await user.save();
 
                 const rcode = uuidv4();
-                
+
                 try {
                     // send email to user
-                    await sendMail(user.email, "Registration successful", 'html', 'cShop',confirmHTMLMSG(user.email, rcode),'');
+                    await sendMail(user.email, "Registration successful", 'html', 'cshop', confirmHTMLMSG(user.email, rcode), '');
                 } catch (error) {
-                    console.log(error);   
+                    console.log(error);
                 }
                 // send result in json data
                 res.status(200).json({

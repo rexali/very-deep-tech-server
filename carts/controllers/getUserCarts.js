@@ -11,18 +11,29 @@ const getUserCarts = async (req, res) => {
 
     try {
 
+        let subdomain = req.params.subdomain ?? "";
         const userId = req.params.userId;
         const page = parseInt(req.params.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-
-        const carts = await Cart.find({ user: userId })
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate("product")
-            .exec();
+        let carts;
+        if (subdomain) {
+            carts = await Cart.find({ user: userId, subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        } else {
+            carts = await Cart.find({ user: userId })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        }
 
         const totalCarts = (await Cart.find({ user: userId })).length;
         const newCarts = JSON.parse(JSON.stringify(carts)).map(cart => ({
