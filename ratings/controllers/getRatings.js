@@ -10,21 +10,36 @@ const getRatings = async (req, res) => {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
+        const subdomain = req.query.subdomain ?? "";
 
-        const ratings = await Rating.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('product')
-            .populate('user')
-            .exec();
+        let ratings;
+        if (subdomain) {
+
+            ratings = await Rating.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('product')
+                .populate('user')
+                .exec();
+        } else {
+
+            ratings = await Rating.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('product')
+                .populate('user')
+                .exec();
+        }
+
 
         const totalRatings = (await Rating.find()).length;
 
         const newRatings = JSON.parse(JSON.stringify(ratings)).map(rating => ({
             ...rating,
             totalRatings
-        })).reverse();
+        }));
 
         // send success data
 

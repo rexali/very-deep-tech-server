@@ -45,7 +45,7 @@ const getQoute = async (req, res) => {
             message: "Error! " + error.message
         })
     }
-
+ 
 }
 
 module.exports = {

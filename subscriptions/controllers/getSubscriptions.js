@@ -11,13 +11,25 @@ const getSubscriptions = async (req, res) => {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
+        const subdomain = req.query?.subdomain ?? "";
+        let subscriptions;
+        if (subdomain) {
+            subscriptions = await Subscription.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .exec();
 
-        const subscriptions = await Subscription.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .exec();
-        ;
+        } else {
+            subscriptions = await Subscription.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .exec();
+
+        }
+
+
         // send success data
         const totalSubscriptions = (await Subscription.find()).length;
 

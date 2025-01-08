@@ -10,13 +10,24 @@ const getQoutes = async (req, res) => {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
+        const subdomain = req.query?.subdomain ?? "";
+        let qoutes;
+        if (subdomain) {
+            qoutes = await Qoute.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('product')
+                .exec();
+        } else {
+            qoutes = await Qoute.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('product')
+                .exec();
+        }
 
-        const qoutes = await Qoute.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('product')
-            .exec();
 
         const totalQoutes = (await Qoute.find()).length;
 

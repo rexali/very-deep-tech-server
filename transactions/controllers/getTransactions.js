@@ -11,16 +11,32 @@ const getTransactions = async (req, res) => {
         const page = parseInt(req.query.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-        const transactions = await Transaction.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate({
-                path: 'order',
-                model: "Order"
-            })
-            .exec();
+        const subdomain = req.query?.subdomain ?? "";
+        let transactions;
+        if (subdomain) {
+            transactions = await Transaction.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate({
+                    path: 'order',
+                    model: "Order"
+                })
+                .exec();
+        } else {
+            transactions = await Transaction.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate({
+                    path: 'order',
+                    model: "Order"
+                })
+                .exec();
+        }
+
 
         const totalTransactions = (await Transaction.find()).length;
         const newTransactions = JSON.parse(JSON.stringify(transactions)).map(transaction => ({
@@ -221,7 +237,7 @@ async function generateQuarterlySalesReportObj() {
 
         },
 
-        
+
 
         {
             $sort: { _id: 1 }

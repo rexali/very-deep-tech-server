@@ -12,13 +12,23 @@ const getProfiles = async (req, res) => {
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-
-        const profiles = await Profile.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('user', ["_id", "email", "role"])
-            .exec();
+        const subdomain = req.query?.subdomain ?? "";
+        let profiles;
+        if (subdomain) {
+            profiles = await Profile.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        } else {
+            profiles = await Profile.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        }
 
         const totalProfiles = (await Profile.find()).length;
         const newProfiles = JSON.parse(JSON.stringify(profiles)).map(profile => ({

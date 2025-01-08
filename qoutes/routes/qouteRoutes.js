@@ -3,6 +3,7 @@ const express = require("express");
 const { isAuthenticated } = require("../../auth/controllers/isAuthenticated");
 const {  getQoutes } = require("../controllers/getQoutes");
 const { createQoute } = require("../controllers/createQoute");
+const { getQoute } = require("../controllers/getQoute");
 
 // initialize admin router
 const qouteRouter = express.Router();
@@ -11,7 +12,7 @@ const qouteRouter = express.Router();
 qouteRouter.get(
     '/:id',
     // isAuthenticated, 
-    getQoutes
+    getQoute
 );
 
 // get all qoutes
