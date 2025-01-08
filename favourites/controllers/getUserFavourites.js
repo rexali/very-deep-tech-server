@@ -7,23 +7,40 @@ const { Favourite } = require("../models/favourite.model");
  * @returns void
  */
 const getUserFavourites = async (req, res) => {
-    const userId = req.params.userId;
-    const page = parseInt(req.params.page ?? 1);
-    const limit = 4;
-    const skip = (page - 1) * limit;
     try {
-        const favourites = await Favourite.find({ user: userId })
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate("user", ["_id", "email", "role"])
-            .populate({
-                path:'product',
-                populate:{
-                    path:'likes'
-                }
-            })
-            .exec();
+        const subdomain = req.params?.subdomain ?? "";
+        const userId = req.params.userId;
+        const page = parseInt(req.params.page ?? 1);
+        const limit = 4;
+        const skip = (page - 1) * limit;
+
+        let favourites;
+        if (subdomain) {
+            favourites = await Favourite.find({ user: userId, subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate({
+                    path: 'product',
+                    populate: {
+                        path: 'likes'
+                    }
+                }).exec();
+        } else {
+            favourites = await Favourite.find({ user: userId })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate({
+                    path: 'product',
+                    populate: {
+                        path: 'likes'
+                    }
+                })
+                .exec();
+        }
 
         const totalFavourites = (await Favourite.find({ user: userId })).length;
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({

@@ -8,12 +8,29 @@ const { Favourite } = require("../models/favourite.model");
  */
 const getFavourites = async (req, res) => {
     try {
-        const favourites = await Favourite.find()
-            .sort({ _id: -1 })
-
-            .populate("user", ["_id", "email", "role"])
-            .populate("product")
-            .exec();
+        
+        const subdomain = req.query?.subdomain ?? "";
+        const page = parseInt(req.params.page ?? 1);
+        const limit = 4;
+        const skip = (page - 1) * limit;
+        let favourites;
+        if (subdomain) {
+            favourites = await Favourite.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        } else {
+            favourites = await Favourite.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate("user", ["_id", "email", "role"])
+                .populate("product")
+                .exec();
+        }
 
         const totalFavourites = favourites.length;
         const newFavourites = JSON.parse(JSON.stringify(favourites)).map(favourite => ({

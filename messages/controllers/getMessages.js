@@ -7,16 +7,26 @@ const { Message } = require("../models/message.model");
  */
 const getMessages = async (req, res) => {
     try {
+        const subdomain = req.query?.subdomain ?? "";
         const page = parseInt(req.query?.page ?? 1);
         const limit = 4;
         const skip = (page - 1) * limit;
-
-        const messages = await Message.find()
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('user', ["_id", "email", "role"])
-            .exec();
+        let messages;
+        if (subdomain) {
+            messages = await Message.find({ subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        } else {
+            messages = await Message.find()
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        }
 
         const totalMessages = (await Message.find()).length;
         const newMessages = JSON.parse(JSON.stringify(messages)).map(msg => ({

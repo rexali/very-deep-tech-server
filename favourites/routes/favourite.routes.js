@@ -34,7 +34,7 @@ favouriteRouter.get(
 
 // get user favourites
 favouriteRouter.get(
-    '/pages/:page/users/:userId',
+    '/pages/:page/users/:userId/subdomains/:subdomain',
     // isAuthenticated,
     getUserFavourites
 );

@@ -7,17 +7,30 @@ const { Message } = require("../models/message.model");
  */
 const getUserMessages = async (req, res) => {
     try {
+        const subdomain = req.params?.subdomain ?? "";
         const page = parseInt(req.params?.page ?? 1);
         const userId = req.params?.userId;
         const limit = 4;
         const skip = (page - 1) * limit;
+        
+        let messages;
+        if (subdomain) {
+            messages = await Message.find({ user: userId, subdomain })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        } else {
+            messages = await Message.find({ user: userId })
+                .sort({ _id: -1 })
+                .skip(skip)
+                .limit(limit)
+                .populate('user', ["_id", "email", "role"])
+                .exec();
+        }
 
-        const messages = await Message.find({ user: userId })
-            .sort({ _id: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('user', ["_id", "email", "role"])
-            .exec();
+
 
         const totalMessages = (await Message.find()).length;
         const newMessages = JSON.parse(JSON.stringify(messages)).map(message => ({

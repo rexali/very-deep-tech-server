@@ -15,7 +15,7 @@ messageRouter.get(
     '/:id',
     // isAuthenticated, 
     getMessage
-); 
+);
 // get all messages
 messageRouter.get(
     '/',
@@ -24,7 +24,7 @@ messageRouter.get(
 );
 // get all messages
 messageRouter.get(
-    '/pages/:page/users/:userId',
+    '/pages/:page/users/:userId/subdomains:/subdomain',
     // isAuthenticated,
     getUserMessages
 );
@@ -48,5 +48,5 @@ messageRouter.delete(
 );
 // export message router
 module.exports = {
-    messageRouter 
+    messageRouter
 }
