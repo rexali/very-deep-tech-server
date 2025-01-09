@@ -6,6 +6,7 @@ const { verifyUserTokenHandler } = require("../controllers/verifyUserTokenHandle
 const { changePassword } = require("../controllers/changePassword");
 const { confirmRegistration } = require("../controllers/confirmRegistration");
 const { requestPassword } = require("../controllers/requestPassword");
+const { isSubdomainAvailbale } = require("../controllers/isSubdomainAvailable");
 
 // initialize authentication router
 const authRouter = express.Router();
@@ -21,6 +22,8 @@ authRouter.post("/change", changePassword);
 authRouter.post("/confirm", confirmRegistration);
 // forget password
 authRouter.post("/forget", requestPassword);
+// is-subdomain-availble route
+authRouter.get("/", isSubdomainAvailbale);
 // export the authRouter
 module.exports = {
     authRouter
