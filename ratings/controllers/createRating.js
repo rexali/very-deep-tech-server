@@ -19,12 +19,15 @@ const createRating = async (req, res) => {
             userId,
             productId
         } = req.body;
+
+        let subdomain = req.body?.subdomain ?? "";
         // let us validate inputs
         const schema = Joi.object({
-            review: Joi.string().required()
+            review: Joi.string().required(),
+            subdomain: Joi.string()
         });
 
-        const { error, value } = schema.validate({ review });
+        const { error, value } = schema.validate({ review, subdomain });
 
         if (error) {
             // send data as json
@@ -37,12 +40,14 @@ const createRating = async (req, res) => {
 
             // let us sanitize our inputs
             let reviewx = escape(review);
+            let subdomainx = escape(subdomain);
 
             const rating = await Rating.create({
                 ratingScore,
                 review: reviewx,
                 product: productId,
-                user: userId
+                user: userId,
+                subdomain: subdomainx
             });
             // update module lessons
             const product = await Product.findById(productId).populate("ratings");

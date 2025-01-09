@@ -18,20 +18,23 @@ const createQoute = async (req, res) => {
             productId,
             message
         } = req.body;
+        let subdomain= req.body?.subdomain??"";
 
         // let us validate inputs
         const schema = Joi.object({
             productId: Joi.string().required(),
             message: Joi.string().required(),
             phone: Joi.string().required(),
-            email: Joi.string().email().required()
+            email: Joi.string().email().required(),
+            subdomain:Joi.string()
         });
 
         const { error, value } = schema.validate({
             email,
             phone,
             productId,
-            message
+            message,
+            subdomain
         });
 
         if (error) {
@@ -48,6 +51,7 @@ const createQoute = async (req, res) => {
             let phonex = escape(phone);
             let productID = escape(productId);
             let messagex = escape(message);
+            let subdomainx=escape(subdomain)
 
             const qoute = await Qoute.create(
                 {
@@ -56,7 +60,8 @@ const createQoute = async (req, res) => {
                     product: productID,
                     message: messagex,
                     createdAt: new Date(),
-                    updatedAt: new Date()
+                    updatedAt: new Date(),
+                    subdomain:subdomainx
                 });
 
             if (qoute != null) {

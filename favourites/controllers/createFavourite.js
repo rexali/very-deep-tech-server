@@ -14,10 +14,13 @@ const createFavourite = async (req, res) => {
             product_id,
             user_id
         } = req.body;
+        let subdomain= req.body.subdomain??"";
+
 
         const favourite = await Favourite.create({
             product: product_id,
-            user: user_id
+            user: user_id,
+            subdomain
         });
          // update module lessons
          const product = await Product.findById(product_id).populate("likes");

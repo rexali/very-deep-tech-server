@@ -14,6 +14,8 @@ const createSubscription = async (req, res) => {
         const {
             email
         } = req.body;
+        let subdomain= req.body?.subdomain??"";
+
         // let us validate inputs
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -34,7 +36,8 @@ const createSubscription = async (req, res) => {
         // let store it in db
         const subscription = await Subscription.create(
             {
-                email: emailx
+                email: emailx,
+                subdomain
             });
 
         if (subscription != null) {

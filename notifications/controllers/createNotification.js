@@ -16,15 +16,16 @@ const createNotification = async (req, res) => {
             body,
             userId
         } = req.body;
-
+        let subdomain = req.body?.subdomain ?? "";
         // let us validate inputs
         const schema = Joi.object({
             title: Joi.string().required(),
             body: Joi.string().required(),
             userId: Joi.string(),
+            subdomain: Joi.string()
         });
 
-        const { error, value } = schema.validate({ title, body, userId });
+        const { error, value } = schema.validate({ title, body, userId, subdomain });
 
         if (error) {
             // send data as json
@@ -39,6 +40,7 @@ const createNotification = async (req, res) => {
             let titlex = escape(title);
             let bodyx = escape(body);
             let userIdx = escape(userId);
+            let subdomainx = escape(subdomain);
 
             const notification = await Notification.create(
                 {
@@ -46,7 +48,8 @@ const createNotification = async (req, res) => {
                     body: bodyx,
                     createdAt: new Date(),
                     updatedAt: new Date(),
-                    user: userIdx
+                    user: userIdx,
+                    subdomain: subdomainx
                 });
 
             if (notification != null) {

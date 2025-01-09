@@ -15,13 +15,15 @@ const createCart = async (req, res) => {
             quantity,
             price,
         } = req.body;
+        let subdomain= req.body.subdomain??"";
 
         const cart = await Cart.create({
             product: product_id,
             user: user_id,
             quantity,
             price,
-            subtotal: quantity * price
+            subtotal: quantity * price,
+            subdomain
         });
 
         if (cart !== null) {

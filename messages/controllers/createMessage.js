@@ -9,7 +9,7 @@ const { escape } = require('html-escaper');
  * @returns void
  */
 const createMessage = async (req, res) => {
- 
+
     try {
         // retrieve the request body data
         const title = req.body.title;
@@ -18,6 +18,8 @@ const createMessage = async (req, res) => {
         const sender = req.body.sender ?? ''; // email
         const firstName = req.body.firstName ?? '';
         const lastName = req.body.lastName ?? '';
+        let subdomain = req.body?.subdomain ?? "";
+
 
         // let us validate inputs
         const schema = Joi.object({
@@ -26,10 +28,11 @@ const createMessage = async (req, res) => {
             user: Joi.string(),
             sender: Joi.string().email(),
             firstName: Joi.string(),
-            lastName: Joi.string()
+            lastName: Joi.string(),
+            subdomain: Joi.string()
         });
 
-        const { error, value } = schema.validate({ title, comment, user, sender, firstName, lastName });
+        const { error, value } = schema.validate({ title, comment, user, sender, firstName, lastName, subdomain });
 
         if (error) {
             // send data as json
@@ -47,6 +50,7 @@ const createMessage = async (req, res) => {
             let senderx = escape(sender);
             let firstNamex = escape(firstName);
             let lastNamex = escape(lastName);
+            let subdomainx = escape(subdomain);
 
             let message;
 
@@ -60,7 +64,8 @@ const createMessage = async (req, res) => {
                         lastName: lastNamex,
                         user,
                         createdAt: new Date(),
-                        updatedAt: new Date()
+                        updatedAt: new Date(),
+                        subdomain: subdomainx
                     });
             } else {
                 message = await Message.create(
@@ -71,7 +76,8 @@ const createMessage = async (req, res) => {
                         firstName: firstNamex,
                         lastName: lastNamex,
                         createdAt: new Date(),
-                        updatedAt: new Date()
+                        updatedAt: new Date(),
+                        subdomain: subdomainx
                     });
             }
 

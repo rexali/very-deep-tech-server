@@ -22,14 +22,18 @@ const createTransaction = async (req, res) => {
             paymentStatus, //pending, paid etc for order
         } = req.body;
 
+        let subdomain = req.body?.subdomain ?? "";
+
+
         const transaction = await Transaction.create({
             order: orderId,
             user: userId,
             amount,
             type, // payment, refund, void
             reference,
-            currency, 
-            paymentMethod
+            currency,
+            paymentMethod,
+            subdomain
         });
 
         // const transactions = await Transaction.findById(transaction._id).populate('order').exec();
@@ -43,23 +47,23 @@ const createTransaction = async (req, res) => {
                 updatedAt: new Date(),
             });
 
-       
-            if (transaction !== null) {
-                // send data as json
-                res.status(200).json({
-                    status: "success",
-                    data: { transaction },
-                    message: "Transaction created"
-                })
 
-            } else {
-                // send data as json
-                res.status(400).json({
-                    status: "failed",
-                    data: { transaction: null },
-                    message: "Transaction creation failed"
-                })
-            }
+        if (transaction !== null) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { transaction },
+                message: "Transaction created"
+            })
+
+        } else {
+            // send data as json
+            res.status(400).json({
+                status: "failed",
+                data: { transaction: null },
+                message: "Transaction creation failed"
+            })
+        }
 
 
     } catch (error) {

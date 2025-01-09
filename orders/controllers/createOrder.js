@@ -21,6 +21,9 @@ const createOrder = async (req, res) => {
             shippingMethod
         } = req.body;
 
+        let subdomain = req.body?.subdomain ?? "";
+
+
         const order = await Order.create({
             user: userId,
             items,
@@ -30,7 +33,8 @@ const createOrder = async (req, res) => {
             shippingCost,
             total,
             paymentStatus,
-            shippingMethod
+            shippingMethod,
+            subdomain
         });
 
         if (order !== null) {

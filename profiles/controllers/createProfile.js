@@ -19,6 +19,9 @@ const createProfile = async (req, res) => {
             photo
         } = req.body;
 
+        let subdomain= req.body?.subdomain??"";
+
+
         const profile = await Profile.create(
             {
                 user,
@@ -27,7 +30,8 @@ const createProfile = async (req, res) => {
                 streetAddress,
                 localGovt,
                 state,
-                photo
+                photo,
+                subdomain
             });
 
         // send data as json
