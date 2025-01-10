@@ -82,13 +82,24 @@ const getFeaturedProducts = async (req, res) => {
 }
 
 async function getFeatured(req, res) {
+     const subdomain = req.params.subdomain ?? ""
     const page = parseInt(req.params.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
-
-    const products = await Product.find()
+    let products;
+    if (subdomain) {
+    products = await Product.find({subdomain})
         .sort({ _id: -1 })
-
+        .where({ featured: 'yes' })
+        .skip(skip)
+        .limit(limit)
+        .populate("user", ["_id", "email", "role"])
+        .populate("ratings")
+        .populate("likes")
+        .exec(); 
+    }else{
+        products = await Product.find()
+        .sort({ _id: -1 })
         .where({ featured: 'yes' })
         .skip(skip)
         .limit(limit)
@@ -96,6 +107,7 @@ async function getFeatured(req, res) {
         .populate("ratings")
         .populate("likes")
         .exec();
+    }
 
     const totalProducts = (await Product.find()).length;
 

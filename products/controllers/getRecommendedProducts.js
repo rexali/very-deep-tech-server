@@ -89,14 +89,27 @@ async function getRecommended(req, res) {
     const limit = 4;
     const skip = (page - 1) * limit;
     const re = new RegExp(term, 'i');
-
-    const products = await Product.find({ product_name: re })
+    const subdomain = req.params.subdomain??"";
+    let products;
+    if (subdomain) {
+        products = await Product.find({ product_name: re, subdomain })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(limit)
         .populate("user", ["_id", "email", "role"])
         .populate("likes")
         .exec();
+
+    }else{
+        products = await Product.find({ product_name: re })
+        .sort({ _id: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("user", ["_id", "email", "role"])
+        .populate("likes")
+        .exec();
+
+    }
 
     const totalProducts = (await Product.find()).length;
     let newProducts = JSON.parse(JSON.stringify(products)).map((product) => ({
