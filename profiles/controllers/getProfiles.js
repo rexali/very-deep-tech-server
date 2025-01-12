@@ -14,15 +14,15 @@ const getProfiles = async (req, res) => {
         const skip = (page - 1) * limit;
         const subdomain = req.query?.subdomain ?? "";
         let profiles;
-        if (subdomain) {
-            profiles = await Profile.find({ subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            profiles = await Profile.find()
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
                 .populate('user', ["_id", "email", "role"])
                 .exec();
         } else {
-            profiles = await Profile.find()
+            profiles = await Profile.find({subdomain})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

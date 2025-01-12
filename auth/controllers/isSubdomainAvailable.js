@@ -5,17 +5,17 @@ async function isSubdomainAvailbale(req, res) {
         const subdomain = req.query?.subdomain ?? "";
         const user = await User.find({ subdomain });
 
-        if (user !== null && Object.keys(user).length) {
+        if (user !== null && Object.keys(user).length >= 1) {
             res.status(200).json({
                 status: "success",
-                data: { result: true },
+                data: { result: true, subdomain: user.subdomain },
                 message: "Subdomain exists"
             })
         } else {
             res.status(200).json({
                 status: "failed",
                 data: { result: false },
-                message: "Subdomain does not exists"
+                message: "Subdomain doesn't exist"
             })
         }
     } catch (error) {

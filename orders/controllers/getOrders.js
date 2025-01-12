@@ -13,8 +13,8 @@ const getOrders = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         let orders;
-        if (subdomain) {
-            orders = await Order.find({subdomain})
+        if (subdomain == "maindomain" || "" || undefined) {
+            orders = await Order.find()
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)
@@ -22,7 +22,7 @@ const getOrders = async (req, res) => {
             .exec();
   
         } else {
-            orders = await Order.find()
+            orders = await Order.find({subdomain})
             .sort({ _id: -1 })
             .skip(skip)
             .limit(limit)

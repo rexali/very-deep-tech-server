@@ -14,15 +14,15 @@ const getNotifications = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let notifications;
-        if (subdomain) {
-            notifications = await Notification.find({ subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            notifications = await Notification.find()
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
                 .populate('user', ["_id", "email", "role"])
                 .exec();
         } else {
-            notifications = await Notification.find()
+            notifications = await Notification.find({subdomain})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

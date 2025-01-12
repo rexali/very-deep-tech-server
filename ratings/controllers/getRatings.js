@@ -13,9 +13,9 @@ const getRatings = async (req, res) => {
         const subdomain = req.query.subdomain ?? "";
 
         let ratings;
-        if (subdomain) {
+        if (subdomain == "maindomain" || "" || undefined) {
 
-            ratings = await Rating.find({ subdomain })
+            ratings = await Rating.find()
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -24,7 +24,7 @@ const getRatings = async (req, res) => {
                 .exec();
         } else {
 
-            ratings = await Rating.find()
+            ratings = await Rating.find({subdomain})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

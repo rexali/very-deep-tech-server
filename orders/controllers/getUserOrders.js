@@ -16,15 +16,15 @@ const getUserOrders = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let orders;
-        if (subdomain) {
-            orders = await Order.find({ user: userId, subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            orders = await Order.find({ user: userId })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
                 .populate("user", ["_id", "email", "role"])
                 .exec();
         } else {
-            orders = await Order.find({ user: userId })
+            orders = await Order.find({ user: userId, subdomain })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

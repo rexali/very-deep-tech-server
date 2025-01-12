@@ -14,8 +14,8 @@ const getFavourites = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         let favourites;
-        if (subdomain) {
-            favourites = await Favourite.find({ subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            favourites = await Favourite.find(subdomain)
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -23,7 +23,7 @@ const getFavourites = async (req, res) => {
                 .populate("product")
                 .exec();
         } else {
-            favourites = await Favourite.find()
+            favourites = await Favourite.find({subdomain})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

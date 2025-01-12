@@ -76,7 +76,6 @@ app.use('/qoutes', qouteRouter);
 app.use('/sortings', getSortedProducts);
 app.use('/filterings', getFilteredProducts);
 app.use('/initial', getInitialProductsData);
-app.use('/subdomains', getInitialProductsData);
 
 // server home
 app.get("/", async (req, res) => {

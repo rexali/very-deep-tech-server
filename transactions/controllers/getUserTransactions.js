@@ -16,8 +16,8 @@ const getUserTransactions = async (req, res) => {
         const subdomain = req.params?.subdomain ?? "";
 
         let transactions;
-        if (subdomain) {
-            transactions = await Transaction.find({ user: userId, subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            transactions = await Transaction.find({ user: userId})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -29,7 +29,7 @@ const getUserTransactions = async (req, res) => {
                 .exec();
 
         } else {
-            transactions = await Transaction.find({ user: userId })
+            transactions = await Transaction.find({ user: userId, subdomain })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

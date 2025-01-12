@@ -14,15 +14,15 @@ const getUserMessages = async (req, res) => {
         const skip = (page - 1) * limit;
         
         let messages;
-        if (subdomain) {
-            messages = await Message.find({ user: userId, subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            messages = await Message.find({ user: userId })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
                 .populate('user', ["_id", "email", "role"])
                 .exec();
         } else {
-            messages = await Message.find({ user: userId })
+            messages = await Message.find({ user: userId, subdomain })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

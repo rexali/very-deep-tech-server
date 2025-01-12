@@ -17,8 +17,8 @@ const getUserCarts = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         let carts;
-        if (subdomain) {
-            carts = await Cart.find({ user: userId, subdomain })
+        if (subdomain == "maindomain" || "" || undefined) {
+            carts = await Cart.find({ user: userId })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -26,7 +26,7 @@ const getUserCarts = async (req, res) => {
                 .populate("product")
                 .exec();
         } else {
-            carts = await Cart.find({ user: userId })
+            carts = await Cart.find({ user: userId, subdomain })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
