@@ -15,11 +15,11 @@ const { getRecommended } = require("./getRecommendedProducts");
 const getInitialProductsData = async (req, res) => {
 
     Promise.all([
-        getProductData(req, res),
-        getPopular(req, res),
-        getRecommended(req, res),
-        getFeatured(req, res),
-        getCategories(req, res)
+        await getProductData(req, res),
+        await getPopular(req, res),
+        await getRecommended(req, res),
+        await getFeatured(req, res),
+        await getCategories(req, res)
     ]).then(([
         productData,
         popularData,
