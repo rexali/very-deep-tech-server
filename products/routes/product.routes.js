@@ -54,7 +54,6 @@ productRouter.get(
     getInitialProductsData
 );
 
-
 // get all filtered products
 productRouter.get(
     '/:page/filters/subdomains/:subdomain',

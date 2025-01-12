@@ -16,7 +16,7 @@ const getFilteredProducts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let products;
-        if (subdomain) {
+        if (subdomain !== 'maindomain') {
 
             products = await Product.find({ subdomain })
                 .where('product_price').gte(filter1).lte(filter2)

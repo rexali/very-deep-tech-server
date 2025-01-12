@@ -15,7 +15,7 @@ const searchProducts = async (req, res) => {
         const re = new RegExp(term, 'i');
         const subdomain = req.query?.subdomain ?? "";
         let products;
-        if (subdomain) {
+        if (subdomain !== 'maindomain') {
             products = await Product.find({ product_name: re , subdomain})
                 .skip(skip)
                 .limit(limit)
