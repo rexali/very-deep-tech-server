@@ -14,8 +14,8 @@ const getFeaturedProducts = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         let products;
-        if (subdomain) {
-            products = await Product.find({ subdomain })
+        if (subdomain == 'maindomain' || "" || undefined) {
+            products = await Product.find()
                 .sort({ _id: -1 })
                 .where({ featured: 'yes' })
                 .skip(skip)
@@ -25,7 +25,7 @@ const getFeaturedProducts = async (req, res) => {
                 .populate("likes")
                 .exec();
         } else {
-            products = await Product.find()
+            products = await Product.find({subdomain})
                 .sort({ _id: -1 })
                 .where({ featured: 'yes' })
                 .skip(skip)
