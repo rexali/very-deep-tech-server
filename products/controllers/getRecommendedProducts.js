@@ -91,7 +91,7 @@ async function getRecommended(req, res) {
     const re = new RegExp(term, 'i');
     const subdomain = req.query.subdomain ?? "";
     let products;
-    if (subdomain) {
+    if (subdomain !== 'maindomain') {
         products = await Product.find({ product_name: re, subdomain })
             .sort({ _id: -1 })
             .skip(skip)

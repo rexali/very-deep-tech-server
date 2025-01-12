@@ -35,7 +35,7 @@ const getSortedProducts = async (req, res) => {
         const limit = 4;
         const skip = (page - 1) * limit;
         let products;
-        if (subdomain) {
+        if (subdomain !== 'maindomain') {
             products = await Product.find({ subdomain })
                 .sort({ [sortName]: sortValue })
                 .skip(skip)

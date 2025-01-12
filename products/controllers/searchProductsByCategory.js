@@ -17,7 +17,7 @@ const searchProductsByCategory = async (req, res) => {
 
         const subdomain = req.query?.subdomain ?? "";
         let products;
-        if (subdomain) {
+        if (subdomain !== 'maindomain') {
             products = await Product.find({ product_category: re, subdomain })
                 .skip(skip)
                 .limit(limit)

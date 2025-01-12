@@ -74,7 +74,7 @@ async function getPopular(req, res) {
     const limit = 4;
     const skip = (page - 1) * limit;
     let products;
-    if (subdomain) {
+    if (subdomain !== 'maindomain') {
         products = await Product.find({ subdomain })
             .sort({ _id: -1 })
             .skip(skip)

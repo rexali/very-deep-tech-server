@@ -50,7 +50,7 @@ const getProductCategories = async (req, res) => {
 async function getCategories(req, res) {
     const subdomain = req.query?.subdomain ?? "";
 
-    if (subdomain) {
+    if (subdomain !== 'maindomain') {
         return await Product.find({ subdomain }).select('product_category').exec();
     } else {
         return await Product.find().select('product_category').exec();
