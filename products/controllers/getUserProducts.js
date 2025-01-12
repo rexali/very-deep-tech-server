@@ -16,8 +16,8 @@ const getUserProducts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let products;
-        if (subdomain !== 'maindomain') {
-            products = await Product.find({ subdomain })
+        if (subdomain == 'maindomain' || "" || undefined) {
+            products = await Product.find()
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -27,7 +27,7 @@ const getUserProducts = async (req, res) => {
                 .exec();
 
         } else {
-            products = await Product.find()
+            products = await Product.find({subdomain})
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)

@@ -16,9 +16,9 @@ const getFilteredProducts = async (req, res) => {
         const skip = (page - 1) * limit;
 
         let products;
-        if (subdomain !== 'maindomain') {
+        if (subdomain == 'maindomain' || "" || undefined) {
 
-            products = await Product.find({ subdomain })
+            products = await Product.find()
                 .where('product_price').gte(filter1).lte(filter2)
                 .skip(skip)
                 .limit(limit)
@@ -27,7 +27,7 @@ const getFilteredProducts = async (req, res) => {
                 .exec();
         } else {
 
-            products = await Product.find()
+            products = await Product.find({subdomain})
                 .where('product_price').gte(filter1).lte(filter2)
                 .skip(skip)
                 .limit(limit)

@@ -17,15 +17,15 @@ const searchProductsByCategory = async (req, res) => {
 
         const subdomain = req.query?.subdomain ?? "";
         let products;
-        if (subdomain !== 'maindomain') {
-            products = await Product.find({ product_category: re, subdomain })
+        if (subdomain == 'maindomain' || "" || undefined) {
+            products = await Product.find({ product_category: re })
                 .skip(skip)
                 .limit(limit)
                 .populate("user", ["_id", "email", "role"])
                 .populate("likes")
                 .exec();
         } else {
-            products = await Product.find({ product_category: re })
+            products = await Product.find({ product_category: re, subdomain })
                 .skip(skip)
                 .limit(limit)
                 .populate("user", ["_id", "email", "role"])

@@ -15,15 +15,15 @@ const searchProducts = async (req, res) => {
         const re = new RegExp(term, 'i');
         const subdomain = req.query?.subdomain ?? "";
         let products;
-        if (subdomain !== 'maindomain') {
-            products = await Product.find({ product_name: re , subdomain})
+        if (subdomain == 'maindomain' || "" || undefined) {
+            products = await Product.find({ product_name: re })
                 .skip(skip)
                 .limit(limit)
                 .populate("user", ["_id", "email", "role"])
                 .populate("likes")
                 .exec();
         } else {
-            products = await Product.find({ product_name: re })
+            products = await Product.find({ product_name: re, subdomain })
                 .skip(skip)
                 .limit(limit)
                 .populate("user", ["_id", "email", "role"])
