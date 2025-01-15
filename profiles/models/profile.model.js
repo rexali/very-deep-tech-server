@@ -8,13 +8,14 @@ const profileSchema = new mongoose.Schema({
     localGovt: String,
     state: String,
     country: String,
-    subdomain:String,
+    subdomain: String,
+    businessName: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     createdAt: { type: Date, default: new Date() },
     updatedAt: { type: Date, default: new Date() }
 });
 
-const Profile = mongoose.model('Profile', profileSchema); 
+const Profile = mongoose.model('Profile', profileSchema);
 
 module.exports = {
     Profile

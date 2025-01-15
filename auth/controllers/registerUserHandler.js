@@ -34,7 +34,9 @@ const registerUserHandler = async (req, res) => {
         let role = req.body.role ?? "user";
         let firstName = req.body.firstName ?? "";
         let lastName = req.body.lastName ?? "";
-        let subdomain = req.body.subdomain ?? ""
+        let subdomain = req.body.subdomain ?? "maindomain"
+        let businessName = req.body.businessName ?? ""
+
 
         // let us validate inputs
         const schema = Joi.object({
@@ -43,10 +45,11 @@ const registerUserHandler = async (req, res) => {
             role: Joi.string(),
             firstName: Joi.string(),
             lastName: Joi.string(),
-            subdomain: Joi.string()
+            subdomain: Joi.string(),
+            businessName: Joi.string()
         });
 
-        const { error, value } = schema.validate({ email, password, role, firstName, lastName, subdomain });
+        const { error, value } = schema.validate({ email, password, role, firstName, lastName, subdomain, businessName });
 
         if (error) {
             // send data as json
@@ -65,22 +68,33 @@ const registerUserHandler = async (req, res) => {
                 role: escape(role),
                 firstName: escape(firstName),
                 lastName: escape(lastName),
-                subdomain: escape(subdomain)
+                subdomain: escape(subdomain),
+                businessName: escape(businessName)
             }
             // hash the user password
             const hassPassword = hashpass(clientData.password);
             // enter data to users table
-            const user = await new User({ email:clientData.email, password: hassPassword, role: clientData.role, subdomain: clientData.subdomain }).save();
+            const user = await new User({ email: clientData.email, password: hassPassword, role: clientData.role, subdomain: clientData.subdomain }).save();
             // check if insert Id is defined
             if (user._id) {
+                let profile;
                 // create user profile
-                let profile = await Profile.create({
-                    user: user._id,
-                    firstName: clientData.firstName,
-                    lastName: clientData.lastName
-                });
+                if (businessName && subdomain) {
+                    profile = await Profile.create({
+                        user: user._id,
+                        businessName: clientData.businessName,
+                        subdomain: clientData.subdomain
+                    });
+                } else {
+                    profile = await Profile.create({
+                        user: user._id,
+                        firstName: clientData.firstName,
+                        lastName: clientData.lastName
+                    });
+                }
 
                 user.profile = profile._id;
+
                 await user.save();
 
                 const rcode = uuidv4();
@@ -99,8 +113,10 @@ const registerUserHandler = async (req, res) => {
                         _id: user._id,
                         email: user.email,
                         role: user.role,
-                        firstName: profile.firstName,
-                        lastName: profile.lastName
+                        firstName: profile.firstName ?? "",
+                        lastName: profile.lastName ?? "",
+                        businessName: profile.businessName ?? "",
+                        subdomain: profile.subdomain ?? ""
                     }
                 });
             }

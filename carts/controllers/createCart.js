@@ -15,7 +15,7 @@ const createCart = async (req, res) => {
             quantity,
             price,
         } = req.body;
-        let subdomain= req.body.subdomain??"";
+        let subdomain = req.body.subdomain ?? "maindomain";
 
         const cart = await Cart.create({
             product: product_id,

@@ -14,7 +14,7 @@ const createFavourite = async (req, res) => {
             product_id,
             user_id
         } = req.body;
-        let subdomain= req.body.subdomain??"";
+        let subdomain = req.body.subdomain ?? "maindomain";
 
 
         const favourite = await Favourite.create({
@@ -22,12 +22,12 @@ const createFavourite = async (req, res) => {
             user: user_id,
             subdomain
         });
-         // update module lessons
-         const product = await Product.findById(product_id).populate("likes");
-         product.likes.push(favourite._id);
-         // save
-         await product.save();
-         await favourite.save();
+        // update module lessons
+        const product = await Product.findById(product_id).populate("likes");
+        product.likes.push(favourite._id);
+        // save
+        await product.save();
+        await favourite.save();
 
         if (favourite !== null) {
             // send data as json
@@ -45,7 +45,7 @@ const createFavourite = async (req, res) => {
                 message: "creation failed"
             })
         }
- 
+
     } catch (error) {
         console.warn(error);
         // send data as json
