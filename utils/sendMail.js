@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const { escape } = require("html-escaper");
 const { use } = require("passport");
 const Imap = require('imap');
-const {simpLeParse}= require('mailparser');
+const { simpLeParse } = require('mailparser');
 dotenv.config();
 /**
  * Send an email to a user
@@ -29,7 +29,7 @@ async function sendMail(
 
     try {
         var transporter = nodemailer.createTransport({
-            host: 'smtp.titan.email',     //smtp.hostinger.com, // 'mail.mujaware.com',//gmail
+            host: 'smtp.hostinger.com', //'smtp.titan.email',     //'smtp.hostinger.com', // 'mail.mujaware.com',//'gmail'
             port: 587, //465,
             secure: true,
             auth: {
@@ -38,26 +38,26 @@ async function sendMail(
             }
         });
 
-        var imap = new Imap({
-            user: process.env.EMAIL_USER,
-            password: process.env.EMAIL_PASS,
-            host: 'imap.titan.email',
-            port: 993,
-            tls: true
-        });
+        // var imap = new Imap({
+        //     user: process.env.EMAIL_USER,
+        //     password: process.env.EMAIL_PASS,
+        //     host: 'imap.titan.email',
+        //     port: 993,
+        //     tls: true
+        // });
 
 
-        var mailOptions2 = {
-            envelope: {
-                from: 'aliyubello@mujaware.com',
-                to: `${email}`
-            },
-            raw: `From: aliyubello@mujaware.com
-            To:${email}
-            Subject:${subject}
+        // var mailOptions2 = {
+        //     envelope: {
+        //         from: 'aliyubello@mujaware.com',
+        //         to: `${email}`
+        //     },
+        //     raw: `From: aliyubello@mujaware.com
+        //     To:${email}
+        //     Subject:${subject}
 
-            ${text}`
-        };
+        //     ${text}`
+        // };
 
         var mailOptions = {
             // from: `${process.env.USER}, {name:"Aliyu Bello",address:${process.env.USER}}`,
@@ -68,23 +68,23 @@ async function sendMail(
         };
 
         const info = await transporter.sendMail(mailOptions);
-        
+
 
         console.log('Email sent: ' + info.response);
         console.log('Info Object: ', info);
 
         // append the sent mail to the sent folder
-        imap.once('ready', function () {
-            imap.openBox('Sent', true, function (err) {
-                if (err) {
-                    console.log('Error: ', err);
-                    imap.end();
-                    return;
-                } else {
-                    console.log('Mail sent and appended to the sent folder');
-                }
-            });
-        });
+        // imap.once('ready', function () {
+        //     imap.openBox('Sent', true, function (err) {
+        //         if (err) {
+        //             console.log('Error: ', err);
+        //             imap.end();
+        //             return;
+        //         } else {
+        //             console.log('Mail sent and appended to the sent folder');
+        //         }
+        //     });
+        // });
 
         return true;
 
@@ -130,7 +130,7 @@ function sendMultipleMail(
     const namee = escape(senderName);
 
     var transporter = nodemailer.createTransport({
-        host: smtp.hostinger.com, // 'mail.mujaware.com',//gmail
+        host: 'smtp.hostinger.com', // 'mail.mujaware.com',//gmail
         port: 587, //465,
         secure: true,
         auth: {
@@ -140,7 +140,7 @@ function sendMultipleMail(
     });
 
     var mailOptions = {
-        from: `${namee ? namee : "Kulwek"} <${process.env.USER}>`,
+        from: `${namee ? namee : "cShop"} <${process.env.USER}>`,
         cc: [ccList ? ccList : ''],
         bcc: [bccList ? bccList : ''],
         to: emaile,

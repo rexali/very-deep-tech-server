@@ -32,15 +32,15 @@ const registerUserHandler = async (req, res) => {
         let clientData;
         // get user role
         let role = req.body.role ?? "user";
-        let firstName = req.body.firstName ?? "";
-        let lastName = req.body.lastName ?? "";
-        let subdomain = req.body.subdomain ?? "maindomain"
-        let businessName = req.body.businessName ?? ""
+        let firstName = req.body?.firstName ?? "";
+        let lastName = req.body?.lastName ?? "";
+        let subdomain = req.body?.subdomain ?? "maindomain"
+        let businessName = req.body?.businessName ?? ""
 
 
         // let us validate inputs
         const schema = Joi.object({
-            email: Joi.string().email(),
+            email: Joi.string().email().required(),
             password: Joi.string().required(),
             role: Joi.string(),
             firstName: Joi.string(),
@@ -63,33 +63,33 @@ const registerUserHandler = async (req, res) => {
             // initilise client data and escape each client details to protect XSS attack
             clientData = {
                 // let us sanitize our inputs
-                email: escape(email),
-                password: escape(password),
-                role: escape(role),
-                firstName: escape(firstName),
-                lastName: escape(lastName),
-                subdomain: escape(subdomain),
-                businessName: escape(businessName)
+                emailx: escape(email),
+                passwordx: escape(password),
+                rolex: escape(role),
+                firstNamex: escape(firstName),
+                lastNamex: escape(lastName),
+                subdomainx: escape(subdomain),
+                businessNamex: escape(businessName)
             }
             // hash the user password
-            const hassPassword = hashpass(clientData.password);
+            const hassPassword = hashpass(clientData.passwordx);
             // enter data to users table
-            const user = await new User({ email: clientData.email, password: hassPassword, role: clientData.role, subdomain: clientData.subdomain }).save();
+            const user = await new User({ email: clientData.emailx, password: hassPassword, role: clientData.rolex, subdomain: clientData.subdomainx }).save();
             // check if insert Id is defined
             if (user._id) {
                 let profile;
                 // create user profile
-                if (businessName && subdomain) {
+                if (clientData.businessNamex && clientData.subdomainx) {
                     profile = await Profile.create({
                         user: user._id,
-                        businessName: clientData.businessName,
-                        subdomain: clientData.subdomain
+                        businessName: clientData.businessNamex,
+                        subdomain: clientData.subdomainx
                     });
                 } else {
                     profile = await Profile.create({
                         user: user._id,
-                        firstName: clientData.firstName,
-                        lastName: clientData.lastName
+                        firstName: clientData.firstNamex,
+                        lastName: clientData.lastNamex
                     });
                 }
 

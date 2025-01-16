@@ -3,12 +3,12 @@ const { User } = require("../models/user.model");
 async function isSubdomainAvailbale(req, res) {
     try {
         const subdomain = req.query?.subdomain ?? "";
-        const user = await User.find({ subdomain });
+        const user = await User.find({ subdomain }).select(['_id', 'email', 'subdomain', 'role']).exec();
 
         if (user !== null && Object.keys(user).length >= 1) {
             res.status(200).json({
                 status: "success",
-                data: { result: true, subdomain: user.subdomain },
+                data: { result: true, user },
                 message: "Subdomain exists"
             })
         } else {
