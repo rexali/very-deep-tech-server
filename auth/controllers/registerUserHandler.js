@@ -40,13 +40,13 @@ const registerUserHandler = async (req, res) => {
 
         // let us validate inputs
         const schema = Joi.object({
-            email: Joi.string().email(),
+            email: Joi.string().email().required(),
             password: Joi.string().required(),
-            role: Joi.string(),
-            firstName: Joi.string(),
-            lastName: Joi.string(),
-            subdomain: Joi.string(),
-            businessName: Joi.string()
+            role: Joi.string().allow(""),
+            firstName: Joi.string().allow(""),
+            lastName: Joi.string().allow(""),
+            subdomain: Joi.string().allow(""),
+            businessName: Joi.string().allow("")
         });
 
         const { error, value } = schema.validate({ email, password, role, firstName, lastName, subdomain, businessName });
