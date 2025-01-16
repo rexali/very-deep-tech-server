@@ -40,7 +40,7 @@ const registerUserHandler = async (req, res) => {
 
         // let us validate inputs
         const schema = Joi.object({
-            email: Joi.string().email().required(),
+            email: Joi.string().email(),
             password: Joi.string().required(),
             role: Joi.string(),
             firstName: Joi.string(),
@@ -125,6 +125,7 @@ const registerUserHandler = async (req, res) => {
 
     } catch (error) {
         //   catch escapeHTML error
+        console.log(error);
         res.status(400).json({
             status: "failed",
             message: "Error: " + error.message,
