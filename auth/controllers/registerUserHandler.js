@@ -54,7 +54,7 @@ const registerUserHandler = async (req, res) => {
         if (error) {
             // send data as json
             res.status(400).json({
-                status: "failed",
+                status: "failed validation: " + error.message,
                 data: null,
                 message: "Error! " + error.message
             })
@@ -127,7 +127,7 @@ const registerUserHandler = async (req, res) => {
         //   catch escapeHTML error
         console.log(error);
         res.status(400).json({
-            status: "failed",
+            status: "failed: " + error.message,
             message: "Error: " + error.message,
             data: null
         });
