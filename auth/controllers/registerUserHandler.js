@@ -36,8 +36,6 @@ const registerUserHandler = async (req, res) => {
         let lastName = req.body?.lastName ?? "";
         let subdomain = req.body?.subdomain ?? "maindomain"
         let businessName = req.body?.businessName ?? ""
-
-
         // let us validate inputs
         const schema = Joi.object({
             email: Joi.string().email().required(),
@@ -89,7 +87,8 @@ const registerUserHandler = async (req, res) => {
                     profile = await Profile.create({
                         user: user._id,
                         firstName: clientData.firstNamex,
-                        lastName: clientData.lastNamex
+                        lastName: clientData.lastNamex,
+                        subdomain: clientData.subdomainx
                     });
                 }
 
