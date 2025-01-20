@@ -5,7 +5,7 @@ async function getTenant(req, res) {
     try {
         const tenant = await Tenant.findOne({ subdomain: subdomain });
         if (tenant._id) {
-            res.status(200).json({
+            res.status(200).json({ 
                 status: "success",
                 message: "Tenant found",
                 data: { tenant }

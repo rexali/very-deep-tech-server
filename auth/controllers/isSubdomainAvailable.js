@@ -12,7 +12,7 @@ async function isSubdomainAvailbale(req, res) {
                 message: "Subdomain exists"
             })
         } else {
-            res.status(200).json({
+            res.status(204).json({
                 status: "failed",
                 data: { result: false },
                 message: "Subdomain doesn't exist"
