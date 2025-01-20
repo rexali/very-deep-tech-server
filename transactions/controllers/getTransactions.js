@@ -25,7 +25,7 @@ const getTransactions = async (req, res) => {
                 })
                 .exec();
         } else {
-            transactions = await Transaction.find({subdomain})
+            transactions = await Transaction.find({ subdomain })
                 .sort({ _id: -1 })
                 .skip(skip)
                 .limit(limit)
@@ -195,8 +195,61 @@ async function generateSalesReportObj() {
             $sort: { _id: 1 }
         }
     ]);
+    
+    const data = [
+        ["Day", "Sales"],
+        // ["Monday", 1000],
+        // ["Tuesday", 1170],
+        // ["Wednesday", 660],
+        // ["Thursday", 1030],
+        // ["Friday", 800],
+    ];
 
-    return salesReport;
+    salesReport.forEach(function(report) {
+        let daySaleReports = Object.entries(report);
+        data.push(daySaleReports[0]);
+    })
+
+    return data;
+}
+
+
+// Function to generate sales report for each week of the month
+async function generateWeeklySalesReport() {
+    const salesReport = await Transaction.aggregate([
+        {
+            $group: {
+                _id: {
+                    $dateToString: {
+                        format: "%Y-%m-W%U",
+                        date: "$createdAt"
+                    }
+                },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+
+    const data = [
+        ["Week", "Sales"],
+        // ["Monday", 1000],
+        // ["Tuesday", 1170],
+        // ["Wednesday", 660],
+        // ["Thursday", 1030],
+        // ["Friday", 800],
+    ];
+
+    salesReport.forEach(function(report) {
+        let weekSaleReports = Object.entries(report);
+        data.push(weekSaleReports[0]);
+    })
+
+
+    return data;
 }
 
 
@@ -214,7 +267,22 @@ async function generateMonthlySalesReportObj() {
         }
     ]);
 
-    return salesReport;
+    
+    const data = [
+        ["Month", "Sales"],
+        // ["Monday", 1000],
+        // ["Tuesday", 1170],
+        // ["Wednesday", 660],
+        // ["Thursday", 1030],
+        // ["Friday", 800],
+    ];
+
+    salesReport.forEach(function(report) {
+        let monthSaleReports = Object.entries(report);
+        data.push(monthSaleReports[0]);
+    })
+
+    return data;
 }
 
 
@@ -237,39 +305,31 @@ async function generateQuarterlySalesReportObj() {
 
         },
 
-
-
         {
             $sort: { _id: 1 }
         }
     ]);
 
-    return salesReport;
+    
+    const data = [
+        ["Quarter", "Sales"],
+        // ["Monday", 1000],
+        // ["Tuesday", 1170],
+        // ["Wednesday", 660],
+        // ["Thursday", 1030],
+        // ["Friday", 800],
+    ];
+
+    salesReport.forEach(function(report) {
+        let quarterlySaleReports = Object.entries(report);
+        data.push(quarterlySaleReports[0]);
+    })
+
+    return data;
 }
 
 
 
-// Function to generate sales report for each week of the month
-async function generateWeeklySalesReport() {
-    const salesReport = await Transaction.aggregate([
-        {
-            $group: {
-                _id: {
-                    $dateToString: {
-                        format: "%Y-%m-W%U",
-                        date: "$createdAt"
-                    }
-                },
-                totalSales: { $sum: "$amount" }
-            }
-        },
-        {
-            $sort: { _id: 1 }
-        }
-    ]);
-
-    return salesReport;
-}
 
 
 
