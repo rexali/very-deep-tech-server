@@ -207,7 +207,7 @@ async function generateSalesReportObj() {
 
     salesReport.forEach(function(report) {
         let daySaleReports = Object.entries(report);
-        data.push([daySaleReports[0][1], daySaleReports[1][1]]);
+        data.push([String(daySaleReports[0][1]), Number(daySaleReports[1][1])]);
     })
 
     return data;
@@ -245,7 +245,7 @@ async function generateWeeklySalesReport() {
 
     salesReport.forEach(function(report) {
         let weekSaleReports = Object.entries(report);
-        data.push([weekSaleReports[0][1],weekSaleReports[1][1]]);
+        data.push([String(weekSaleReports[0][1]),Number(weekSaleReports[1][1])]);
     })
 
 
@@ -279,7 +279,7 @@ async function generateMonthlySalesReportObj() {
 
     salesReport.forEach(function(report) {
         let monthSaleReports = Object.entries(report);
-        data.push([monthSaleReports[0][1], monthSaleReports[1][1]]);
+        data.push([String(monthSaleReports[0][1]), Number(monthSaleReports[1][1])]);
     })
 
     return data;
@@ -322,7 +322,7 @@ async function generateQuarterlySalesReportObj() {
 
     salesReport.forEach(function(report) {
         let quarterlySaleReports = Object.entries(report);
-        data.push([quarterlySaleReports[0][1],quarterlySaleReports[1][1]]);
+        data.push([String(quarterlySaleReports[0][1]),Number(quarterlySaleReports[1][1])]);
     })
 
     return data;
