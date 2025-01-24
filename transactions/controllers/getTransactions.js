@@ -270,10 +270,10 @@ async function generateMondayToSundaySalesReportObj() {
 
     salesReport.forEach(function (report) {
         let daySaleReports = Object.entries(report);
-        data.push([String(daySaleReports[0][1]), Number(daySaleReports[1][1])]);
+        data.push([daySaleReports[0][1], Number(daySaleReports[1][1])]);
     })
 
-    return data;
+    return salesReport;
 }
 
 
