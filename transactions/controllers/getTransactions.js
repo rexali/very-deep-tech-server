@@ -217,7 +217,7 @@ async function generateDaySalesReportObj() {
     const salesReport = await Transaction.aggregate([
         {
             $group: {
-                _id: { $day: "$createdAt" },
+                _id: { $dayOfMonth: "$createdAt" },
                 totalSales: { $sum: "$amount" }
             }
         },
