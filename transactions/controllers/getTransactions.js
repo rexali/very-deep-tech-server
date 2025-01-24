@@ -61,7 +61,9 @@ const getTransactions = async (req, res) => {
                         generateMonthlySalesReportObj: await generateMonthlySalesReportObj(),
                         generateQuarterlySalesReportObj: await generateQuarterlySalesReportObj(),
                         generateWeeklySalesReportObj: await generateWeeklySalesReport(),
-                        generateYearlySalesReportObj: await generateYearlySalesReportObj()
+                        generateYearlySalesReportObj: await generateYearlySalesReportObj(),
+                        generateDaySalesReportObj:await generateDaySalesReportObj(),
+                        generateMondayToSundaySalesReportObj:await generateMondayToSundaySalesReportObj()
                     },
                     message: "Transaction read",
                 });
@@ -210,6 +212,71 @@ async function generateSalesReportObj() {
 }
 
 
+// Function to generate sales report for each month of the year
+async function generateDaySalesReportObj() {
+    const salesReport = await Transaction.aggregate([
+        {
+            $group: {
+                _id: { $day: "$createdAt" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    const data = [
+        ["Day", "Sales"]
+    ];
+
+    salesReport.forEach(function (report) {
+        let daySaleReports = Object.entries(report);
+        data.push([String(daySaleReports[0][1]), Number(daySaleReports[1][1])]);
+    })
+
+    return data;
+}
+
+
+
+
+// Function to generate sales report for each month of the year
+async function generateMondayToSundaySalesReportObj() {
+    const salesReport = await Transaction.aggregate([
+        {
+            $group: {
+                _id: { $dayOfWeek: "$createdAt" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                day: { $arrayElemAt: ["$dayNames", "$_id"] },
+                totalSales: 1
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const data = [
+        ["Day", "Sales"]
+    ];
+
+    salesReport.forEach(function (report) {
+        let daySaleReports = Object.entries(report);
+        data.push([String(daySaleReports[0][1]), Number(daySaleReports[1][1])]);
+    })
+
+    return data;
+}
+
+
 // Function to generate sales report for each week of the month
 async function generateWeeklySalesReport() {
     const salesReport = await Transaction.aggregate([
@@ -299,8 +366,6 @@ async function generateYearlySalesReportObj() {
     return data;
 }
 
-
-
 // Function to generate sales report for each quarter of the year
 async function generateQuarterlySalesReportObj() {
     const salesReport = await Transaction.aggregate([
@@ -324,7 +389,6 @@ async function generateQuarterlySalesReportObj() {
         }
     ]);
 
-
     const data = [
         ["Quarter", "Sales"]
     ];
@@ -336,11 +400,6 @@ async function generateQuarterlySalesReportObj() {
 
     return data;
 }
-
-
-
-
-
 
 module.exports = {
     getTransactions
