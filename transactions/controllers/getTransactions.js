@@ -61,6 +61,7 @@ const getTransactions = async (req, res) => {
                         generateMonthlySalesReportObj: await generateMonthlySalesReportObj(),
                         generateQuarterlySalesReportObj: await generateQuarterlySalesReportObj(),
                         generateWeeklySalesReportObj: await generateWeeklySalesReport(),
+                        generateYearlySalesReportObj: await generateYearlySalesReportObj()
                     },
                     message: "Transaction read",
                 });
@@ -195,17 +196,12 @@ async function generateSalesReportObj() {
             $sort: { _id: 1 }
         }
     ]);
-    
+
     const data = [
-        ["Day", "Sales"],
-        // ["Monday", 1000],
-        // ["Tuesday", 1170],
-        // ["Wednesday", 660],
-        // ["Thursday", 1030],
-        // ["Friday", 800],
+        ["Day", "Sales"]
     ];
 
-    salesReport.forEach(function(report) {
+    salesReport.forEach(function (report) {
         let daySaleReports = Object.entries(report);
         data.push([String(daySaleReports[0][1]), Number(daySaleReports[1][1])]);
     })
@@ -235,17 +231,12 @@ async function generateWeeklySalesReport() {
 
 
     const data = [
-        ["Week", "Sales"],
-        // ["Monday", 1000],
-        // ["Tuesday", 1170],
-        // ["Wednesday", 660],
-        // ["Thursday", 1030],
-        // ["Friday", 800],
+        ["Week", "Sales"]
     ];
 
-    salesReport.forEach(function(report) {
+    salesReport.forEach(function (report) {
         let weekSaleReports = Object.entries(report);
-        data.push([String(weekSaleReports[0][1]),Number(weekSaleReports[1][1])]);
+        data.push([String(weekSaleReports[0][1]), Number(weekSaleReports[1][1])]);
     })
 
 
@@ -267,19 +258,42 @@ async function generateMonthlySalesReportObj() {
         }
     ]);
 
-    
+
     const data = [
-        ["Month", "Sales"],
-        // ["Monday", 1000],
-        // ["Tuesday", 1170],
-        // ["Wednesday", 660],
-        // ["Thursday", 1030],
-        // ["Friday", 800],
+        ["Month", "Sales"]
     ];
 
-    salesReport.forEach(function(report) {
+    salesReport.forEach(function (report) {
         let monthSaleReports = Object.entries(report);
         data.push([String(monthSaleReports[0][1]), Number(monthSaleReports[1][1])]);
+    })
+
+    return data;
+}
+
+
+
+// Function to generate sales report for each month of the year
+async function generateYearlySalesReportObj() {
+    const salesReport = await Transaction.aggregate([
+        {
+            $group: {
+                _id: { $year: "$createdAt" },
+                totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $sort: { _id: 1 }
+        }
+    ]);
+
+    const data = [
+        ["Year", "Sales"]
+    ];
+
+    salesReport.forEach(function (report) {
+        let yearSaleReports = Object.entries(report);
+        data.push([String(yearSaleReports[0][1]), Number(yearSaleReports[1][1])]);
     })
 
     return data;
@@ -310,19 +324,14 @@ async function generateQuarterlySalesReportObj() {
         }
     ]);
 
-    
+
     const data = [
-        ["Quarter", "Sales"],
-        // ["Monday", 1000],
-        // ["Tuesday", 1170],
-        // ["Wednesday", 660],
-        // ["Thursday", 1030],
-        // ["Friday", 800],
+        ["Quarter", "Sales"]
     ];
 
-    salesReport.forEach(function(report) {
+    salesReport.forEach(function (report) {
         let quarterlySaleReports = Object.entries(report);
-        data.push([String(quarterlySaleReports[0][1]),Number(quarterlySaleReports[1][1])]);
+        data.push([String(quarterlySaleReports[0][1]), Number(quarterlySaleReports[1][1])]);
     })
 
     return data;
