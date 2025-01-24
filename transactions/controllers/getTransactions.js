@@ -62,8 +62,8 @@ const getTransactions = async (req, res) => {
                         generateQuarterlySalesReportObj: await generateQuarterlySalesReportObj(),
                         generateWeeklySalesReportObj: await generateWeeklySalesReport(),
                         generateYearlySalesReportObj: await generateYearlySalesReportObj(),
-                        generateDaySalesReportObj:await generateDaySalesReportObj(),
-                        generateMondayToSundaySalesReportObj:await generateMondayToSundaySalesReportObj()
+                        generateDaySalesReportObj: await generateDaySalesReportObj(),
+                        generateMondayToSundaySalesReportObj: await generateMondayToSundaySalesReportObj()
                     },
                     message: "Transaction read",
                 });
@@ -243,11 +243,19 @@ async function generateDaySalesReportObj() {
 
 // Function to generate sales report for each month of the year
 async function generateMondayToSundaySalesReportObj() {
+
+    // const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
     const salesReport = await Transaction.aggregate([
         {
             $group: {
                 _id: { $dayOfWeek: "$createdAt" },
                 totalSales: { $sum: "$amount" }
+            }
+        },
+        {
+            $addFields: {
+                dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             }
         },
         {
@@ -261,8 +269,6 @@ async function generateMondayToSundaySalesReportObj() {
             $sort: { _id: 1 }
         }
     ]);
-
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
     const data = [
         ["Day", "Sales"]
