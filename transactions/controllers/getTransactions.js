@@ -279,7 +279,7 @@ async function generateMondayToSundaySalesReportObj() {
         data.push([daySaleReports[0][1], Number(daySaleReports[1][1])]);
     })
 
-    return salesReport;
+    return data;
 }
 
 
