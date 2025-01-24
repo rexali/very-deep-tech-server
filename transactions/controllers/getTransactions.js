@@ -261,7 +261,7 @@ async function generateMondayToSundaySalesReportObj() {
         {
             $project: {
                 _id: 0,
-                day: { $arrayElemAt: ["$dayNames", { $subtract: ["$_id", 1] }] },
+                day: { $arrayElemAt: [{ "$literal": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] }, { $subtract: ["$_id", 1] }] },
                 totalSales: 1
             }
         },
