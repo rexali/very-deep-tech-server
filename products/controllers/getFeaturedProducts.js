@@ -25,7 +25,7 @@ const getFeaturedProducts = async (req, res) => {
                 .populate("likes")
                 .exec();
         } else {
-            products = await Product.find({subdomain})
+            products = await Product.find({ subdomain })
                 .sort({ _id: -1 })
                 .where({ featured: 'yes' })
                 .skip(skip)
@@ -82,31 +82,31 @@ const getFeaturedProducts = async (req, res) => {
 }
 
 async function getFeatured(req, res) {
-     const subdomain = req.query.subdomain ?? ""
-    const page = parseInt(req.query.page ?? 1);
+    const subdomain = req.query?.subdomain ?? ""
+    const page = parseInt(req.query?.page ?? 1);
     const limit = 4;
     const skip = (page - 1) * limit;
     let products;
     if (subdomain == 'maindomain' || "" || undefined) {
-    products = await Product.find()
-        .sort({ _id: -1 })
-        .where({ featured: 'yes' })
-        .skip(skip)
-        .limit(limit)
-        .populate("user", ["_id", "email", "role"])
-        .populate("ratings")
-        .populate("likes")
-        .exec(); 
-    }else{
-        products = await Product.find({subdomain})
-        .sort({ _id: -1 })
-        .where({ featured: 'yes' })
-        .skip(skip)
-        .limit(limit)
-        .populate("user", ["_id", "email", "role"])
-        .populate("ratings")
-        .populate("likes")
-        .exec();
+        products = await Product.find()
+            .sort({ _id: -1 })
+            .where({ featured: 'yes' })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .populate("likes")
+            .exec();
+    } else {
+        products = await Product.find({ subdomain: subdomain })
+            .sort({ _id: -1 })
+            .where({ featured: 'yes' })
+            .skip(skip)
+            .limit(limit)
+            .populate("user", ["_id", "email", "role"])
+            .populate("ratings")
+            .populate("likes")
+            .exec();
     }
 
     const totalProducts = (await Product.find()).length;
