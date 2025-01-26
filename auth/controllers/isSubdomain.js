@@ -1,9 +1,12 @@
 const { User } = require("../models/user.model");
 
-async function isSubdomainAvailbale(req, res) {
+async function isSubdomain(req, res) {
     try {
         const subdomain = req.query?.subdomain ?? "";
-        const user = await User.find({ subdomain }).select(['_id', 'email', 'subdomain', 'role']).exec();
+        const user = await User.find({ subdomain })
+        .select(['_id', 'email', 'subdomain', 'role'])
+        .populate('profile',['businessName'])
+        .exec();
 
         if (user !== null && Object.keys(user).length >= 1) {
             res.status(200).json({
@@ -28,4 +31,4 @@ async function isSubdomainAvailbale(req, res) {
 
 }
 
-module.exports = { isSubdomainAvailbale }
+module.exports = { isSubdomain}
